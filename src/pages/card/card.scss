@@ -1,0 +1,37 @@
+/* pages/card/index.wxss */
+.card_info_box{
+  background-color: #fff; padding: 25px; height: 350px;
+}
+.card_info_box view.box{
+  background: #4ca0c5; height: 350px; border-radius: 10px; padding:60px 30px 30px 30px; box-sizing: border-box;
+}
+.card_info_box view.box .image_box{
+  width: 150px; height: 150px; float: left;
+}
+.card_info_box view.box image{
+  width: 140px; height: 140px; border-radius: 75px; border: solid 5px #fff;
+}
+.card_text{
+  float: left; padding-left: 50px;
+}
+.card_text text{
+  line-height: 70px; font-size: 38px; color: #001624;
+}
+.cardno_box{
+  width: 100%; float: left; margin-top: 60px; color: #001624;
+}
+.card_info_box view.box text{
+  
+}
+.user_entrance{
+  margin-top: 20px;
+}
+.user_entrance view{
+  height: 80px; line-height: 80px; background: #fff; font-size: 30px; border-bottom: solid 1px #dfdfdf;text-indent:30px; color: #303030;
+}
+.get_card{
+  width: 100%; height: 80px; padding: 0 10PX; box-sizing: border-box;
+  .btn{
+    width: 100%; font-size: 34px; height: 80px; line-height: 80px;
+  }
+}

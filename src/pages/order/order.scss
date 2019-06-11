@@ -1,0 +1,71 @@
+.orderListPage{
+    .order_nav{
+        display: flex; background: #fff; border: solid 1PX #e9e9e9; height: 72px; line-height: 72px;        
+        .text{
+            flex: 1; text-align: center; font-size: 26px; color: #333333;
+            &.active{
+                color: #f12e24; border-bottom: solid 2PX #f12e24;
+            }
+        }
+    }
+    .order_list{
+        font-size: 26px; background: #fff;
+        .order-list-item-wrap{
+            margin-top: 10px;
+            .order-item-desc{
+                border-bottom: solid 1PX #e9e9e9; display: flex; flex-direction: row; justify-content: space-between;
+                padding: 0 20px; height: 80px; line-height: 80px;
+                .theme-color{
+                    color: #f12e24;
+                }
+            }
+        }
+        .order-list-item{
+            .order-goods{
+                border-bottom: solid 1PX #e9e9e9; padding: 20px;
+                
+                .order-goods-img{
+                    height: 160px; width: 160px;
+                    background:no-repeat 50%/cover
+                }
+                
+                .order-goods-detail{
+                    display: flex; flex-direction:column;  justify-content: space-between;
+                    padding-left: 20px;
+                    .font20{
+                        font-size: 20px;
+                    }
+                    .font26{
+                        font-size: 26px;
+                    }
+                    .order-goods-title{
+                        color:#222;padding-right:20px; height: 90px;
+                    }
+                    .order-goods-tag{
+                        border: solid 1px #de0022; color: #de0022;
+                    }
+                    .order-goods-sku{
+                        color: #646464;
+                    }
+                    
+                }
+                
+            }
+            .order-goods-amount{ 
+                height: 60px; line-height: 60px; text-align: right; padding: 0 20px; color: #333333;
+                .theme-color{
+                    color: #f12e24;
+                }
+            }
+        }
+        
+    }
+    .loadMore {
+        font-size: 26px;
+        color: #c1c1c1;
+        text-align: center;
+        height: 80px;
+        line-height: 80px;
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,36 @@
+/* pages/card/details/cardDetails.wxss */
+view.top{
+    position: relative; height: 500px; overflow: hidden;
+  }
+  view.top .big_image{
+    position: absolute; left: 0; top: 0; width: 100%; filter: blur(10px);  height: 500px;
+    -webkit-filter: blur(10px);
+    transform: scale(1);
+  }
+  view.top view.bg{
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: #fff; opacity: 0.4;
+  }
+  .small_image{
+    position: absolute; width: 140px; height: 140px; border-radius: 74px; border: solid 2px #fff; left: 50%; top: 40px;margin-left: -70px;
+  }
+  .top_bottom{
+    display: flex; background: #fff; height: 70px; line-height: 70px; font-size: 30px;
+  }
+  .top_bottom view{
+    flex: 1; text-align: center;
+  }
+  .top_bottom view text{
+    color: #c94d58;
+  }
+  .center_con{
+    margin-top: 20px; background-color: #fff;
+  }
+  .center_con view{
+    border-bottom: solid 1PX #dedede; color: #a6a6a6; font-size: 26px; padding: 20px 20px 20px 20px;
+  }
+  .center_con view text{
+    color: #232323; font-size: 30px; width: 100%; float: left; padding-bottom: 10px;
+  }
+  .center_con view:nth-child(4){
+    border-bottom: none;
+  }

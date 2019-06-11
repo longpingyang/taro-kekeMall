@@ -1,0 +1,128 @@
+.addressList_box{
+    font-size: 24px;
+    .msg-header {
+        display: flex;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        margin: 0 0 20px;
+        background: #fff;
+        &:before {
+            content: "";
+        }
+        &:after {
+            content: "";
+        }
+        .msg-item {
+            height: 96px;color: #333;
+            line-height: 96px;
+            font-size: 30px;
+            letter-spacing: 0;
+            text-align: center;
+            position: relative;
+        }
+        .msg-item-active {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+        }
+    }
+    .handel
+    {   
+        &.content-null {
+        padding: 100px 0 0;
+        }
+        &.content{
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 25px 30px;
+            line-height:80px;
+            text-align: center;
+            background: #f8f8f8;
+        }
+        .icon-address-null {
+            width: 187px;
+            height: 177px;
+            margin: 0 auto;
+            background: url(//cdn.weimob.com/saas/retail/image/user/member/location.png) no-repeat 50%/contain;
+        }
+        .address-tip{
+            color: #aeaeae; margin: 50px auto;
+            text-align: center;
+            font-size: 32px;
+        }
+        .single-btn {
+            font-size: 34px;display: block;
+            text-align: center;
+            color: #fff;
+            line-height: 80px;
+            text-align: center;
+            border-radius: 4px;
+            margin: 0 32px;
+        }
+    }    
+}
+.m-address-list .list {
+    margin-bottom: 140px; overflow: auto;
+    color: #1a1a1a;
+}
+.m-address-list .item {
+    margin: 20px 0;
+    padding: 40px 30px 0;
+    background: #fff;
+    position: relative;
+    .item:first-child {
+        margin: 0 0 20px;
+    }
+    .core {
+        font-size: 30px;
+        color: #333;
+        letter-spacing: 0;
+        text-align: justify;
+        line-height: 30px;
+        margin: 0 0 20px;
+    }
+    .name {
+        text-align: justify;
+    }
+    .tel {
+        margin: 0 0 0 25px;
+        text-align: justify;
+    }
+    .details{
+        font-size: 28px;
+        color: #333;
+        letter-spacing: 0;
+        text-align: justify;
+        line-height: 40px;
+        padding: 0 0 34px;
+        // border-bottom: 10px solid #ededed;
+    }
+    .msg-action-box {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        .default,.special {
+            color: #666; display: flex;
+            letter-spacing: 0;
+            height: 88px;
+            line-height: 88px;
+            font-size: 28px;
+            .text{
+                padding-left: 12px;
+            }
+        }
+        .edit,.delete{
+            font-size: 28px;
+        }
+        .delete {
+            margin: 0 0 0 40px;
+        }
+    }
+}
+

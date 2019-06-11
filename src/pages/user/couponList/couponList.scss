@@ -1,0 +1,130 @@
+
+
+.coupon-list-main {
+    padding-top:100px;
+    .coupon-list {
+        padding: 0 30px 60px;
+    }
+}
+.coupon-type-tab {
+    position: fixed; top: 0;right: 0; left: 0;
+    z-index: 2;
+    width: 100%;
+    margin: 0 auto;
+    line-height:98px;
+    text-align: center;
+    .on-tab {
+        position: absolute;
+        left: 30%;
+        bottom: 0;
+        width: 104px;
+        height: 4px;
+    }
+}
+.discoloration {
+    background: rgba(241,46,36,.6);
+}
+.coupon {
+    height: 182px;position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 8px 0 rgba(0,0,0,.08);
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,.08);
+    margin-top: 20px;
+    &.disabled {
+        background: hsla(0,0%,72%,.6);
+    }
+    .coupon-price {
+        width: 190px;height: 182px;
+        text-align: center;
+        font-weight: 300;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        color: #fff;
+        justify-content: center;
+        align-items: center;
+        view {
+            display: inline;
+        }
+        .price-number {
+            font-size: 56px;
+            .coupon_fsize {
+                font-size: 42px;
+                color: #fff;
+            }
+        }
+        .coupon-full {
+            margin-top: 12px;
+            font-family: PingFangSC-Regular;
+            font-size: 20px;
+            line-height: 20px;
+            color: #fff;
+        }
+    }
+    .coupon-content{
+        overflow: hidden;justify-content: center;position: relative; width: 374px;
+        .coupon-dec {
+            font-size: 30px;
+        }
+        .coupon-date {
+            font-family: PingFangSC-Light;
+            letter-spacing: -1;
+            line-height: 22px;
+            font-size: 22px;
+            color: #fff;
+            margin-top: 16px;
+        }
+        .coupon-use-scence {
+            margin-top: 16px;
+            font-family: PingFangSC-Light;
+            color: #fff;
+            line-height: 20px;
+        }
+        .coupon-text-line1 {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            font-family: PingFangSC-Regular;
+            font-size: 30px;
+            color: #fff;
+            line-height: 30px;
+        }
+    }
+    .coupon-usebtn {
+        position: relative;
+        width: 126px;
+        height: 100%;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0 auto;
+        background: url(//cdn.weimob.com/saas/retail/image/market/coupon/money.png) no-repeat 100% 0;
+        background-size: 86%;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        color: #fff;
+        .coupon-usetext {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 28px;
+            font-family: PingFangSC-Light;
+        }
+    }
+    .border-coupon {
+        position: absolute;width: 12px; right: 120px; top: 0;
+        height: 100%;
+        background: url(//cdn.weimob.com/saas/retail/image/market/coupon/point.png) no-repeat 100% 0;
+        background-size: 100% 100%;
+    }
+}

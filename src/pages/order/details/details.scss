@@ -1,0 +1,146 @@
+.order_detail_box{
+    font-size: 24px;
+}
+.order-detail-deliver-goods, .order-detail-header-not-paid {
+    position: relative;
+    padding: 80px 70px;
+    color: #fff;
+    background: url(//cdn.weimob.com/saas/retail/image/order/detail/dingdanbeijing.jpg) no-repeat 50%/cover;
+}
+.order-detail-deliver-goods:after, .order-detail-header-not-paid:after {
+    display: block;
+    position: absolute;
+    top: 30px;
+    right: 70px;
+    content: "";
+    width: 180px;
+    height: 134px;
+    background: url(//cdn.weimob.com/saas/retail/image/order/detail/jiaoyichenggong.png) no-repeat 50%/cover;
+}
+.order-detail-deliver-goods:after {
+    background: url(//cdn.weimob.com/saas/retail/image/order/detail/daifahuo.png) no-repeat 50%/cover;
+}
+.order-delivery{
+    
+}
+.order-detail-icon {
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin-right: 20px;
+    font-size: 36px;
+}
+.order-detail-delivery {
+    padding-left: 30px;
+}
+.bgwh {
+    background-color: #fff;
+}
+.delivery-address-box {
+    padding: 20px 30px 20px 0;
+}
+.order-detail-shopping {
+    margin-top: 18px;
+    padding: 0 30px;
+    line-height: 80px;
+}
+
+.order-shopping-list {
+    padding-left: 30px;
+}
+.order-goods {
+    padding: 25px 30px 25px 0;
+}
+.order-goods-img {
+    width: 120px;
+    height: 120px;
+    background: no-repeat 50%/cover;
+}
+
+.order-goods-detail {
+    padding-left: 30px;
+}
+.order-goods-sku {
+    margin: 8px 0;
+    line-height: 21px;
+    color: #999;
+}
+.order-goods-title {
+    height: 56px;
+    padding-right: 46px;
+    line-height: 28px;
+    color: #646464;
+}
+.order-goods-price {
+    color: #000;
+}
+.order-goods-tags {
+    color: #de0022;
+}
+.order-goods-count {
+    color: #646464;
+}
+.order-goods-tag {
+    padding: 0 4px;
+    border: 1PX solid #de0022;
+    border-radius: 4px;
+    line-height: 28px;
+    margin-right: 6px;
+}
+.order-detail-msg {
+    line-height:82px;
+}
+.order-detail-price {
+    padding: 22px 30px;
+}
+.order-detail-price >.flex{
+    padding: 8px 0;
+}
+.detail-record-bottom {
+    margin-bottom: 150px;
+}
+.order-detail-record {
+    padding: 22px 30px;
+    margin-top: 16px;
+}
+.order-detail-record .item{
+    padding: 8px 0;
+}
+
+.order-detail-action {
+    position: fixed; box-sizing: border-box;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width:100%;
+    padding: 26px 30px;
+    margin: 0 auto;
+    text-align: right;
+}
+.detail-action-handle {
+    display: inline-block;
+    width: 148px;
+    margin-left: 25px;
+    line-height: 56px;
+    text-align: center;
+    border-style: solid;
+    border-width: 1PX;
+    border-radius: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

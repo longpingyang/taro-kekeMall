@@ -1,0 +1,250 @@
+/**index.wxss**/
+.userinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .userinfo-avatar {
+    width: 128PX;
+    height: 128PX;
+    margin: 20PX;
+    border-radius: 50%;
+  }
+  
+  .userinfo-nickname {
+    color: #aaa;
+  }
+  
+  .usermotto {
+    margin-top: 200PX;
+  }
+  
+  page{
+    background: #fff;
+  }
+  .searach_box{
+    width: 100%; padding: 10PX 10PX; box-sizing: border-box; 
+    .searach_con{
+      font-size: 14PX; border: solid 1PX #ddd; border-radius: 15PX; height: 30PX;
+      display: flex; flex-direction: row;
+      .icon{
+        width: 40PX; height: 30PX; line-height: 30PX; text-align: center; background-position: center center;
+      }
+      input{
+        height:30PX; font-size: 12PX;
+      }
+    }
+  }
+  .index_head{
+    width: 100%; float: left; height: 220PX; position: relative;
+    .bg{
+      width: 100%;float: left; height: 140PX;
+    }
+    .center{
+      width: 80PX; height: 80PX; position: absolute; left: 50%; margin-left:-40PX; top: 100PX; 
+    }
+    button{
+      position: absolute; top: 10PX; right: 10PX; height: 30PX; line-height: 30PX; border-radius: 15PX; width: 100PX;
+      color: #fff;  border: solid 2PX #fff; background: rgba(0, 0, 0, 0.1); padding: 0 10PX;
+      font-size: 14PX;
+    }
+    .text{
+      text-align: center; width: 100%; font-size: 20PX; position: absolute; bottom: 0; height:30PX; line-height: 30PX; left: 0;
+    }
+  }
+
+  .discounts_box{
+    width: 100%;padding: 0 10PX 0 0; box-sizing: border-box; height: 80PX; margin: 15PX 0; float: left;
+    display: flex; flex-direction: row; justify-content: space-between;
+    .image{
+     padding-left: 10PX; box-sizing: border-box; height: 80PX;
+    }
+  }
+  
+  .firstHot{
+    width: 100%;float: left; 
+    .image{
+      width: 100%; height: 500PX;
+    }
+  }
+  
+  
+  
+  .style_box{
+    margin-top: 15PX;width: 100%; float: left; 
+    .style_title{
+      width: 100%; float: left; height: 60PX;text-align:center;
+      .image{
+        height: 50PX;
+      }
+    }
+  }
+ 
+  
+  
+  .pintuan{
+    width: 100%; padding: 10PX 0 0 10PX; box-sizing: border-box; float: left;
+  
+   .bigtitle{
+    color: #f12d22; float: left; width: 100%; font-size: 20PX; height: 50PX; line-height: 40PX;
+  }
+   .item_box{
+      float: left; width: 100%;  height: 150PX; position: relative; 
+      .image{
+        width: 150PX; height: 150PX; float: left;
+      }
+      .item_right{
+        position: absolute; left: 150PX; right: 0; height: 150PX;
+        display: flex; flex-direction: row; justify-content: space-between;
+        .txtCon{
+          display: flex; flex-direction:column; justify-content: space-between;
+          padding: 0 6PX;
+          .goodsTitle{
+            font-size: 14PX; float: left; width: 100%; line-height: 1.5; color: #666666;
+          }
+          .price_box{
+            width: 100%; 
+            .price_left{
+              border: solid 1PX #f12d22; border-radius: 4PX 0 0 4PX; float: left;  box-sizing: border-box;  height: 40PX;
+              width: 55%; border-right: 0;  
+              .symbol{
+                color: #f12d22; line-height: 50PX; float: left;
+              }
+              .num{
+                color: #f12d22;line-height: 40PX; float: left;
+              }
+            }
+            
+            button{
+              background: #f12d22; color: #fff; float: right; font-size: 14PX; padding: 0;
+              border: none;height: 40PX; width: 45%;  border-radius: 0 4PX 4PX 0; line-height: 40PX;
+            }
+          }
+        }
+        .more{
+          width: 30PX; border-left: solid 2PX #efefef; box-sizing: border-box;
+          text-align: center;  line-height: 18PX; padding-top: 10PX;letter-spacing:2PX;
+          .text{
+            color: #666666;  font-size:14PX;
+          }
+        }
+    }
+  }
+
+}
+.coupon_1{
+  width: 100%; height: 237px; float: left;
+}
+.swiper-container {
+  margin: 0 auto;
+  overflow: hidden;
+  direction: ltr;
+  z-index: 1;
+  transform-style: preserve-3d;
+}
+.swiper-wrapper{
+  width: 100%; height: 237px; float: left;
+}
+.coupon_1 .swiper-slide {
+  padding: 30px 15px; float: left; box-sizing: border-box;
+  width: 50%;  height: 237px;
+}
+.coupon_1 .swiper-slide:first-child {
+  padding-left: 30px;
+}
+.coupon_bg{
+  background-color: #fff;
+  border-radius: 4px;
+}
+.coupon_1 .coupon_12 {
+  height: 177px;position: relative; overflow: hidden;     color: #fff;
+  width: 100%;background-color: rgba(241, 45, 34, 0.6);
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  border-radius: 4px;
+  .index_btn{
+    width: 100%;
+    height: 177px;
+    line-height: 177px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .coupon-price{
+    display: flex; 
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 218px; 
+    color: #fff;
+    padding: 26px 0 0;
+    .couponline {
+      width: 150px;
+      height: 1PX;
+      background: #fff;
+    }
+    .price-number{
+      text-align: center;
+      margin-bottom: 6px;
+      font-weight: 300;
+    }
+    .price-number_3 {
+      font-size: 56px;
+      .text{
+        font-size: 42px;
+      }
+    }
+    .coupondec{
+      padding-top: 12px;
+      font-weight: 300;
+      overflow: hidden;
+      white-space: nowrap;
+      -o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      word-break: break-all;
+    }
+    .coupon_discount {
+      font-size: 56px;
+      color: #fff;
+    }
+    .coupon_fsize {
+      font-size: 42px;
+      color: #fff;
+    }
+  }
+  .coupon-operate{
+    display: flex;position: relative; background-color: rgb(241, 45, 34);
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 112px;
+    background-image: url(//cdn.weimob.com/saas/retail/image/market/coupon/money.png);
+    background-size: 86%;
+    background-repeat: no-repeat;
+    background-position: 100% 0;
+  }
+  .border-indexcoupon{
+      height: 100%;
+      background: url(//cdn.weimob.com/saas/retail/image/market/coupon/point.png) no-repeat 100% 0;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 64.2%;
+      top: 0;
+      width: 12px;
+  }
+}

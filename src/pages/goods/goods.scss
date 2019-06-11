@@ -1,0 +1,180 @@
+@import "~taro-ui/dist/style/components/drawer.scss";
+@import "~taro-ui/dist/style/components/list.scss";
+
+.goods_box{
+  font-size: 24px;
+  .header {
+    background: #fff;
+    .headers {
+      height: 96px;
+      .classify,.mode {
+        width: 96px; box-sizing: border-box;
+        height: 96px;
+        padding-top: 18px;
+        text-align: center;
+        font-size: 24px;
+        line-height: 32px;
+        color: #999;
+        cursor: pointer;
+        .iconfont{
+          display: block; font-size: 32px;
+          line-height: 40px;
+          height: 40px;
+        }
+      }
+      .searchs {
+        padding: 8px;
+        padding-top: 18px;
+        position: relative;
+        input{
+          height: 60px; box-sizing: border-box;
+          vertical-align: middle;
+          border-radius: 8px;
+          padding: 0 18px 0 60px;
+          width: 100%;
+          -webkit-appearance: none;
+          border: 0;
+          font-size: 26px;
+          line-height: 50px;
+          text-align: left;
+          background-color: #f8f8f8;
+        }
+        .iconsearch {
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          font-size: 28px;
+          top: 24px;
+          text-align: center;
+          line-height: 50px;
+          color: #999;
+        }
+      }
+    }
+  }
+  .nav {
+    padding:0 18px; box-sizing: border-box;
+    height: 96px;
+    > .flex1{
+      text-align: center;
+      font-size: 28px;
+      line-height: 96px;
+      position: relative;
+      .asc,.desc {
+        font-size: 14px; 
+        line-height: 15px;
+        margin-left: 6px;
+      }
+      &.shaixuan{
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 20%;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+        position: relative;
+        .filter-line {
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+          left: 0;
+          height: 32px;
+          width: 1PX;
+          background: #d8d8d8;
+        }
+        .icon-shaixuan {
+          font-size: 24px;
+          margin-left: 6px;
+        }
+      }
+    }
+  }
+}
+
+
+.goods_type_bg{
+    position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: #000; opacity: 0.3;
+  }
+  
+  .goods_type_box{
+    position: fixed;
+    width: 40%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    transform: rotate(0deg) scale(1) translate(-100%,0%); 
+    -webkit-transform: rotate(0deg) scale(1) translate(-100%,0%); 
+    transition: all 0.8s ease;
+    z-index: 998;
+  }
+  .show_typebox{
+    transform: rotate(0deg) scale(1) translate(0%,0%); 
+    -webkit-transform: rotate(0deg) scale(1) translate(0%,0%); 
+  }
+  
+  .serach_box{
+    padding: 10PX 0PX; background: #fff; float: left; width: 100%; box-sizing: border-box; font-size: 14PX;
+    height: 60PX;  display: flex; flex-direction: row; justify-content: space-between;
+    .show_typebox_btn{
+      float: left;  width: 60PX; text-align: center;
+    }
+    .show_typebox_btn .image,.serach_right .image{
+      width: 20PX; height: 20PX; 
+    
+    }
+    .show_typebox_btn .text,.serach_right .text{
+       float: left; width: 60PX; 
+    }
+    .serach_body{
+      background: #f8f8f8; float: left; height: 40PX; border-radius: 4PX;line-height: 40PX;
+    }
+    .serach_body .icon{
+      float: left; margin: 10PX;
+    }
+    .serach_body input{
+      float: left;height: 40PX; line-height: 40PX;
+    }
+    .serach_right{
+      float: right; width: 60PX; text-align: center;
+    } 
+    
+  }
+  .filter_box{
+    background: #fff; height: 25PX; float: left; width: 100%; padding: 5PX 0;
+    display: flex; flex-direction: row;
+  }
+  .filter_box view{
+    height: 25PX; line-height: 25PX; text-align: center; font-size: 16PX;
+    flex: 1;
+  }
+
+  .goods_menu{
+    width: 268px;
+    .h3{
+      color: #333; font-size: 30px; font-weight: bold;height: 80px; padding-top: 50px; line-height: 80px; box-sizing: border-box;
+      padding: 0 10px 0 30px; width: 100%; float: left;
+      &.active{
+        color: #f12e24;
+      }
+    }
+    .item_box{
+      border-top: solid 1px #e9e9e9; width: 100%; float: left;
+      .item{
+        display: flex; flex-direction: column;padding: 0 10px 0 30px; width: 100%; float: left;box-sizing: border-box;
+        .text{
+          color: #666; font-size: 24px;  line-height: 72px; width: 100%; float: left;
+          &.active{
+            color: #f12e24;
+          }
+        }
+      }
+    }
+  }
+
+
+  

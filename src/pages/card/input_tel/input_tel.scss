@@ -1,0 +1,40 @@
+
+@import "~taro-ui/dist/style/components/input.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+.phone_box{
+    background-color: #fff; font-size: 30px;height: 80px; line-height: 80px; margin-top: 10px;
+    padding:0 10px;
+    .at-input{
+        padding: 0;
+        input{
+            font-size: 30px;
+        }
+    }
+    .text{
+        float: left;font-size: 26px;  height: 80px; line-height: 80px;
+    }
+    .star{
+        float: left; color: red;  height: 80px; line-height: 80px;
+    }
+    .input{
+        width: 400px;  float: left; font-size: 26px; height: 80px; line-height: 80px; margin-left: 10px;
+    }
+    .get_code_btn{ 
+        width: 200px; float: right; font-size: 26px; border-left: solid 1PX #eeeeee; color: red; text-align: center;
+        height: 80px;
+    }
+}
+.code_box{
+    .at-input{
+        .at-input__container{
+            height: 80px; line-height: 80px; 
+        }
+    }
+}
+.get_card{
+    width: 100%; height: 80px;padding: 0 10PX; box-sizing: border-box;
+    .btn{
+        width: 100%;height: 80px; line-height: 80px; font-size: 34px;
+    }
+}
+
