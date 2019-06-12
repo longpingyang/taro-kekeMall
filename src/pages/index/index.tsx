@@ -25,12 +25,17 @@ class Index extends Component {
   
   componentWillMount(){     
     // Taro.showTabBar({}) 
+    this.getShopActivity();
   }
   componentDidMount(){
     console.log(1)
   }
   componentWillUnmount () {  }
   componentDidShow () {
+    this.getIndeList();
+  }
+  //首页商品展示信息
+  getIndeList(){
     Taro.request({
       url:api.goodsIndexCategorygoodsPath,
       method:'POST',
@@ -45,6 +50,32 @@ class Index extends Component {
       }
     })
   }
+  //获取 店铺 活动信息
+  getShopActivity(){
+    Taro.request({
+      url:api.activityQueryPath,
+      method:'POST',
+      data:{
+          "actId": "",
+          "shopId": "1",
+          "status": null,
+          "type": [1,2,3,4,5,6]
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res)=>{
+      if(res.data.success){
+        Taro.setStorageSync("allCouponList",res.data.data.couponRules);
+        Taro.setStorageSync("allActivityList",res.data.data.activityRules);
+      }
+    })
+  }
+
+
+
+
+
   componentDidHide () { }
   state = {
     posts: [

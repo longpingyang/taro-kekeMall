@@ -116,6 +116,27 @@ class Cart extends Component {
       this.setTotalPrice();
     })
   }
+  allCheckedFn(){
+    this.setState((data)=>{
+      data['allChecked']=!this.state.allChecked;
+    },()=>{
+      let goodsList = this.state.goodsList;
+      if(this.state.allChecked){
+        goodsList.forEach(element => {
+          element['checked']=true;
+        })
+      }else{
+        goodsList.forEach(element => {
+          element['checked']=false;
+        })
+      }
+      this.setState((data)=>{
+          data.goodsList=goodsList;
+      })      
+    });
+  }
+
+
   //计算总价
   setTotalPrice(){
     let total=0;
@@ -146,9 +167,11 @@ class Cart extends Component {
           <View className="store_wrap">
               <View className="shopcart_title_wrap flex flex-between font28">
                   <View className="shopcart_title_name text-line-1 flex1">
-                    <View className="store_select"><View className="shopcart_iconwrap">
-                      <View className={"iconfont theme-color "+(this.state.allChecked?"icon-xuanzhong":"icon-weixuanzhong")}></View>
-                    </View></View>
+                    <View onClick={this.allCheckedFn.bind(this)} className="store_select">
+                      <View className="shopcart_iconwrap">
+                        <View className={"iconfont theme-color "+(this.state.allChecked?"icon-xuanzhong":"icon-weixuanzhong")}></View>
+                      </View>
+                    </View>
                     <Text className="color-3">克克智慧零售演示账号</Text>
                   </View>
                   <View onClick={this.couponsMoreFn} className="shopcart_title_action font26 color-5"><Text className="btn btn_coupon">优惠券</Text></View>
@@ -205,7 +228,7 @@ class Cart extends Component {
               </View>
           </View>
           <View className="shopcart_account_wrap flex bottom100 iphoneXMB">
-              <View className="shopcart_iconwrap">
+              <View onClick={this.allCheckedFn.bind(this)} className="shopcart_iconwrap">
                 <View className={"iconfont theme-color "+(this.state.allChecked?"icon-xuanzhong":"icon-weixuanzhong")}></View>
               </View>
               <View className="sc_select_all">全选</View>

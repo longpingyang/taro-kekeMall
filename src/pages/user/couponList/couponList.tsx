@@ -10,7 +10,7 @@ class Index extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+
   }
 
   componentWillUnmount () { }
@@ -26,6 +26,7 @@ class Index extends Component {
       avatarUrl:'',
       nickName:''
     },
+    currentNav:0,
     dataList:[]
   }
   couponsMoreFn(){
@@ -34,15 +35,15 @@ class Index extends Component {
     })
   }
 
-  getcouponList(){
+  getcouponList(type){
     Taro.request({
         url:api.couponListPath,
         method:"POST",
         data:{
             "actId": "",
             "shopId": "1",
-            "status": 0,
-            "type": [1,2,3,4,5]
+            "status": type,
+            "type": [1,2,3,4,5,6]
         },
         header:{
             token:Taro.getStorageSync('token')
@@ -50,53 +51,68 @@ class Index extends Component {
     }).then((res) =>{
         if(res.data.data){
             this.setState({
-                dataList:res.data.data
+                dataList:res.data.data,
+                currentNav:type
             })
         }
     })
   }
   componentDidShow () { 
-      this.getcouponList()
+      this.getcouponList(this.state.currentNav)
   }
 
   componentDidHide () { }
   render () {    
+      const {currentNav,dataList} = this.state;
     return (
         <View className="coupon-list-main fixIphonex">
         <View className="coupon-type-tab flex font28 color-3 bkg-white">
-            <View className="flex1 position-rlt flex-v-center">
-                <View className="theme-color" data-status="0">未使用</View><View className="theme-bgc on-tab"></View>
+            <View className="flex1 position-rlt flex-v-center" onClick={this.getcouponList.bind(this,0)}>
+                <View className={(currentNav==0?'theme-color':'')}>未使用</View>
+                <View className={"theme-bgc "+(currentNav==0?'on-tab ':'')}></View>
             </View>
-            <View className="flex1 position-rlt flex-v-center">
-                <View className="" data-status="1">已使用</View><View className="theme-bgc"></View>
+            <View className="flex1 position-rlt flex-v-center" onClick={this.getcouponList.bind(this,1)}>
+                <View className={(currentNav==1?'theme-color':'')}>已使用</View>
+                <View className={"theme-bgc "+(currentNav==1?'on-tab ':'')}></View>
             </View>
-            <View className="flex1 position-rlt flex-v-center">
-                <View className="" data-status="2">已过期</View><View className="theme-bgc"></View>
+            <View className="flex1 position-rlt flex-v-center" onClick={this.getcouponList.bind(this,2)}>
+                <View className={(currentNav==2?'theme-color':'')}>已过期</View>
+                <View className={"theme-bgc "+(currentNav==2?'on-tab ':'')}></View>
+               
             </View>
         </View>
         <View className="coupon-list">
-            <View className="coupon flex discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
-                <View className="coupon-price flex theme-color flex-col">
-                    <View className="price-number price-number_3">
-                        <View className="unit-name_3">¥</View>
-                        <View>0.5 </View>
+            {
+                dataList.map((item) =>{
+                    return (
+                    <View key={item.id} className="coupon flex discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
+                        <View className="coupon-price flex theme-color flex-col">
+                            <View className={"price-number "+(item.template.type==1?"price-number_3":"")}>
+                                {item.template.type==1 && <View className="unit-name_3">¥</View>}                                        
+                                <View>{item.template.value}</View>
+                                {item.template.type==2 && <View className="coupon_fsize">折</View>}
+                            </View>
+                            <View className="coupon-full">满{item.template.reqAmt}元</View>
+                        </View>
+                        <View className="coupon-content flex1 flex flex-col">
+                            <View className="coupon-dec coupon-text-line1">超值满减优惠券</View>
+                            <View className="coupon-date ">{item.template.date1} - {item.template.date2}</View>
+                            <View className="color-white font22 coupon-use-scence">
+                                <View className="flex flex-v-center">全部商品可用 | 全部门店适用</View>
+                            </View>
+                        </View>
+                        <View className="coupon-usebtn flex flex-col" style="background-color: rgb(241, 45, 34);">
+                            <View className="coupon-usetext">去使用</View>
+                            <View className="coupon-expire"><View></View></View>
+                        </View>
+                        <View className="border-coupon"></View>
                     </View>
-                    <View className="coupon-full">满2元</View>
-                </View>
-                <View className="coupon-content flex1 flex flex-col">
-                    <View className="coupon-dec coupon-text-line1">超值满减优惠券</View>
-                    <View className="coupon-date ">2019.03.17 00:00 - 2019.06.24 23:59</View>
-                    <View className="color-white font22 coupon-use-scence">
-                        <View className="flex flex-v-center">全部商品可用 | 全部门店适用</View>
-                    </View>
-                </View>
-                <View className="coupon-usebtn flex flex-col" style="background-color: rgb(241, 45, 34);">
-                    <View className="coupon-usetext">去使用</View>
-                    <View className="coupon-expire"><View></View></View>
-                </View>
-                <View className="border-coupon"></View>
-            </View>
-            <View className="coupon flex discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
+                    )
+                })
+                
+            }
+            
+            {/* <View className="coupon flex discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
                 <View className="coupon-price flex theme-color flex-col">
                     <View className="price-number price-number_3">
                         <View className="unit-name_3">¥</View>
@@ -202,7 +218,7 @@ class Index extends Component {
                     <View className="coupon-expire"><View></View></View>
                 </View>
                 <View className="border-coupon"></View>
-            </View>
+            </View> */}
         </View>
         <View className="loadMore">没有更多了</View>
         {/* <View className=" fixed-btn-group iphoneXMB">

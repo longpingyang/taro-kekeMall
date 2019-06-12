@@ -124,7 +124,7 @@ class Order extends Component {
                       </View>
                       <View className="order-list-item" onClick={this.goOrderDetailsPage.bind(this,item.orderId)}>
                           {
-                            item.goodsList.map((citem)=>{
+                            item.goodsList.length==1 && item.goodsList.map((citem)=>{
                               return (
                                   <View key={citem.goodsId} className="order-goods">
                                     <View className="flex">
@@ -152,6 +152,28 @@ class Order extends Component {
                                   </View>
                               )
                             })
+                          }
+                          {
+                            (item.goodsList.length>1 && item.goodsList.length<=3) && 
+                                  <View key={citem.goodsId} className="order-goods">
+                                    <View className="flex">
+                                    {
+                                        item.goodsList.map((citem)=>{
+                                          return (<Image className="order-goods-img" src={citem.mainPic}></Image>)
+                                        })
+                                    }
+                                    </View>
+                                  </View>
+                          }
+                          {
+                            item.goodsList.length>3 && 
+                                  <View key={citem.goodsId} className="order-goods">
+                                    <View className="flex">
+                                        <Image className="order-goods-img" src={item.goodsList[0].mainPic}></Image>
+                                        <Image className="order-goods-img" src={item.goodsList[1].mainPic}></Image>
+                                        <Image className="order-goods-img" src={item.goodsList[2].mainPic}></Image>
+                                    </View>
+                                  </View>
                           }
                           <View className="order-goods-amount font26 color-3">
                               <Text className="goods-amount-number">共{item.goodsList.length}件商品</Text>

@@ -25,13 +25,12 @@
                 border-bottom: solid 1PX #e9e9e9; padding: 20px;
                 
                 .order-goods-img{
-                    height: 160px; width: 160px;
+                    height: 160px; width: 160px;margin-right: 20px;
                     background:no-repeat 50%/cover
                 }
                 
                 .order-goods-detail{
-                    display: flex; flex-direction:column;  justify-content: space-between;
-                    padding-left: 20px;
+                    display: flex; flex-direction:column;  justify-content: space-between;                    
                     .font20{
                         font-size: 20px;
                     }

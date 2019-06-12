@@ -16,6 +16,11 @@ class Ordercreate extends Component {
             url: '/pages/address/edit/edit'
         })
     }
+    goListAddressPage(){
+        Taro.navigateTo({
+            url: '/pages/address/list/list'
+        })
+    }
     state={
         isShowInvocePage:true,
         goodsList:[],
@@ -50,7 +55,6 @@ class Ordercreate extends Component {
                         addressListlength:res.data.data.length,
                         memberAddressId:element.deliveryId
                     })
-                    
                 }
             });
             if(isDefault){
@@ -60,13 +64,9 @@ class Ordercreate extends Component {
                     memberAddressId:res.data.data[0].deliveryId
                 })
             }
-
-
-            
           }
         })
       }
-
     showInvocePage(){
         this.setState({
             isShowInvocePage:false
@@ -123,7 +123,7 @@ class Ordercreate extends Component {
                     <View className="deli-title flex0">配送方式</View>
                     <View className="deli-type-list flex1 flex">
                         <View className="deli-item  border-around theme-color theme-bdc  text-line1">商家配送</View>
-                        <View className="deli-item   text-line1">到店自提</View>
+                        <View className="deli-item  text-line1">到店自提</View>
                     </View>
                 </View>
                 <View className="wrap-address">
@@ -149,7 +149,7 @@ class Ordercreate extends Component {
                                     <View className="wrap-locat flex0">
                                         <View className="iconfont icon-dizhi2"></View>
                                     </View>
-                                    <View className="flex1">
+                                    <View onClick={this.goListAddressPage} className="flex1">
                                         <View className="wrap-addr-cont ">
                                             <View className="wrap-addr-detail flex flex-between">
                                                 <Text className="">收 货 人 ：{addressObj['truename']}</Text>

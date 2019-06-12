@@ -41,6 +41,7 @@ class Index extends Component {
       { name: '1', value: '到店自提' }
     ],
     couponsModalShow: false,
+    couponlist:[],
     skuModalShow:false,
     skuData: [],
     buyType:1,//购买类型1是立即购买 2 加入购物车
@@ -83,9 +84,25 @@ class Index extends Component {
         let sizeArr:any = [];
         res.data.data.sizeList.forEach(element => {
           sizeArr.push({'key':element.sizeId,'value':element.name})
+        });   
+        //优惠券 信息筛选
+        let tempList=Taro.getStorageSync('allCouponList');        
+        let tempArr = [];
+        tempList.forEach(element => {
+            tempArr=[...tempArr,...element.coupons];
         });
-       
+        let couponlist=[];
+        tempArr.forEach(ele => {
+          if(ele.isGoods==1){
+            if(ele.goodsId.indexOf(this.$router.params.id)>-1){
+              couponlist.push(ele);
+            }        
+          }else{
+            couponlist.push(ele);
+          }
+        });    
         this.setState({
+          couponlist:couponlist,
           goodsDetail:res.data.data,
           goodsId:this.$router.params.id,
           selArrtText:['颜色','尺码'],
@@ -147,7 +164,6 @@ class Index extends Component {
                 preState['buyParam'].count=(parseInt(this.state.buyParam.count)-1).toString();
             })
           }
-          
         }else{
             this.setState((preState)=>{
                 preState['buyParam'].count=(parseInt(this.state.buyParam.count)+1).toString();
@@ -194,7 +210,7 @@ class Index extends Component {
 
 
   //更多优惠卷
-  couponsMoreFn(){
+  couponsMoreFn(){   
     this.setState({
       skuModalShow:false,
       couponsModalShow: true
@@ -476,7 +492,7 @@ class Index extends Component {
         </AtFloatLayout>
 
         <AtFloatLayout title="领取优惠券" isOpened={this.state.couponsModalShow}>
-            <CouponsModal />
+            <CouponsModal couponlist={this.state.couponlist} />
         </AtFloatLayout>
 
       </View>

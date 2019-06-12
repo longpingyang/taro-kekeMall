@@ -39,6 +39,8 @@ class App extends Component {
       "pages/user/user",
       "pages/user/userInfo/userInfo",
       "pages/user/couponList/couponList",
+      "pages/user/amount/amount",
+      "pages/user/point/point",
       "pages/logs/logs",
       "pages/order/order",
       "pages/order/details/details",
@@ -88,14 +90,9 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {
-    
-  }
-
+  componentDidMount () {}
   componentDidShow () {}
-
   componentDidHide () {}
-
   componentDidCatchError () {}
 
   // 在 App 类中的 render() 函数没有实际作用

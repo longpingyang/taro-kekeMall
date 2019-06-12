@@ -7,13 +7,10 @@ const api = require('../../../../config/api.js');
 class SkuModal extends Component {
     static options = {
         addGlobalClass: true
-    }
-    
+    }    
     constructor(props){
         super(...arguments); 
-        console.log("asdasd");
-    }
-    
+    }    
     state={
         buyParam:{
             "colorId": "",
@@ -24,7 +21,6 @@ class SkuModal extends Component {
         selArrtText:[],
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps,123);
         let selArrtText=[];
         nextProps.skuData.forEach(element => {
             selArrtText.push(element.name)
@@ -59,7 +55,6 @@ class SkuModal extends Component {
             })
         })
     }
-
     checkedAttr(pindex,sIndex,value){
         this.setState((data) =>{            
             data['skuData'][pindex].attrValueList.forEach(element => {
@@ -94,7 +89,6 @@ class SkuModal extends Component {
     componentDidMount(){}
     render(){        
         const { skuData,selArrtText } = this.state;
-        console.log(this.props,321);
         return (
         <View className='sku-modal_box'>
             <View className='sku-modal'>

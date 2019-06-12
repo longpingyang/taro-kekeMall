@@ -50,7 +50,8 @@ class Index extends Component {
       nickName:''
     },
     couponsModalShow: false,
-    isCard:2
+    isCard:2,
+    orderNumArr:[0,2,0,0,0]
   }
   couponsMoreFn(){
     Taro.navigateTo({
@@ -71,6 +72,25 @@ class Index extends Component {
       url: '/pages/address/list/list'
     })
   }
+  //余额明细
+  goAmountPage(){
+    Taro.navigateTo({
+      url: '/pages/user/amount/amount'
+    })
+  }
+  //积分明细
+  goPointPage(){
+    Taro.navigateTo({
+      url: '/pages/user/point/point'
+    })
+  }
+
+  //个人信息
+  gogerenxinxiPage(){
+    Taro.navigateTo({
+      url: '/pages/user/userInfo/userInfo'
+    })
+  }
 
   tobegin = (userInfo) => {    
     if(userInfo.detail.userInfo){   //同意
@@ -81,6 +101,7 @@ class Index extends Component {
     } 
   };
   render () {    
+    const {orderNumArr} =this.state;
     return (
       <View className="mine_box">
           {/* <Button className="btn" openType="getUserInfo" onGetUserInfo={this.tobegin} type="primary">
@@ -104,8 +125,8 @@ class Index extends Component {
             </View>
           </View>
           <View className='balance_box'>
-            <View className='item'><Text className='text'>0.00\n余额</Text></View>            
-            <View className='item center'><Text className='text'>0\n积分</Text></View>            
+            <View className='item' onClick={this.goAmountPage}><Text className='text'>0.00\n余额</Text></View>            
+            <View className='item center' onClick={this.goPointPage}><Text className='text'>0\n积分</Text></View>            
             <View className='item'><Text className='text' onClick={this.couponsMoreFn}>3\n优惠券</Text></View>            
           </View>
           <View className='order_box'>
@@ -115,31 +136,31 @@ class Index extends Component {
             </View>
             <View className='con'>
               <View className='item'>
-                <AtBadge value={10} maxValue={99}>
+                <AtBadge value={orderNumArr[0]>0?orderNumArr[0]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifukuan_icon.png')}></Image>
                 </AtBadge>                
                 <Text className='text'>待付款</Text>
               </View>
               <View className='item'>
-                <AtBadge value={10} maxValue={99}>
+                <AtBadge value={orderNumArr[1]>0?orderNumArr[1]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifahuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待发货</Text>
               </View>
               <View className='item'>
-                <AtBadge value={10} maxValue={99}>
+                <AtBadge value={orderNumArr[2]>0?orderNumArr[2]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daishouhuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待收货</Text>
               </View>
               <View className='item'>
-                <AtBadge value={10} maxValue={99}>
+                <AtBadge value={orderNumArr[3]>0?orderNumArr[3]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daipingjia_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待评价</Text>
               </View>
               <View className='item'>
-                <AtBadge value={10} maxValue={99}>
+                <AtBadge value={orderNumArr[4]>0?orderNumArr[4]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/tuikuan_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>退款/维权</Text>
@@ -195,7 +216,7 @@ class Index extends Component {
                 arrow='right'
                 thumb={require('../../images/icon/dizhi_icon.png')}
               />
-              <AtListItem
+              <AtListItem onClick={this.gogerenxinxiPage}
                 title='个人信息'
                 arrow='right'
                 thumb={require('../../images/icon/gerenxinxi_icon.png')}
