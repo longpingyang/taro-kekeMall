@@ -136,7 +136,7 @@ class Index extends Component {
           <Image className='bg' mode='aspectFill' src={require('../../images/goods/7.jpg')}></Image>
           <Button>切换门店</Button>
           <Image className='center' mode='scaleToFill' src={require('../../images/goods.png')}></Image>
-          <Text className="text">KK商城演示账户</Text>
+          <Text className="text">克克智慧零售商城</Text>
         </View>
         {/* <View className='discounts_box'>
           <Image className='image' mode='aspectFill' src={require('../../images/a.jpg')}></Image>
@@ -186,10 +186,10 @@ class Index extends Component {
           </View>
         </View>
 
-        <View className='firstHot'>
+        {/*<View className='firstHot'>
           <Image className='image' mode='aspectFill' src={require('../../images/goods/2.jpg')}></Image>
         </View>
-        {/* <View className='pintuan'>
+         <View className='pintuan'>
           <Text className='bigtitle'>一起来拼团</Text>
           <View className='item_box'>
             <Image className='image' mode='aspectFill' src={require('../../images/goods/3.jpg')}></Image>
