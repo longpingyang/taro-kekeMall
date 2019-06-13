@@ -14,7 +14,8 @@ class AddressList extends Component {
   }
   state={
     addressList:[],
-    listlength:0
+    listlength:0,
+    iscreateOrder: false
   }
 
   componentDidMount(){
@@ -30,9 +31,21 @@ class AddressList extends Component {
       }
     }).then((res) =>{
       if(res.data.success){
+        let iscreateOrder=false;
+        if(this.$router.params.checkedId){
+          res.data.data.forEach(element => {
+            if(element['deliveryId']==this.$router.params.checkedId){
+              element['checked'] = true;
+              iscreateOrder=true;
+            }else{
+              element['checked'] = false;
+            }
+          });
+        }
         this.setState({
           addressList:res.data.data,
-          listlength:res.data.data.length
+          listlength:res.data.data.length,
+          iscreateOrder:iscreateOrder
         })
       }
     })
@@ -81,6 +94,13 @@ class AddressList extends Component {
       }
     })
   }
+  selCreateOrderAdd(id){
+    if(this.state.iscreateOrder){
+      Taro.navigateTo({
+        url: '/pages/cart/ordercreate/ordercreate?addId='+id
+      })
+    }
+  }
 
 
 
@@ -105,8 +125,10 @@ class AddressList extends Component {
                 {
                   addressList.map((item,index)=>{
                     return (
-                      <View className="item" key={item.deliveryId}>
-                        <View className=""></View>
+                      <View onClick={this.selCreateOrderAdd.bind(this,item.deliveryId)} className="item" key={item.deliveryId}>
+                        {
+                          item.checked && <View className="iconfont icon-xuanzhongdizhi theme-color"></View>
+                        }
                         <View className="core">
                           <Text className="name">{item.truename}</Text>
                           <Text className="tel">{item.phone}</Text>

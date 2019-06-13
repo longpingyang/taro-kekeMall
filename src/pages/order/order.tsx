@@ -155,11 +155,11 @@ class Order extends Component {
                           }
                           {
                             (item.goodsList.length>1 && item.goodsList.length<=3) && 
-                                  <View key={citem.goodsId} className="order-goods">
+                                  <View className="order-goods">
                                     <View className="flex">
                                     {
                                         item.goodsList.map((citem)=>{
-                                          return (<Image className="order-goods-img" src={citem.mainPic}></Image>)
+                                          return (<Image key={citem.goodsId} className="order-goods-img" src={citem.mainPic}></Image>)
                                         })
                                     }
                                     </View>

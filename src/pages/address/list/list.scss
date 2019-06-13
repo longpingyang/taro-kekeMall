@@ -68,6 +68,13 @@
 .m-address-list .list {
     margin-bottom: 140px; overflow: auto;
     color: #1a1a1a;
+    .icon-xuanzhongdizhi:before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 64px;
+        line-height: 64px;
+    }
 }
 .m-address-list .item {
     margin: 20px 0;

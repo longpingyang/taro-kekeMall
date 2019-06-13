@@ -18,7 +18,7 @@ class Ordercreate extends Component {
     }
     goListAddressPage(){
         Taro.navigateTo({
-            url: '/pages/address/list/list'
+            url: '/pages/address/list/list?checkedId='+this.state.memberAddressId
         })
     }
     state={
@@ -47,16 +47,30 @@ class Ordercreate extends Component {
         }).then((res) =>{
           if(res.data.success){
             let isDefault=true;
-            res.data.data.forEach(element => {
-                if(element['isDefault']==1){
-                    isDefault=false
-                    this.setState({
-                        addressObj:element,
-                        addressListlength:res.data.data.length,
-                        memberAddressId:element.deliveryId
-                    })
-                }
-            });
+            if(this.$router.params.addId){
+                res.data.data.forEach(element => {
+                    if(element['deliveryId']==this.$router.params.addId){
+                        isDefault=false
+                        this.setState({
+                            addressObj:element,
+                            addressListlength:res.data.data.length,
+                            memberAddressId:element.deliveryId
+                        })
+                    }
+                });  
+            }else{
+                res.data.data.forEach(element => {
+                    if(element['isDefault']==1){
+                        isDefault=false
+                        this.setState({
+                            addressObj:element,
+                            addressListlength:res.data.data.length,
+                            memberAddressId:element.deliveryId
+                        })
+                    }
+                });
+            }
+            
             if(isDefault){
                 this.setState({
                     addressObj:res.data.data[0],

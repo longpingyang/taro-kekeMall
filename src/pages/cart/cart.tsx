@@ -69,7 +69,9 @@ class Cart extends Component {
 
         this.setState({
           goodsList:res.data.data.goodsList,
-          amount:res.data.data.amount
+          amount:res.data.data.amount,
+          allChecked:true,
+          couponsModalShow: false
         })
       }
     })
@@ -78,20 +80,40 @@ class Cart extends Component {
     if(type=='jian'){
       if(this.state.goodsList[index].count>1){
         this.setState((preState)=>{
-          preState.goodsList[index].count=parseInt(preState.goodsList[index].count)-1
-        },()=>{
+          let tempNum = parseInt(preState.goodsList[index].count)-1;
+          preState.goodsList[index].count=tempNum;
+          this.updateCartCount(preState.goodsList[index].cartId,tempNum);
+        },()=>{          
           this.setTotalPrice()
         })
       }
       
     }else{
       this.setState((preState)=>{
-        preState.goodsList[index].count=parseInt(preState.goodsList[index].count)+1
+        let tempNum = parseInt(preState.goodsList[index].count)+1;
+        preState.goodsList[index].count=tempNum;
+        this.updateCartCount(preState.goodsList[index].cartId,tempNum);
       },()=>{
         this.setTotalPrice()
       })
     }
   }
+  //更新购物 count
+  updateCartCount(id,count){
+    Taro.request({
+      url:api.orderShopcartModifyPath,
+      method:"POST",
+      data:{
+        "cartId": id,
+        "count": count
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    })
+  }
+
+
   //选择要结算的商品
   checkGoods(index){
     this.setState((data)=>{
@@ -149,6 +171,52 @@ class Cart extends Component {
       data['amount']=total;
       data['couponsModalShow']=false;
     })
+  }
+  //删除
+  delCartGoods(){
+    let delIds=[];
+    this.state.goodsList.forEach(element => {
+      if(element['checked']){
+        delIds.push(element.cartId);
+      }
+    });
+
+    if(delIds.length>0){
+      Taro.showModal({
+        title:"提示",
+        content:"您确认要删除吗?",
+        success:()=>{
+          Taro.request({
+            url:api.orderShopcartDelPath,
+            method:"POST",
+            data:{
+              cartId:delIds.join(','),
+              count:delIds.length
+            },
+            header:{
+              token:Taro.getStorageSync('token')
+            }
+          }).then((res)=>{
+            if(res.data.success){
+              Taro.showToast({
+                title:"删除成功",
+                icon:"success",
+                duration:1500
+              });
+              this.getShopcartList()
+            }
+          })
+        }
+      })
+    }else{
+      Taro.showToast({
+        title:"请选择要删除的商品",
+        icon:"none",
+        duration:1500
+      })
+    }
+
+    
   }
 
 
@@ -232,7 +300,7 @@ class Cart extends Component {
                 <View className={"iconfont theme-color "+(this.state.allChecked?"icon-xuanzhong":"icon-weixuanzhong")}></View>
               </View>
               <View className="sc_select_all">全选</View>
-              <View className="theme-color delete_btn font26">删除</View>
+              <View onClick={this.delCartGoods} className="theme-color delete_btn font26">删除</View>
               <View className="shopcart_total_price flex1 flex flex-col">
                   <View className="font26">
                       总计:

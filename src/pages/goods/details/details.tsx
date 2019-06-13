@@ -47,7 +47,7 @@ class Index extends Component {
     buyType:1,//购买类型1是立即购买 2 加入购物车
     buyParam:{
       "colorId": "",
-      "count": '0',
+      "count": '1',
       "goodsId": "",
       "sizeId": ""
     },
