@@ -73,7 +73,7 @@ class Index extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
   componentWillMount(){
     Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
@@ -99,7 +99,6 @@ class Index extends Component {
     })
   }
   render () {
-    console.log(this.state.userInfo);
     return (
       <View className='userInfo'>
         <View className='headImg'>

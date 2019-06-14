@@ -11,7 +11,6 @@ class SkuModalA extends Component {
     
     constructor(props){
         super(...arguments); 
-        console.log("asdasd");
     }
     // static defaultProps={a:1}
     // constructor(props) {
@@ -37,7 +36,6 @@ class SkuModalA extends Component {
         selArrtText:[],
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps,123);
         let selArrtText=[];
         nextProps.skuData.forEach(element => {
             selArrtText.push(element.name)
@@ -106,7 +104,6 @@ class SkuModalA extends Component {
     componentDidMount(){}
     render(){        
         const { skuData,selArrtText } = this.state;
-        console.log(this.props,321);
         return (
         <View className='sku-modal_box'>
         <View className='sku-modal'>

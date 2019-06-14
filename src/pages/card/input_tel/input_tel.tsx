@@ -30,7 +30,7 @@ class Index extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
   state = {
     phoneNo:'',
@@ -46,7 +46,6 @@ class Index extends Component {
 
   componentDidHide () { }
   getCodeFn () {
-    // console.log(app.globalData.userId);
     var getChange = this.state.getChange
     var n = 59;
     var that = this;
@@ -85,7 +84,6 @@ class Index extends Component {
           },
           method: 'POST',
           success: function (res) {
-            console.log(res);
           }
         })
       }
@@ -147,6 +145,7 @@ class Index extends Component {
       Taro.hideLoading();
       if(res.data.success){
         Taro.setStorageSync('token',res.data.data.token);
+        Taro.setStorageSync('userMember',res.data.data.member);
         Taro.switchTab({
           url: '/pages/index/index'
         })

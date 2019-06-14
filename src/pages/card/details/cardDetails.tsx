@@ -66,13 +66,11 @@ class CardDetails extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
   componentWillMount(){
-    Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
-      this.setState({
-        userInfo: rst.data
-      })
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
     })
   }
   componentWillUnmount () { }
@@ -83,7 +81,7 @@ class CardDetails extends Component {
   
   state = {
     userInfo:{
-      avatarUrl:''
+      headUrl:''
     }
   }
 
@@ -97,9 +95,9 @@ class CardDetails extends Component {
     return (
       <View>
         <View className='top'>
-          <Image className='big_image' src={this.state.userInfo.avatarUrl}></Image>
+          <Image mode='aspectFill' className='big_image' src={this.state.userInfo.headUrl}></Image>
           {/* <View className='bg'></View> */}
-          <Image className='small_image' onClick={this.goUserInfoPage} src={this.state.userInfo.avatarUrl}></Image>
+          <Image className='small_image' onClick={this.goUserInfoPage} src={this.state.userInfo.headUrl}></Image>
         </View>
         <View className='top_bottom'>
           <View>积分：<Text>999</Text></View>

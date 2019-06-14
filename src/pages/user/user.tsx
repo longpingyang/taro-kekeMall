@@ -32,21 +32,21 @@ class Index extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
 
   componentWillUnmount () { }
   componentWillMount(){
-    Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
-      // this.props.setBasicInfo(rst.data)avatarUrl
-      this.setState({
-        userInfo: rst.data
-      })
+    // Taro.getStorage({key:'userMember'}).then(rst => {   //从缓存中获取用户信息
+    //   // this.props.setBasicInfo(rst.data)avatarUrl
+    // })
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
     })
   }
   state = {
     userInfo:{
-      avatarUrl:'',
+      headUrl:'',
       nickName:''
     },
     couponsModalShow: false,
@@ -101,7 +101,7 @@ class Index extends Component {
     } 
   };
   render () {    
-    const {orderNumArr} =this.state;
+    const {orderNumArr,userInfo} =this.state;
     return (
       <View className="mine_box">
           {/* <Button className="btn" openType="getUserInfo" onGetUserInfo={this.tobegin} type="primary">
@@ -111,8 +111,8 @@ class Index extends Component {
           <View className='mine_head'>
             <Image className='mine_head_bg' src={headImg}></Image>
             <View className='mine_head_top'>
-              <Image className='user_img' src={this.state.userInfo.avatarUrl}></Image>
-              <Text className='user_name'>{this.state.userInfo.nickName}</Text>
+              <Image className='user_img' src={userInfo.headUrl}></Image>
+              <Text className='user_name'>{userInfo.nickName}</Text>
               <Image className='user_qrcode' src={require('../../images/icon/qrcode.png')}></Image>
               <View className='checkIn_btn'>
                 <Image className='checkIn_Icon' src={require('../../images/icon/checkIn_Icon.png')}></Image>
@@ -171,6 +171,16 @@ class Index extends Component {
           {/* <View className='mineImg' style={{backgroundImage: `url(${centerImg})`}}></View> */}
           <View className='menu_box'>
             <AtList>
+              <AtListItem onClick={this.gogerenxinxiPage}
+                title='个人信息'
+                arrow='right'
+                thumb={require('../../images/icon/gerenxinxi_icon.png')}
+              />
+              <AtListItem onClick={this.goAddressListPage}
+                title='收货地址'
+                arrow='right'
+                thumb={require('../../images/icon/dizhi_icon.png')}
+              />
               <AtListItem
                 title='分销中心'
                 arrow='right'
@@ -211,16 +221,7 @@ class Index extends Component {
                 arrow='right'
                 thumb={require('../../images/icon/daogou_icon.png')}
               />
-              <AtListItem onClick={this.goAddressListPage}
-                title='收货地址'
-                arrow='right'
-                thumb={require('../../images/icon/dizhi_icon.png')}
-              />
-              <AtListItem onClick={this.gogerenxinxiPage}
-                title='个人信息'
-                arrow='right'
-                thumb={require('../../images/icon/gerenxinxi_icon.png')}
-              />
+              
             </AtList>
           </View>
       </View>

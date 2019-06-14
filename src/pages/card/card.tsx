@@ -18,7 +18,7 @@ class Card extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
 
   componentWillUnmount () {
@@ -27,9 +27,12 @@ class Card extends Component {
     // Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
     //   // this.props.setBasicInfo(rst.data)avatarUrl
     //   this.setState({
-    //     userInfo: rst.data
+    //     userInfo: Taro.getStorageSync("userMember")
     //   })
     // })
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
+    })
     Taro.login({
       success:function(res){
         Taro.request({
@@ -48,7 +51,6 @@ class Card extends Component {
               },
               method: 'POST',
               success:function(obj){
-                console.log(obj);
                 if(obj.success){
                   this.setState({
                     isCard:obj.data.verifyResult //1新用户;2未登录;3已登录
@@ -70,7 +72,7 @@ class Card extends Component {
 
   state = {
     userInfo:{
-      avatarUrl:'',
+      headUrl:'',
       nickName:''
     },
     isCard:2
@@ -87,19 +89,17 @@ class Card extends Component {
   }
   /**会员卡详情 */
   goCardDetailsPageFn = () =>{
-    // console.log('会员卡详情');
     Taro.navigateTo({
       url: '/pages/card/details/cardDetails'
     })
   }
   render () {
-    console.log(this.state.isCard);
     return (
       <View>
         <View className='card_info_box'>
           <View className='box'>
             <View className='image_box'>
-              <Image src={this.state.userInfo.avatarUrl}></Image>
+              <Image src={this.state.userInfo.headUrl}></Image>
             </View>
             <View className='card_text'>
               <Text>{this.state.userInfo.nickName}\n会员卡 | 白银会员</Text>

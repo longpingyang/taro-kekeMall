@@ -20,7 +20,6 @@ class Index extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
   }
   
   componentWillMount(){     
@@ -28,7 +27,6 @@ class Index extends Component {
     this.getShopActivity();
   }
   componentDidMount(){
-    console.log(1)
   }
   componentWillUnmount () {  }
   componentDidShow () {

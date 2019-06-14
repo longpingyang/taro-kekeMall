@@ -136,7 +136,6 @@ class Index extends Component {
       data['couponsModalShow']=false;
       data['buyType']=2;
     },()=>{
-      console.log(this.state);
     })
   }
 
@@ -205,7 +204,6 @@ class Index extends Component {
 
   //选择的参数
   getskudata(data){
-    console.log(data);
   }
 
 
@@ -429,12 +427,13 @@ class Index extends Component {
               <View className='sku-modal'>
                   <View className="sku-head">
                       <View className="flex">
-                          <View className="sku-good-img" style={{backgroundImage: `url(${headImg})`}}>
-                          </View>
+                          {/* <View  style={{backgroundImage: `url(${headImg})`}}>
+                          </View> */}
+                          <Image className="sku-good-img" mode='widthFix' src={this.state.background[0]}></Image>
                           <View className="sku-header-info flex1">
                               <View>
                                   <View className="sku-price PriceSwitch theme-color">
-                                      <Text>会员¥<Text className="sku-price-1">0</Text>.03x</Text>
+                                      <Text>会员¥<Text className="sku-price-1">0.03</Text></Text>
                                   </View>
                                   <View className="sku-inventery font26 color999">
                                       库存89864件

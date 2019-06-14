@@ -25,16 +25,38 @@ class Amount extends Component {
   }
   componentWillMount(){    
   }
-  componentDidShow () { }
+  componentDidShow () { this.getMoneyLoglist() }
   componentDidHide () { }
   state = {
     userInfo:{
       avatarUrl:'',
       nickName:''
-    }
+    },
+    moneyLogList:[],
+    moneyLogListlen:0
   }
+
+  getMoneyLoglist(){
+    Taro.request({
+      url:api.memberMoneyLoglistPath,
+      method:"POST",
+      data:{},
+      header:{
+        token:Taro.getStorageSync('token')
+      }      
+    }).then((res) =>{
+      if(res.data.success){
+        this.setState({
+          moneyLogList:res.data.data,
+          moneyLogListlen:res.data.data.length
+        })
+      }
+    })
+  }
+
  
   render () {
+    const {moneyLogList,moneyLogListlen} = this.state;
     return (
     <View className="integral-detail">
         <View className="integral-header">
@@ -55,9 +77,10 @@ class Amount extends Component {
         </View>
         <View className="amount-record-wrap">
             <View></View>
-            <View className="ap-no-record color-9 font26 mr-t-dis">没有产生余额记录哦~</View>
+            {
+              moneyLogListlen==0 &&<View className="ap-no-record color-9 font26 mr-t-dis">没有产生余额记录哦~</View>
+            }            
             <View className="amount-charge-fixed flex fixIphonex">
-                <View className="amount--btn half theme-color theme-bdc font36">买单</View>
                 <View className="amount--btn half color-white theme-bgc font36">充值</View>
             </View>
         </View>

@@ -95,10 +95,10 @@ class Index extends Component {
                             <View className="coupon-full">满{item.template.reqAmt}元</View>
                         </View>
                         <View className="coupon-content flex1 flex flex-col">
-                            <View className="coupon-dec coupon-text-line1">超值满减优惠券</View>
+                            <View className="coupon-dec coupon-text-line1">{item.template.type==1?"超值满减优惠券":"超值折扣优惠券"}</View>
                             <View className="coupon-date ">{item.template.date1} - {item.template.date2}</View>
                             <View className="color-white font22 coupon-use-scence">
-                                <View className="flex flex-v-center">全部商品可用 | 全部门店适用</View>
+                                <View className="flex flex-v-center">{item.template.isGoods==1?"部分商品可用":"全部商品可用"}</View>
                             </View>
                         </View>
                         <View className="coupon-usebtn flex flex-col" style="background-color: rgb(241, 45, 34);">

@@ -36,7 +36,7 @@ class OrderDetails extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+    
   }
   componentWillMount(){
     this.getDetailsFn()

@@ -38,6 +38,10 @@ class Point extends Component {
       nickName:''
     }
   }
+  getScoreLogList(){
+    
+  }
+
  
   render () {
     return (

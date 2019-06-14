@@ -18,7 +18,6 @@ class AddressEdit extends Component {
     postalCode:""
   }
   bindRegionChange(e){
-    console.log(e);
     this.setState({
       region: e.detail.value
     })

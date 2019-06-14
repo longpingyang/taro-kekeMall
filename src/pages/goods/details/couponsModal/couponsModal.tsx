@@ -8,7 +8,6 @@ class CouponsModal extends Component {
         super(...arguments);
     }
     componentWillReceiveProps(nextProps){
-        // console.log(nextProps);
     }
     getCoupon(id){
         Taro.request({
