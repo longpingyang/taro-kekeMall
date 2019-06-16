@@ -1,7 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-
+import { View,Button,Input,Text } from '@tarojs/components'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from "taro-ui"
 const api = require('../../../config/api.js');
 
 import './amount.scss'
@@ -25,13 +25,39 @@ class Amount extends Component {
   }
   componentWillMount(){    
   }
-  componentDidShow () { this.getMoneyLoglist() }
+  componentDidShow () { 
+    this.getMoneyLoglist() 
+    if(this.$router.params.type && this.$router.params.type==1){
+      // console.log(this.$router.params.rule)
+      this.setState({
+        czType:this.$router.params.type,
+        rule:JSON.parse(this.$router.params.rule)
+      },()=>{
+        this.OpenCz();
+      })      
+    }
+    if(this.$router.params.type && this.$router.params.type==2){
+      // console.log(this.$router.params.rule)
+      this.setState({
+        czType:this.$router.params.type,
+        czAmount:JSON.parse(this.$router.params.amount)
+      },()=>{
+        this.OpenCz();
+      })      
+    }
+
+  }
   componentDidHide () { }
   state = {
     userInfo:{
       avatarUrl:'',
       nickName:''
     },
+    isCzModal: false,
+    czAmount:'0',
+    czType:0,
+    totalAmount:0,
+    rule:{save:'',give:''},
     moneyLogList:[],
     moneyLogListlen:0
   }
@@ -51,6 +77,49 @@ class Amount extends Component {
           moneyLogListlen:res.data.data.length
         })
       }
+    })
+  }
+  //充值按钮
+  OpenCz(){
+    this.setState({
+      isCzModal:true
+    })
+  }
+  handleChange (key,e) {    
+    if(this.state.czType==0){
+      this.setState({
+        [key]:e.detail.value
+      })
+      return e.detail.value;
+    }
+    else if(this.state.czType==1){
+      let temp = '';
+      if(e.detail.value!='')
+      {
+        temp = (Math.floor(parseInt(e.detail.value)/parseInt(this.state.rule.save))*parseInt(this.state.rule.give)+parseInt(e.detail.value)).toString();
+      }
+
+
+      this.setState({
+        [key]:e.detail.value,
+        totalAmount:temp
+      })
+      return e.detail.value;
+    }
+    
+  }
+  recharge(){
+    console.log(this.state.czAmount);
+    // this.setState({
+    //   isCzModal:false
+    // })
+  }
+  selFastAmount(val){
+    this.setState({
+      czAmount:val,
+      totalAmount:Math.floor(parseInt(val)/parseInt(this.state.rule.save))*parseInt(this.state.rule.give)+parseInt(val)
+    },()=>{
+      this.recharge();
     })
   }
 
@@ -80,10 +149,72 @@ class Amount extends Component {
             {
               moneyLogListlen==0 &&<View className="ap-no-record color-9 font26 mr-t-dis">没有产生余额记录哦~</View>
             }            
-            <View className="amount-charge-fixed flex fixIphonex">
+            <View onClick={this.OpenCz} className="amount-charge-fixed flex fixIphonex">
                 <View className="amount--btn half color-white theme-bgc font36">充值</View>
             </View>
         </View>
+
+        <AtModal isOpened={this.state.isCzModal}>
+          <AtModalHeader>
+            {this.state.czType==0 && <Text>充值</Text>}
+            {this.state.czType==1 && <Text>充值送钱</Text>}
+            {this.state.czType==2 && <Text>充值送鞋</Text>}
+          </AtModalHeader>
+          <AtModalContent>
+            {
+              this.state.czType==0 && <View className='amountModalCon'>
+                                        <View className="FastAmount">
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,100)}>100</Text>
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,200)}>200</Text>
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,500)}>500</Text>
+                                        </View>
+                                        <View className='customAmount'>
+                                          <Text className='text'>请输入充值金额：</Text>
+                                          <View className='input_box'>
+                                            <Text className='unit'>￥</Text>
+                                            <Input className='input' type="digit" value={this.state.czAmount=="0"?"":this.state.czAmount} onInput={this.handleChange.bind(this,'czAmount')}></Input>
+                                          </View>
+                                        </View>
+                                      </View>
+            }
+            {
+              this.state.czType==1 && <View className='amountModalCon'>
+                                        <View>充值规则：每充值{this.state.rule.save}送{this.state.rule.give},可以累计</View>
+                                        <View className="FastAmount">
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,100)}>100</Text>
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,200)}>200</Text>
+                                          <Text className='text' onClick={this.selFastAmount.bind(this,500)}>500</Text>
+                                        </View>
+                                        <View className='customAmount'>
+                                          <Text className='text'>请输入充值金额：</Text>
+                                          <View className='input_box'>
+                                            <Text className='unit'>￥</Text>
+                                            <Input className='input' type="digit" value={this.state.czAmount=="0"?"":this.state.czAmount} onInput={this.handleChange.bind(this,'czAmount')}></Input>
+                                          </View>
+                                        </View>
+                                        <View className=''>
+                                          实得金额：{this.state.totalAmount==0?'':this.state.totalAmount}
+                                        </View>
+                                      </View>
+            }
+            {
+              this.state.czType==2 && <View className='amountModalCon'>                                        
+                                        <View className='customAmount'>
+                                          <Text className='text'>充值金额：</Text>
+                                          <View className='input_box'>
+                                            <Text className='unit'>￥</Text>
+                                            <Input className='input' disabled type="digit" value={this.state.czAmount}></Input>
+                                          </View>
+                                        </View>
+                                      </View>
+            }
+          </AtModalContent>
+          <AtModalAction> 
+            <Button>取消</Button>
+            <Button onClick={this.recharge}>确定</Button> 
+          </AtModalAction>
+        </AtModal>
+
     </View>
     )
   }

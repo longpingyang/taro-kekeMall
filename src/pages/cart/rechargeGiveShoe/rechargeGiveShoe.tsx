@@ -46,7 +46,7 @@ class RechargeGiveShoe extends Component {
   }
   goOrderCreatePage(){
 
-    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount*this.state.saveTimes});
+    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount,saveTimes:this.state.saveTimes});
     
 
     Taro.navigateTo({
@@ -70,7 +70,7 @@ class RechargeGiveShoe extends Component {
         }).then((res)=>{
             if(res.data.success){
                 tempGoods.push(res.data.data);
-                tempamount+=res.data.data.dispPrice;             
+                tempamount+=res.data.data.price;             
             }
             if(tempGoods.length==idArr.length){
                 tempGoods.forEach(element => {
@@ -82,7 +82,6 @@ class RechargeGiveShoe extends Component {
                     element['sizeId'] =element.colorList[0].sizeId;
                     element['sizeName'] =element.colorList[0].name;
                 });
-            
                 this.setState({
                     goodsList:tempGoods,
                     amount:tempamount,
@@ -269,7 +268,7 @@ class RechargeGiveShoe extends Component {
               <View className="sc_select_all">全选</View>
               <View className="shopcart_total_price flex1 flex flex-col">
                   <View className="font26">
-                      总计:
+                      充值金额:
                       <Text className="theme-color price">
                         <Text className="font26">¥</Text>
                         <Text className="font36">{this.state.amount*this.state.saveTimes}</Text>

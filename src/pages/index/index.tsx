@@ -138,9 +138,9 @@ class Index extends Component {
     })
   }
   //去充值
-  goRecharge(){
+  goRecharge(rule){
       Taro.navigateTo({
-          url: '/pages/user/amount/amount'
+          url: '/pages/user/amount/amount?type=1&rule='+rule
       })
   }
   //领取优惠券
@@ -217,7 +217,9 @@ class Index extends Component {
                               <View className="coupon_12 flex coupon-picker discoloration">
                                   <View className="coupon-price">
                                     {
-                                      item.type==1 && <View className="price-number price-number_3"><Text className='text'>¥</Text>{item.value}</View>
+                                      item.type==1 && <View className="price-number price-number_3">
+                                                        <Text className='text'>¥</Text>{item.value}
+                                                      </View>
                                     }
                                     {
                                       item.type==2 && <View><Text className="coupon_discount">{item.value}</Text><Text className="coupon_fsize">折</Text></View>
@@ -266,7 +268,7 @@ class Index extends Component {
                       
                       <View className='price_box'>
                         {
-                          item.type==4 && <Button onClick={this.goRecharge.bind(this)}>去充值</Button>
+                          item.type==4 && <Button onClick={this.goRecharge.bind(this,item.rule)}>去充值</Button>
                         }
                         {
                           item.type==5 && <Button onClick={this.goGiveShow.bind(this,item.goodsId,item.rule)}>去充值</Button>

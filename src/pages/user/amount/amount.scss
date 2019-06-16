@@ -1,3 +1,4 @@
+@import "~taro-ui/dist/style/components/modal.scss";
 .integral-detail{
     font-size: 24px;
     .integral-header{
@@ -81,5 +82,29 @@
                 margin: 0 15px;
             }
         }
+    }
+}
+.amountModalCon{    
+    .FastAmount{ 
+        display: flex; flex-direction: row; justify-content: space-between;
+        .text{
+            border: solid 1PX #dddddd; padding: 16px 30px; border-radius: 4px;
+        }
+    }
+    .customAmount{
+        padding-top: 12px; width: 100%; display: inline-block;
+        .text{
+            line-height: 40px; width: 100%; float: left;
+        }
+        .input_box{
+            width: 100%; float: left;
+            .unit{
+                float: left;
+            }
+            .input{
+                float: left;
+            }
+        }
+        
     }
 }

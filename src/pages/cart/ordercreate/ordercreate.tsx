@@ -33,6 +33,7 @@ class Ordercreate extends Component {
         couponsModalShow: false,
         goodsList:[],
         amount:0,
+        saveTimes:0,
         couponList:[],//礼券列表
         coupon:0,//优惠金额
         cxYhMoney:0,//促销优惠金额
@@ -100,11 +101,12 @@ class Ordercreate extends Component {
     }
     componentDidMount(){
         this.getAddressList();
-        if(this.$router.params.orderType){
+        if(this.$router.params.orderType==5){//充值送鞋
             this.setState({
                 goodsList:Taro.getStorageSync('orderCreate').goodsList,
                 amount:Taro.getStorageSync('orderCreate').amount,
-                orderType: this.$router.params.orderType
+                saveTimes:Taro.getStorageSync('orderCreate').saveTimes,
+                orderType: 5
             })
         }else{
             this.setState({
@@ -158,7 +160,7 @@ class Ordercreate extends Component {
         })
     }
     //去充值
-    goRecharge(){
+    goRecharge(amount){
     //    Taro.requestPayment({
     //         timeStamp: '',
     //         nonceStr: '',
@@ -169,7 +171,7 @@ class Ordercreate extends Component {
     //         fail (res) { }
     //     })
         Taro.navigateTo({
-            url: '/pages/user/amount/amount'
+            url: '/pages/user/amount/amount?type=2&amount='+amount
         })
     }
     //获取用户所有有效优惠券
@@ -469,17 +471,19 @@ class Ordercreate extends Component {
                             <Input type="text" className="order-message" placeholder="给卖家留言：(50字以内)" value=""></Input>
                         </View>
                         <View className="wrap-goods-total flex flex-end">
-                            <Text className="goods-total-num">共{goodsList.length}件商品</Text>
+                            <Text className="goods-total-num">共{goodsList.length}类商品</Text>
                             <Text>合计:</Text>
                             <Text className="goods-tataol-price theme-color">¥{amount}</Text>
                         </View>
                     </View>
                 </View>
                 <View className="wrap-pormo section-item">
-                    <View className="arrow-item flex flex-between" onClick={this.couponsMoreFn}>
-                        <Text>优惠券/码</Text>
-                        <Text>已优惠{this.state.coupon}元</Text>
-                    </View>
+                    {
+                        this.state.orderType==0 && <View className="arrow-item flex flex-between" onClick={this.couponsMoreFn}>
+                                                        <Text>优惠券/码</Text>
+                                                        <Text>已优惠{this.state.coupon}元</Text>
+                                                    </View>
+                    }                    
                     <View className=" wrap-radio-input border-bottom-1px invoice-btn-wrap">
                         <View onClick={this.showInvocePage} className="wrap-radio flex-between flex">
                             <Text className="flex0">发票</Text>
@@ -497,7 +501,7 @@ class Ordercreate extends Component {
                 <View className="wrap-paytype section-item">
                     <View className="arrow-item flex flex-between arrow-item1">
                         <Text>支付方式</Text>
-                        <Text>货到付款</Text>
+                        <Text>微信</Text>
                     </View>
                 </View>
                 <View className="wrap-payinfo section-item">
@@ -507,30 +511,60 @@ class Ordercreate extends Component {
                                 <Text className="money-msg-tip money-msg">价格说明：因价格更新导致价格变动、营销互斥规则等原因，商品售价可能与前置页面不同，以本结算页为准</Text>
                             </Text>
                         </View>
-                        <Text>¥{this.state.amount-this.state.coupon}</Text>
+                        <Text>¥{this.state.amount}</Text>
                     </View>
-                    <View className="flex flex-between">
-                        <Text>促销活动抵扣</Text><Text>-¥{this.state.cxYhMoney}</Text>
-                    </View>
-                    <View className="flex flex-between">
-                        <Text>优惠券抵扣</Text><Text>-¥{this.state.coupon}</Text>
-                    </View>
-                    <View className="flex flex-between">
-                        <Text>运费</Text><Text>¥{this.state.freight}</Text>
-                    </View>
-                    <View className="flex flex-between">
-                        <Text>实际支付</Text><Text>¥{this.state.amount-this.state.coupon+this.state.freight}</Text>
-                    </View>
+                    
+                    {
+                        this.state.orderType==5 && <View>
+                                                        <View className="flex flex-between">
+                                                            <Text>充值赠送抵扣</Text><Text>-¥{this.state.amount}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>充值金额</Text><Text>¥{this.state.amount*this.state.saveTimes}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>运费</Text><Text>¥{this.state.freight}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>实付支付</Text><Text>¥{this.state.amount*this.state.saveTimes+this.state.freight}</Text>
+                                                        </View>
+                                                    </View>
+                    }
+                    {
+                        this.state.orderType==0 && <View>
+                                                        <View className="flex flex-between">
+                                                            <Text>促销活动抵扣</Text><Text>-¥{this.state.cxYhMoney}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>优惠券抵扣</Text><Text>-¥{this.state.coupon}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>运费</Text><Text>¥{this.state.freight}</Text>
+                                                        </View>
+                                                        <View className="flex flex-between">
+                                                            <Text>实际支付</Text><Text>¥{this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight}</Text>
+                                                        </View>
+                                                    </View>
+                    }
                 </View>
                 <View className="wrap-footer flex flex-between border-top-1px fixIphonex">
-                    <View className="pay-info"> 实付：<Text className="theme-color">¥{this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight}</Text>
-                    </View>
+                    {
+                        this.state.orderType==0 && <View className="pay-info"> 
+                                                        实付：<Text className="theme-color">¥{this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight}</Text>
+                                                    </View>
+                    }
+                    {
+                        this.state.orderType==5 && <View className="pay-info"> 
+                                                        实付：<Text className="theme-color">¥{this.state.amount*this.state.saveTimes+this.state.freight}</Text>
+                                                    </View>
+                    }
+                    
                     {/* disable */}
                     {
                         this.state.orderType==0 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>提交订单</View>
                     }
                     {
-                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this)}>去充值</View>
+                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this,this.state.amount*this.state.saveTimes+this.state.freight)}>去充值</View>
                     }
                 </View>
                 <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>
