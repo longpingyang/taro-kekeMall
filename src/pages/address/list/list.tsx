@@ -96,9 +96,16 @@ class AddressList extends Component {
   }
   selCreateOrderAdd(id){
     if(this.state.iscreateOrder){
-      Taro.navigateTo({
-        url: '/pages/cart/ordercreate/ordercreate?addId='+id
-      })
+      if(this.$router.params.orderType){
+        Taro.navigateTo({
+          url: '/pages/cart/ordercreate/ordercreate?addId='+id+"&orderType="+this.$router.params.orderType
+        })
+      }else{
+        Taro.navigateTo({
+          url: '/pages/cart/ordercreate/ordercreate?addId='+id
+        })
+      }
+      
     }
   }
 

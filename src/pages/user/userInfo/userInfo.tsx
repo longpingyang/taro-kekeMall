@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Input, Text } from '@tarojs/components'
+import { View, Image, Input, Text,Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '../../../actions/counter'
@@ -66,7 +66,7 @@ class Index extends Component {
   }
   state ={
     userInfo:{
-      avatarUrl:'',
+      headUrl:'',
       nickName:'',
       phone:''
     }
@@ -76,15 +76,19 @@ class Index extends Component {
     
   }
   componentWillMount(){
-    Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
-      this.setState({
-        userInfo: rst.data
-      })
-    })
+    // Taro.getStorage({key:'userInfo'}).then(rst => {   //从缓存中获取用户信息
+    //   this.setState({
+    //     userInfo: rst.data
+    //   })
+    // })
   }
   componentWillUnmount () { }
 
-  componentDidShow () { }
+  componentDidShow () {
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
+    })
+  }
 
   componentDidHide () { }
   changeHeadImgFn(){
@@ -98,12 +102,15 @@ class Index extends Component {
       },
     })
   }
+  logoutFn(){
+    Taro.setStorageSync("userMember",null);
+  }
   render () {
     return (
       <View className='userInfo'>
         <View className='headImg'>
           <Text>我的头像</Text>
-          <Image onClick={this.changeHeadImgFn} src={this.state.userInfo.avatarUrl}></Image>
+          <Image onClick={this.changeHeadImgFn} src={this.state.userInfo.headUrl}></Image>
         </View>
         <View>
           <Text>我的昵称</Text>
@@ -112,6 +119,9 @@ class Index extends Component {
         <View>
           <Text>手机号</Text>
           <Input value={this.state.userInfo.phone}></Input>
+        </View>
+        <View className="logout_box">
+          <Button onClick={this.logoutFn} className='btn-max-w' type='primary'>退出登录</Button>
         </View>
       </View>
       

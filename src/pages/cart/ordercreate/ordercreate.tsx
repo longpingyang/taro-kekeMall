@@ -3,6 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Input, Text,Image } from '@tarojs/components'
 import goodsImg from '../../../images/goods/1.jpg';
 
+import { AtFloatLayout } from "taro-ui"
 import InvocePage from '../invocePage/invocePage'
 const api = require('../../../config/api.js');
 import './ordercreate.scss'
@@ -17,16 +18,25 @@ class Ordercreate extends Component {
         })
     }
     goListAddressPage(){
-        Taro.navigateTo({
-            url: '/pages/address/list/list?checkedId='+this.state.memberAddressId
-        })
+        if(this.$router.params.orderType){
+            Taro.navigateTo({
+                url: '/pages/address/list/list?checkedId='+this.state.memberAddressId+"&orderType="+this.$router.params.orderType
+            })
+        }else{
+            Taro.navigateTo({
+                url: '/pages/address/list/list?checkedId='+this.state.memberAddressId
+            })
+        }
     }
     state={
         isShowInvocePage:true,
+        couponsModalShow: false,
         goodsList:[],
         amount:0,
         couponList:[],//礼券列表
         coupon:0,//优惠金额
+        cxYhMoney:0,//促销优惠金额
+        couponId:'',
         freight:0,//运费
         payScore:"",
         payBanlance:"",
@@ -34,7 +44,9 @@ class Ordercreate extends Component {
         remark:"",
         addressObj:{},
         addressListlength:0,
-        memberAddressId:""
+        memberAddressId:"",
+        yHmoneyArr:{},
+        orderType:0//0:普通订单 5:充值送鞋订单
     }
 
     getAddressList(){
@@ -88,11 +100,22 @@ class Ordercreate extends Component {
     }
     componentDidMount(){
         this.getAddressList();
-        this.setState({
-            goodsList:Taro.getStorageSync('orderCreate').goodsList,
-            amount:Taro.getStorageSync('orderCreate').amount
-        })
+        if(this.$router.params.orderType){
+            this.setState({
+                goodsList:Taro.getStorageSync('orderCreate').goodsList,
+                amount:Taro.getStorageSync('orderCreate').amount,
+                orderType: this.$router.params.orderType
+            })
+        }else{
+            this.setState({
+                goodsList:Taro.getStorageSync('orderCreate').goodsList,
+                amount:Taro.getStorageSync('orderCreate').amount
+            })
+            this.getCouponList();
+            this.getAllActivityList();
+        }        
     }
+    componentDidShow(){}
     //提交订单
     subOrderFn(){
         Taro.showLoading({
@@ -103,7 +126,7 @@ class Ordercreate extends Component {
             method:"POST",
             data:{
                 "activityId": "1",
-                "couponList": [],
+                "couponList": [this.state.couponId],
                 "goodsList": this.state.goodsList,
                 "memberAddressId": this.state.memberAddressId,
                 "payBanlance": 0,
@@ -125,12 +148,209 @@ class Ordercreate extends Component {
                 Taro.navigateTo({
                     url: '/pages/order/order'
                 })
+            }else{
+                Taro.showToast({
+                    title: res.data.errorInfo,
+                    icon: 'none',
+                    duration: 1500
+                });
             }
         })
     }
+    //去充值
+    goRecharge(){
+    //    Taro.requestPayment({
+    //         timeStamp: '',
+    //         nonceStr: '',
+    //         package: '',
+    //         signType: 'MD5',
+    //         paySign: '',
+    //         success (res) { },
+    //         fail (res) { }
+    //     })
+        Taro.navigateTo({
+            url: '/pages/user/amount/amount'
+        })
+    }
+    //获取用户所有有效优惠券
+    getCouponList(){
+        Taro.request({
+            url:api.couponListPath,
+            method:"POST",
+            data:{
+                "actId": "",
+                "shopId": "1",
+                "status": 0,
+                "type": [1,2,3,4,5,6]
+            },
+            header:{
+                token:Taro.getStorageSync('token')
+            }
+        }).then((res) =>{
+            if(res.data.data){
+                //筛选可用的优惠券
+                let goodList = Taro.getStorageSync('orderCreate').goodsList;
+                res.data.data.forEach(ele => {
+                    if(ele.template.isGoods==1){
+                        goodList.forEach(obj => {
+                            if(ele.template.goodsId.indexOf(obj.goodsId)>-1){
+                                ele['ky'] = true;
+                            }
+                        });
+                    }else{
+                        ele['ky'] = true;
+                    }
+                    
+                });
+                let tempList = []
+                res.data.data.forEach(ele => {
+                    if(ele['ky']){
+                        tempList.push(ele)
+                    }
+                })
+                tempList.forEach(element => {
+                    this.useCoupon(element);
+                });
+
+
+                this.setState({
+                    couponList:tempList
+                })
+            }
+        })
+    }
+    //选择优惠券
+    couponsMoreFn(){   
+    this.setState({
+        couponsModalShow: true
+        })
+    }
+    //使用优惠券
+    useCoupon(obj){
+        let tempGoodsList = [];        
+        if(obj.template.isGoods==1){
+            this.state.goodsList.forEach(ele => {
+                if(obj.template.goodsId.indexOf(ele.goodsId)>-1){
+                    tempGoodsList.push(ele);
+                }
+            });
+        }else{
+            tempGoodsList = this.state.goodsList;
+        }
+        let money = 0;
+        let yHmoney =0;
+        tempGoodsList.forEach(element => {
+            money+= element.price*element.count;
+        });   
+        if(money>=obj.template.reqAmt){
+            if(obj.template.type==1){//(1.代金券 2.折扣券)
+                yHmoney=obj.template.value;
+            }else{
+                yHmoney=parseFloat((money*(1-(obj.template.value/10))).toFixed(2));
+            }            
+        }
+        let tempyHmoneyArr = this.state.yHmoneyArr;
+        tempyHmoneyArr[obj.template.couponId] = yHmoney;
+        this.setState({
+            yHmoneyArr:tempyHmoneyArr
+        });
+        let MaxYh={
+            id:'',
+            val:0
+        };
+        for(let key in tempyHmoneyArr){
+            if(tempyHmoneyArr[key]>MaxYh.val){
+                MaxYh.id= key;
+                MaxYh.val = tempyHmoneyArr[key];
+            }
+        }
+        this.setState({
+            coupon:MaxYh.val,
+            couponId:MaxYh.id
+        });
+    }
+    //选择优惠券
+    selUseCoupon(id){
+        this.setState({
+            coupon:this.state.yHmoneyArr[id],
+            couponId:id,
+            couponsModalShow:false
+        });
+    }
+    //促销活动
+    getAllActivityList(){
+        let allActivityList =Taro.getStorageSync('allActivityList');
+        let goodsList = Taro.getStorageSync('orderCreate').goodsList;
+        let tempList= [];
+        allActivityList.forEach(element => {
+            if(element.type!=4 && element.type!=5){
+                tempList.push(element);
+            }
+        });
+        if(tempList.length>0){
+            let yXActivity = tempList[tempList.length-1];
+            // let rule = JSON.parse(yXActivity.rule);//规则
+            let rule = [{min:1,max:1,value:8},{min:2,max:2,value:7},{min:3,max:1000000,value:6}]
+            let tempGoodsList = [];
+            if(yXActivity.goodsType==1){
+                goodsList.forEach(ele => {
+                    if(yXActivity.goodsId.indexOf(ele.goodsId)>-1){
+                        tempGoodsList.push(ele);
+                    }
+                });
+            }else{
+                tempGoodsList = goodsList;
+            }
+            let cxYhMoney = 0;
+            if(yXActivity.type==1){//满几件打几折
+                let count = 0;
+                let sumMoney = 0;
+                tempGoodsList.forEach(element => {
+                    count +=element.count;
+                    sumMoney +=element.price*element.count;
+                });
+                rule.forEach(element => {
+                    if(count>=element.min && count<element.max){
+                        cxYhMoney=(10-element.value)/10*sumMoney;
+                    }
+                });
+            }
+            if(yXActivity.type==2){//满几件省多少
+                let count = 0;
+                tempGoodsList.forEach(element => {
+                    count +=element.count;
+                });
+                rule.forEach(element => {
+                    if(count>=element.min && count<element.max){
+                        cxYhMoney=element.value;
+                    }
+                });
+
+            }
+            if(yXActivity.type==3){//满多少省多少
+                let sumMoney = 0;
+                tempGoodsList.forEach(element => {
+                    sumMoney +=element.price*element.count;
+                });
+                rule.forEach(element => {
+                    if(sumMoney>=element.min && sumMoney<element.max){
+                        cxYhMoney=element.value;
+                    }
+                });
+            }
+            this.setState({
+                cxYhMoney:cxYhMoney
+            })
+
+        }
+
+        
+
+    }
+
 
     render(){
-        const {goodsList,amount,addressObj,addressListlength} = this.state;
+        const {goodsList,amount,addressObj,addressListlength,couponList} = this.state;
         return (
             <View className="page-container order-create_box">
                 <View className="wrap-delivery-type flex flex-v-center">
@@ -256,7 +476,7 @@ class Ordercreate extends Component {
                     </View>
                 </View>
                 <View className="wrap-pormo section-item">
-                    <View className="arrow-item flex flex-between">
+                    <View className="arrow-item flex flex-between" onClick={this.couponsMoreFn}>
                         <Text>优惠券/码</Text>
                         <Text>已优惠{this.state.coupon}元</Text>
                     </View>
@@ -290,7 +510,10 @@ class Ordercreate extends Component {
                         <Text>¥{this.state.amount-this.state.coupon}</Text>
                     </View>
                     <View className="flex flex-between">
-                        <Text>优惠抵扣</Text><Text>-¥{this.state.coupon}</Text>
+                        <Text>促销活动抵扣</Text><Text>-¥{this.state.cxYhMoney}</Text>
+                    </View>
+                    <View className="flex flex-between">
+                        <Text>优惠券抵扣</Text><Text>-¥{this.state.coupon}</Text>
                     </View>
                     <View className="flex flex-between">
                         <Text>运费</Text><Text>¥{this.state.freight}</Text>
@@ -300,15 +523,57 @@ class Ordercreate extends Component {
                     </View>
                 </View>
                 <View className="wrap-footer flex flex-between border-top-1px fixIphonex">
-                    <View className="pay-info"> 实付：<Text className="theme-color">¥{this.state.amount-this.state.coupon+this.state.freight}</Text>
+                    <View className="pay-info"> 实付：<Text className="theme-color">¥{this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight}</Text>
                     </View>
                     {/* disable */}
-                    <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>提交订单</View>
+                    {
+                        this.state.orderType==0 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>提交订单</View>
+                    }
+                    {
+                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this)}>去充值</View>
+                    }
                 </View>
                 <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>
                     <InvocePage></InvocePage>
                 </View>
                 
+                <AtFloatLayout title="使用优惠券" isOpened={this.state.couponsModalShow}>
+                    <View className='couponsModal_box select_coupons_wrap'>
+                        <View className="select_coupons_box">
+                            <View className="select_ocupons_cont coupon_pick_wrap">
+                                {
+                                    couponList.map((item)=>{
+                                        return (
+                                    <View key={item.id} className="coupon flex coupon-picker discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
+                                        <View className="coupon-price flex theme-color flex-col">
+                                            <View className={"price-number "+(item.template.type==1?"price-number_3":"")}>
+                                                {item.template.type==1 && <View className="unit-name_3">¥</View>}                                        
+                                                <View>{item.template.value}</View>
+                                                {item.template.type==2 && <View className="coupon_fsize">折</View>}
+                                            </View>
+                                            <Text className="coupon-full">满{item.template.reqAmt}元</Text>
+                                        </View>
+                                        <View className="coupon-content flex1 flex flex-col">
+                                            {item.type==1 && <View className="coupon-dec text-line1">满{item.template.reqAmt}减{item.template.value}元</View>}
+                                            {item.type==2 && <View className="coupon-dec text-line1">{item.template.type==1?"超值满减券":"超值折扣券"}</View>}
+                                            <View className="coupon-date">
+                                                {item.template.date1} - {item.template.date2}
+                                            </View>
+                                            <View className="coupon-date">{item.template.isGoods==1?"部分商品可用":"全部商品可用"}</View>
+                                        </View>
+                                        <View onClick={this.selUseCoupon.bind(this,item.template.couponId)} className="coupon-operate flex" style="background-color: rgb(241, 45, 34);">
+                                            <View  className="btn-pick theme-bdc theme-color font26">{this.state.couponId==item.template.couponId?'已使用': '使用'}</View>
+                                        </View>
+                                        <View className="border-coupon"></View>
+                                    </View>
+                                        )
+                                    })
+                                }
+                                <View className="height-48"></View>
+                            </View>
+                        </View>
+                    </View>
+                </AtFloatLayout>
 
 
             </View>

@@ -61,7 +61,8 @@
     }
     .promo-cont {
       color: #454552;
-      overflow-x: auto;
+      // overflow-x: auto;
+      overflow: hidden;
       -webkit-overflow-scrolling: touch;
     }
     .coupon-circle {

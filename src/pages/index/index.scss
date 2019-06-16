@@ -103,10 +103,16 @@
           .goodsTitle{
             font-size: 14PX; float: left; width: 100%; line-height: 1.5; color: #666666;
           }
+          .yxTime_box{
+
+          }
+          .yxTime{
+            color: #666666; width: 100%; float: left; line-height: 40px;
+          }
           .price_box{
             width: 100%; 
             .price_left{
-              border: solid 1PX #f12d22; border-radius: 4PX 0 0 4PX; float: left;  box-sizing: border-box;  height: 40PX;
+              border: solid 1PX #f12d22; border-radius: 4PX; float: left;  box-sizing: border-box;  height: 40PX;
               width: 55%; border-right: 0;  
               .symbol{
                 color: #f12d22; line-height: 50PX; float: left;
@@ -118,7 +124,7 @@
             
             button{
               background: #f12d22; color: #fff; float: right; font-size: 14PX; padding: 0;
-              border: none;height: 40PX; width: 45%;  border-radius: 0 4PX 4PX 0; line-height: 40PX;
+              border: none;height: 40PX; width: 45%;  border-radius: 4PX; line-height: 40PX;
             }
           }
         }

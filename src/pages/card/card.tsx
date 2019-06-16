@@ -30,9 +30,9 @@ class Card extends Component {
     //     userInfo: Taro.getStorageSync("userMember")
     //   })
     // })
-    this.setState({
-      userInfo: Taro.getStorageSync("userMember")
-    })
+    // this.setState({
+    //   userInfo: Taro.getStorageSync("userMember")
+    // })
     Taro.login({
       success:function(res){
         Taro.request({
@@ -66,7 +66,11 @@ class Card extends Component {
     })
   }
 
-  componentDidShow () { Taro.showTabBar({})}
+  componentDidShow () { 
+    this.setState({
+        userInfo: Taro.getStorageSync("userMember")
+    })
+  }
 
   componentDidHide () { }
 

@@ -24,12 +24,13 @@ class Index extends Component {
   
   componentWillMount(){     
     // Taro.showTabBar({}) 
-    this.getShopActivity();
+    
   }
   componentDidMount(){
   }
   componentWillUnmount () {  }
   componentDidShow () {
+    this.getShopActivity();
     this.getIndeList();
   }
   //首页商品展示信息
@@ -66,6 +67,32 @@ class Index extends Component {
       if(res.data.success){
         Taro.setStorageSync("allCouponList",res.data.data.couponRules);
         Taro.setStorageSync("allActivityList",res.data.data.activityRules);
+
+
+        //优惠券 信息筛选
+        let tempList=Taro.getStorageSync('allCouponList');        
+        let tempArr = [];
+        tempList.forEach(element => {
+            tempArr=[...tempArr,...element.coupons];
+        });
+        let couponlist=[];
+        tempArr.forEach(ele => {
+          if(ele.isGoods==0){
+            couponlist.push(ele);
+          }
+        });    
+        if(couponlist.length>2){
+          couponlist = couponlist.slice(0,1);
+        }
+        console.log(couponlist);
+        this.setState((data) =>{
+          data['activityData']=res.data.data;
+          data['couponList']= couponlist;
+        })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+        }
       }
     })
   }
@@ -77,10 +104,7 @@ class Index extends Component {
   componentDidHide () { }
   state = {
     posts: [
-      {id:1, imgurl: '/static/images/1.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 1 },
-      {id:2, imgurl: '/static/images/2.jpg', title: '气质白气质白色连衣衣衣衣裙气质白色连衣裙色连衣裙', lump: 1 },
-      {id:3, imgurl: '/static/images/7.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 1 },
-      {id:4, imgurl: '/static/images/1.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 3 },
+      // {id:1, imgurl: '/static/images/1.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 1 },
     ],
     typeGoodsList:[
       {
@@ -96,15 +120,56 @@ class Index extends Component {
           }
         ]
       }
-    ]
+    ],
+    couponList:[],//礼券列表
+    activityData:{
+      activityRules:[],
+      couponRules:[]
+    }
   }
   goDetailPage(id){
     Taro.navigateTo({
       url: '/pages/goods/details/details?id='+id
     })
   }
+  goGiveShow(ids,rule){
+    Taro.navigateTo({
+      url: '/pages/cart/rechargeGiveShoe/rechargeGiveShoe?ids='+ids+"&rule="+rule
+    })
+  }
+  //去充值
+  goRecharge(){
+      Taro.navigateTo({
+          url: '/pages/user/amount/amount'
+      })
+  }
+  //领取优惠券
+  getCoupon(id){
+    Taro.request({
+        url:api.couponGetPath,
+        method:"POST",
+        data:{couponId:id},
+        header:{token:Taro.getStorageSync('token')}
+    }).then((res)=>{
+        if(res.data.success){
+            Taro.showToast({
+                title: '领取成功',
+                icon: 'none',
+                duration: 1500
+            });
+        }else{
+            Taro.showToast({
+                title: res.data.errorInfo,
+                icon: 'none',
+                duration: 1500
+            });
+        }
+    })
+}
+
+
   render () {
-    const { posts } = this.state
+    const { posts,activityData } = this.state;
     // const goodsItem = posts.map((post) =>{
     //   return <View className='goodsItem' key={post.id}>
     //           <Image className='goods_img' mode='aspectFill' src={require('../../images/goods/1.jpg')}></Image>
@@ -144,71 +209,77 @@ class Index extends Component {
           <View className="coupon_area">
             <View className="swiper-container">
                 <View className="swiper-wrapper">
-                    <View className="swiper-slide swiper-slide-visible swiper-slide-active">
-                        <View className="coupon_bg">
-                            <View className="coupon_12 flex coupon-picker discoloration">
-                                <View className="coupon-price">
-                                    <View className="price-number price-number_3">
-                                        <Text className='text'>¥</Text>0.5
-                                    </View>
+                  {
+                    this.state.couponList.map((item) =>{
+                      return (
+                        <View key={item.couponId} className="swiper-slide swiper-slide-visible swiper-slide-active">
+                          <View className="coupon_bg">
+                              <View className="coupon_12 flex coupon-picker discoloration">
+                                  <View className="coupon-price">
+                                    {
+                                      item.type==1 && <View className="price-number price-number_3"><Text className='text'>¥</Text>{item.value}</View>
+                                    }
+                                    {
+                                      item.type==2 && <View><Text className="coupon_discount">{item.value}</Text><Text className="coupon_fsize">折</Text></View>
+                                    }
                                     <View className="couponline"></View>
-                                    <View className="coupondec font24 text-line-1">满2使用</View>
-                                </View>
-                                <View className="coupon-operate">
-                                    <View className="font26 fontweight_300 index_btn" data-elementid="领取">领取</View>
-                                </View>
-                                <View className="border-indexcoupon"></View>
-                            </View>
+                                    <View className="coupondec font24 text-line-1">满{item.reqAmt}使用</View>
+                                  </View>
+                                  <View className="coupon-operate" onClick={this.getCoupon.bind(this,item.couponId)}>
+                                      <View className="font26 fontweight_300 index_btn" >领取</View>
+                                  </View>
+                                  <View className="border-indexcoupon"></View>
+                              </View>
+                          </View>
                         </View>
-                    </View>
-                    <View className="swiper-slide swiper-slide-visible">
-                        <View className="coupon_bg">
-                            <View className="coupon_12 flex coupon-picker discoloration">
-                                <View className="coupon-price">
-                                    <View>
-                                      <Text className="coupon_discount">8</Text>
-                                      <Text className="coupon_fsize">折</Text>
-                                    </View>
-                                    <View className="couponline"></View>
-                                    <View className="coupondec font24 text-line-1">满5使用</View>
-                                </View>
-                                <View className="coupon-operate">
-                                    <View className="font26 fontweight_300 index_btn" data-elementid="领取">领取</View>
-                                </View>
-                                <View className="border-indexcoupon"></View>
-                            </View>
-                        </View>
-                    </View>
+                      )
+                    })
+                  }
                 </View>
             </View>
           </View>
         </View>
 
-        {/*<View className='firstHot'>
+        {/* <View className='firstHot'>
           <Image className='image' mode='aspectFill' src={require('../../images/goods/2.jpg')}></Image>
-        </View>
-         <View className='pintuan'>
-          <Text className='bigtitle'>一起来拼团</Text>
-          <View className='item_box'>
-            <Image className='image' mode='aspectFill' src={require('../../images/goods/3.jpg')}></Image>
-            <View className='item_right'>
-              <View className='txtCon'>
-                <Text className='goodsTitle'>气质白色连衣裙（演示，不发货）</Text>
-                <View className='price_box'>
-                  <View className='price_left'>
-                    <Text className='symbol'>￥</Text>
-                    <Text className='num'>0.01</Text>
+        </View> */}
+        {
+          activityData.activityRules.map((item)=>{
+            return (
+              <View hidden={item.type!=4 && item.type!=5} className='pintuan' key={item.id}>
+                <Text className='bigtitle'>{item.name}</Text>
+                <View className='item_box'>
+                  <Image className='image' mode='aspectFill' src={item.adPic}></Image>
+                  <View className='item_right'>
+                    <View className='txtCon'>
+                      {/* <Text className='goodsTitle'>活动有效时间</Text> */}
+                      <View className="yxTime_box">
+                        <Text className='yxTime font24'>活动开始时间：{item.date1}</Text>
+                        <Text className='yxTime font24'>活动结束时间：{item.date2}</Text>
+                      </View>
+                      {
+                        item.type==4 && <View className="font24">充{JSON.parse(item.rule).save}送{JSON.parse(item.rule).give}</View>
+                      }
+                      {
+                        item.type==5 && <View className="font24">充值陪数：{JSON.parse(item.rule).saveTimes}</View>
+                      }
+                      
+                      <View className='price_box'>
+                        {
+                          item.type==4 && <Button onClick={this.goRecharge.bind(this)}>去充值</Button>
+                        }
+                        {
+                          item.type==5 && <Button onClick={this.goGiveShow.bind(this,item.goodsId,item.rule)}>去充值</Button>
+                        }
+                      </View>
+                    </View>
                   </View>
-                  <Button>去拼团</Button>
                 </View>
               </View>
-              <View className='more'>
-                <Text className="text">查看更多</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View className='pintuan'>
+            )
+          })
+        }
+        {/*<View className='pintuan'>
           <Text className='bigtitle'>一起来砍价</Text>
           <View className='item_box'>
             <Image className='image' mode='aspectFill' src={require('../../images/goods/9.jpg')}></Image>

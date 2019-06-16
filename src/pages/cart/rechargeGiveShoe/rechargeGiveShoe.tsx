@@ -2,15 +2,14 @@ import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button,Image,Input, Text } from '@tarojs/components'
 import { AtFloatLayout } from "taro-ui"
-import CouponsModal from '../goods/details/couponsModal/couponsModal'
-import goodsImg from '../../images/goods/1.jpg';
-import './cart.scss'
-const api = require('../../config/api.js');
+import goodsImg from '../../../images/goods/1.jpg';
+import './rechargeGiveShoe.scss'
+const api = require('../../../config/api.js');
 
-class Cart extends Component {
+class RechargeGiveShoe extends Component {
    
   config: Config = {
-    navigationBarTitleText: '购物车'
+    navigationBarTitleText: '充值送鞋'
   }
 
   componentWillReceiveProps (nextProps) {
@@ -21,7 +20,7 @@ class Cart extends Component {
   }
 
   componentDidShow () { 
-    this.getShopcartList();
+    this.getShopcartList(this.$router.params.ids);
   }
 
   componentDidHide () { }
@@ -37,6 +36,7 @@ class Cart extends Component {
     couponsModalShow: false,
     goodsList:[],
     amount:0,
+    saveTimes:1,
     allChecked:true
   }
   goDetailPage(id){
@@ -46,34 +46,56 @@ class Cart extends Component {
   }
   goOrderCreatePage(){
 
-    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount});
+    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount*this.state.saveTimes});
     
 
     Taro.navigateTo({
-      url: '/pages/cart/ordercreate/ordercreate'
+      url: '/pages/cart/ordercreate/ordercreate?orderType=5'
     })
   }
-  getShopcartList(){
-    Taro.request({
-      url:api.orderShopcartListPath,
-      method:"POST",
-      header:{
-        token:Taro.getStorageSync('token')
-      }
-    }).then((res) =>{
-      if(res.data.success){
-        res.data.data.goodsList.forEach(element => {
-          element['checked']=true
-        });
+  getShopcartList(ids){
+    let tempGoods=[];
+    let tempamount= 0;
+    let idArr=ids.split(',')
+    for(let i=0; i<idArr.length; i++){
+        Taro.request({
+            url:api.goodsDetailPath,
+            method:'POST',
+            data:{
+              goodsId:idArr[i]
+            },
+            header:{
+              token:Taro.getStorageSync('token')
+            }
+        }).then((res)=>{
+            if(res.data.success){
+                tempGoods.push(res.data.data);
+                tempamount+=res.data.data.dispPrice;             
+            }
+            if(tempGoods.length==idArr.length){
+                tempGoods.forEach(element => {
+                    element['checked']=true
+                    element['count'] =1;
+                    element['mainPic'] = JSON.parse(element.picList)[0];
+                    element['colorId'] =element.colorList[0].colorId;
+                    element['colorName'] =element.colorList[0].name;
+                    element['sizeId'] =element.colorList[0].sizeId;
+                    element['sizeName'] =element.colorList[0].name;
+                });
+            
+                this.setState({
+                    goodsList:tempGoods,
+                    amount:tempamount,
+                    allChecked:true,
+                    couponsModalShow: false,
+                    saveTimes:parseInt(JSON.parse(this.$router.params.rule).saveTimes)
+                })
+            }
 
-        this.setState({
-          goodsList:res.data.data.goodsList,
-          amount:res.data.data.amount,
-          allChecked:true,
-          couponsModalShow: false
+
         })
-      }
-    })
+    }
+    
   }
   editCartCount(type,index){
     if(type=='jian'){
@@ -81,7 +103,7 @@ class Cart extends Component {
         this.setState((preState)=>{
           let tempNum = parseInt(preState.goodsList[index].count)-1;
           preState.goodsList[index].count=tempNum;
-          this.updateCartCount(preState.goodsList[index].cartId,tempNum);
+          // this.updateCartCount(preState.goodsList[index].cartId,tempNum);
         },()=>{          
           this.setTotalPrice()
         })
@@ -91,7 +113,7 @@ class Cart extends Component {
       this.setState((preState)=>{
         let tempNum = parseInt(preState.goodsList[index].count)+1;
         preState.goodsList[index].count=tempNum;
-        this.updateCartCount(preState.goodsList[index].cartId,tempNum);
+        // this.updateCartCount(preState.goodsList[index].cartId,tempNum);
       },()=>{
         this.setTotalPrice()
       })
@@ -153,9 +175,9 @@ class Cart extends Component {
       }
       this.setState((data)=>{
           data.goodsList=goodsList;
-      });
-      this.setTotalPrice();      
+      })      
     });
+    this.setTotalPrice(); 
   }
 
 
@@ -170,61 +192,6 @@ class Cart extends Component {
     this.setState((data)=>{
       data['amount']=total;
       data['couponsModalShow']=false;
-    })
-  }
-  //删除
-  delCartGoods(){
-    let delIds=[];
-    this.state.goodsList.forEach(element => {
-      if(element['checked']){
-        delIds.push(element.cartId);
-      }
-    });
-
-    if(delIds.length>0){
-      Taro.showModal({
-        title:"提示",
-        content:"您确认要删除吗?",
-        success:()=>{
-          Taro.request({
-            url:api.orderShopcartDelPath,
-            method:"POST",
-            data:{
-              cartId:delIds.join(','),
-              count:delIds.length
-            },
-            header:{
-              token:Taro.getStorageSync('token')
-            }
-          }).then((res)=>{
-            if(res.data.success){
-              Taro.showToast({
-                title:"删除成功",
-                icon:"success",
-                duration:1500
-              });
-              this.getShopcartList()
-            }
-          })
-        }
-      })
-    }else{
-      Taro.showToast({
-        title:"请选择要删除的商品",
-        icon:"none",
-        duration:1500
-      })
-    }
-
-    
-  }
-
-
-
-  //更多优惠卷
-  couponsMoreFn(){
-    this.setState((data)=>{
-      data['couponsModalShow']=true;
     })
   }
   render () {
@@ -242,7 +209,7 @@ class Cart extends Component {
                     </View>
                     <Text className="color-3">克克智慧零售</Text>
                   </View>
-                  <View onClick={this.couponsMoreFn} className="shopcart_title_action font26 color-5"><Text className="btn btn_coupon">优惠券</Text></View>
+                  {/* <View onClick={this.couponsMoreFn} className="shopcart_title_action font26 color-5"><Text className="btn btn_coupon">优惠券</Text></View> */}
               </View>
               <View>
                 {
@@ -300,13 +267,12 @@ class Cart extends Component {
                 <View className={"iconfont theme-color "+(this.state.allChecked?"icon-xuanzhong":"icon-weixuanzhong")}></View>
               </View>
               <View className="sc_select_all">全选</View>
-              <View onClick={this.delCartGoods} className="theme-color delete_btn font26">删除</View>
               <View className="shopcart_total_price flex1 flex flex-col">
                   <View className="font26">
                       总计:
                       <Text className="theme-color price">
                         <Text className="font26">¥</Text>
-                        <Text className="font36">{this.state.amount}</Text>
+                        <Text className="font36">{this.state.amount*this.state.saveTimes}</Text>
                         {/* <Text className="font26">.00</Text> */}
                       </Text>
                   </View>
@@ -338,11 +304,6 @@ class Cart extends Component {
           }
           </View>
         </View>
-          
-        <AtFloatLayout title="领取优惠券" isOpened={this.state.couponsModalShow}>
-            <CouponsModal />
-        </AtFloatLayout>
-
       </View>
       
     )
@@ -356,4 +317,4 @@ class Cart extends Component {
 //
 // #endregion
 
-export default Cart as ComponentClass
+export default RechargeGiveShoe as ComponentClass

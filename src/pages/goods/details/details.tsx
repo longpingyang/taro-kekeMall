@@ -245,7 +245,8 @@ class Index extends Component {
     })
   }
   render () {
-    const {skuData} =this.state;
+    const {skuData,couponlist} =this.state;
+    console.log(couponlist);
     return (
       <View className='goods_details_page'>
         <View className="goods_detail_box">
@@ -299,12 +300,13 @@ class Index extends Component {
               <View className="promotion-item flex  arrows">
                   <View className="promo-title promo-title-color flex0">领券</View>
                   <View className="promo-cont flex1 text-line1">
-                      <Text className="coupon-circle act-color act-bdc">超值折扣券</Text>
-                      <Text className="coupon-circle act-color act-bdc">超值满减优惠券</Text>
-                      <Text className="coupon-circle act-color act-bdc">满100减5元</Text>
-                      <Text className="coupon-circle act-color act-bdc">测试</Text>
-                      <Text className="coupon-circle act-color act-bdc">双11热力</Text>
-                      <Text className="coupon-circle act-color act-bdc">沃尔玛演示</Text>
+                    {
+                      couponlist.map((item) =>{
+                        return (
+                          <Text key={item.couponId} className="coupon-circle act-color act-bdc">{item.name}</Text>
+                        )
+                      })
+                    }
                   </View>
               </View>
             </View>

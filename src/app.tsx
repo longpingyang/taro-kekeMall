@@ -36,6 +36,7 @@ class App extends Component {
       "pages/card/details/cardDetails",
       "pages/cart/cart",
       "pages/cart/ordercreate/ordercreate",
+      "pages/cart/rechargeGiveShoe/rechargeGiveShoe",
       "pages/user/user",
       "pages/user/userInfo/userInfo",
       "pages/user/couponList/couponList",

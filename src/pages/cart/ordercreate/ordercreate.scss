@@ -1,3 +1,4 @@
+@import "~taro-ui/dist/style/components/float-layout.scss";
 .order-create_box{
     font-size: 26px; padding-bottom: 130px;
     .wrap-delivery-type {
@@ -316,4 +317,109 @@
 }
 .InvocePage_box{
     position: fixed; left: 0; top: 0; right: 0; bottom: 0;z-index: 10;
+}
+.select_coupons_wrap {
+    .select_coupons_box {
+        margin: 0 auto; width: 100%; background: #f8f8f8;
+        .select_coupons_title {
+            position: relative; line-height: 104px; height:104px; width: 100%;
+            background: #fff; font-family: 'PingFangSC-Light';font-size: 30px;
+            color: #333;  text-align: center;
+            .icon-guanbi {
+                position: absolute; height: 104px; top: 0;
+                right: 0;
+                padding:0 30px;
+                font-size: 20px;
+            }
+        }
+        .select_ocupons_cont {
+            background: #fff; max-height: 800px; overflow-y: auto;
+            .coupon {
+                margin: 25px 0;position: relative; color: #fff;
+                height: 182px;
+                background-color: #fff;
+                border-radius: 4px;
+                -webkit-box-shadow: 0 2px 12px 0 rgba(0,0,0,.08);
+                box-shadow: 0 2px 12px 0 rgba(0,0,0,.08);
+                margin-top: 20px;
+                &.disabled {
+                    background: hsla(0,0%,72%,.6);
+                }
+                .coupon-price {
+                    width: 190px;height: 182px;
+                    text-align: center;
+                    font-weight: 300;
+                    border-top-left-radius: 4px;
+                    border-bottom-left-radius: 4px;
+                    color: #fff;
+                    justify-content: center;
+                    align-items: center;
+                    view {
+                        display: inline;
+                    }
+                    .price-number {
+                        font-size: 56px;
+                        .coupon_fsize {
+                            font-size: 42px;
+                            color: #fff;
+                        }
+                    }
+                    .coupon-full {
+                        margin-top: 12px;
+                        font-family: PingFangSC-Regular;
+                        font-size: 20px;
+                        line-height: 20px;
+                        color: #fff;
+                    }
+                }
+                .coupon-content{
+                    overflow: hidden;justify-content: center;position: relative; width: 374px;
+                    .coupon-dec {
+                        font-size: 30px;
+                    }
+                    .coupon-date {
+                        font-family: PingFangSC-Light;
+                        letter-spacing: -1;
+                        line-height: 22px;
+                        font-size: 22px;
+                        color: #fff;
+                        margin-top: 16px;
+                    }
+                }
+                .coupon-operate {
+                    width: 126px;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+                    -webkit-box-flex: 0;
+                    -ms-flex: none;
+                    flex: none;
+                    -webkit-flex: none;
+                    background-image: url(//cdn.weimob.com/saas/retail/image/market/coupon/money.png);
+                    background-size: 86%;
+                    background-repeat: no-repeat;
+                    background-position: 100% 0;
+                    border-top-right-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                    .btn-pick {
+                        height: 180px;
+                        line-height: 180px;
+                        width: 100%;
+                        text-align: center;
+                        font-size: 26px;
+                        color: #fff;
+                    }
+                }
+                .border-coupon {
+                    position: absolute;width: 12px; right: 120px; top: 0;
+                    height: 100%;
+                    background: url(//cdn.weimob.com/saas/retail/image/market/coupon/point.png) no-repeat 100% 0;
+                    background-size: 100% 100%;
+                }
+            }
+        }
+        .coupon_pick_wrap {
+            padding: 0 30px;
+        }
+    }
 }

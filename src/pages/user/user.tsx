@@ -100,6 +100,13 @@ class Index extends Component {
       })
     } 
   };
+
+  TaroGetUserInfo(res){
+      console.log(res);
+  }
+
+
+
   render () {    
     const {orderNumArr,userInfo} =this.state;
     return (
@@ -112,8 +119,14 @@ class Index extends Component {
             <Image className='mine_head_bg' src={headImg}></Image>
             <View className='mine_head_top'>
               <Image className='user_img' src={userInfo.headUrl}></Image>
-              <Text className='user_name'>{userInfo.nickName}</Text>
-              <Image className='user_qrcode' src={require('../../images/icon/qrcode.png')}></Image>
+              {
+                userInfo && <Text className='user_name'>{userInfo.nickName}</Text>
+              }
+              {
+                // !userInfo && <Text onClick={this.TaroGetUserInfo} className='user_name'>登录/注册</Text>
+                !userInfo && <Button className="logon_btn" openType="getUserInfo" onGetUserInfo={this.TaroGetUserInfo}>登录/注册</Button>
+              }
+              {/* <Image className='user_qrcode' src={require('../../images/icon/qrcode.png')}></Image> */}
               <View className='checkIn_btn'>
                 <Image className='checkIn_Icon' src={require('../../images/icon/checkIn_Icon.png')}></Image>
                 <Text className='checkIn_text'>签到</Text>

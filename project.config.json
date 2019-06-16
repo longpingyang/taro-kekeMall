@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 10,
 			"list": [
 				{
 					"id": -1,
@@ -95,6 +95,13 @@
 					"id": -1,
 					"name": "创建订单",
 					"pathName": "pages/cart/ordercreate/ordercreate",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "购物车",
+					"pathName": "pages/cart/cart",
 					"query": "",
 					"scene": null
 				},

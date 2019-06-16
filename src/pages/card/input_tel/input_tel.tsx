@@ -173,7 +173,7 @@ class Index extends Component {
           <View className='phone_box'>
             <Text className='text'>手机号</Text>
             <Text className='star'>*</Text>
-            <Input className='input' type='text' name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
+            <Input className='input' type="number" name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
             <Text className='get_code_btn' onClick={this.getCodeFn}>{this.state.getText}</Text>
           </View>
           <View className='phone_box code_box'>
@@ -184,7 +184,7 @@ class Index extends Component {
           <View className='phone_box code_box'>
             <Text className='text'>密码</Text>
             <Text className='star'>*</Text>
-            <Input className='input' type='text' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
+            <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
           </View>
           <View className='get_card'>
             {/* <Button className='btn' onClick={this.activateFn}>立即激活</Button> */}
