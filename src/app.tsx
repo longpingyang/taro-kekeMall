@@ -41,6 +41,7 @@ class App extends Component {
       "pages/user/userInfo/userInfo",
       "pages/user/couponList/couponList",
       "pages/user/amount/amount",
+      "pages/user/login/login",
       "pages/user/point/point",
       "pages/logs/logs",
       "pages/order/order",

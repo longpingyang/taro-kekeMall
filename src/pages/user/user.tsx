@@ -102,7 +102,9 @@ class Index extends Component {
   };
 
   TaroGetUserInfo(res){
-      console.log(res);
+    Taro.navigateTo({
+      url: '/pages/user/login/login'
+    })
   }
 
 

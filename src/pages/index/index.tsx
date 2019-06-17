@@ -84,7 +84,6 @@ class Index extends Component {
         if(couponlist.length>2){
           couponlist = couponlist.slice(0,1);
         }
-        console.log(couponlist);
         this.setState((data) =>{
           data['activityData']=res.data.data;
           data['couponList']= couponlist;
