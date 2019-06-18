@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Form, Text,Input } from '@tarojs/components'
+import { View, Button, Form, Text,Input,Picker } from '@tarojs/components'
 
 const api = require('../../../config/api.js');
 import { AtInput, AtForm } from 'taro-ui'
@@ -14,7 +14,7 @@ class Login extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '登录'
+    navigationBarTitleText: '登录/注册'
   }
   static options = {
     addGlobalClass: true
@@ -25,7 +25,54 @@ class Login extends Component {
 
   componentWillUnmount () {
   }
-  componentWillMount(){    
+  componentWillMount(){
+    Taro.login({
+      success:(res) =>{
+        Taro.request({
+          url:'https://api.weixin.qq.com/sns/jscode2session?appid=wxa4028bf5e14b501a&secret=cc66408d416e1152f7c6ee16abf25860&js_code=' + res.code,
+          header:{
+            'content-type':'json'
+          },
+          success:(data)=>{
+            console.log("wxOpenid:"+data.data.openid);
+            Taro.setStorage({key:'wxOpenid',data:data.data.openid})
+            Taro.getStorage({key:'wxOpenid'})
+            Taro.request({
+              url:api.memberCheckPath,
+              data:{
+                wxOpenid:data.data.openid
+              },
+              method: 'POST',
+              success:(obj) =>{
+                if(obj.data.success){
+                  if(obj.data.data.verifyResult){
+                    Taro.request({
+                      url:api.memberShopListPath,
+                      method:"POST",
+                      header:{
+                        token:Taro.getStorageSync('token')
+                      } 
+                    }).then((res) =>{
+                      if(res.data.success){
+                        this.setState({
+                          shopSelector:res.data.data
+                        })
+                      }
+                    })
+                  }
+                  this.setState({
+                    isCard:obj.data.data.verifyResult, //1新用户;2未登录;3已登录
+                    cardNo:obj.data.data.memberSummary.cardNo
+                  })
+                }
+              }
+            })
+            
+          }
+        })
+
+      }
+    })  
   }
   componentDidShow () { }
   componentDidHide () { }
@@ -33,9 +80,14 @@ class Login extends Component {
   state = {
     userInfo:{
       avatarUrl:'',
-      nickName:''
+      nickName:''      
     },
+    isCard:1,
+    cardNo:"",
     phoneNo:'',
+    shopSelector:[{id:1,name:"成都自营店"}],
+    shopIndex:0,
+    selectorCheckedName:"",
     getText:'获取验证码',
     code:'',
     passwd:"",
@@ -124,10 +176,17 @@ class Login extends Component {
     })
     return e.detail.value;
   }
+  //选择门店
+  onShopChange = e => {
+    this.setState({
+      shopIndex: e.detail.value
+    })
+  }
   render () {
     return (
-        <View className='index'>
-        <AtForm>
+      <View className='login_page'>        
+        <View className='index register_box' hidden={this.state.isCard==2 || this.state.isCard==3}>
+          <AtForm>
           <View className='phone_box'>
             <Text className='text'>手机号</Text>
             <Text className='star'>*</Text>
@@ -144,13 +203,34 @@ class Login extends Component {
             <Text className='star'>*</Text>
             <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
           </View>
+          <View className='phone_box code_box'>
+            <Text className='text'>确认密码</Text>
+            <Text className='star'>*</Text>
+            <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
+          </View>
+          <View className="phone_box">
+            <Picker mode='selector' value={this.state.shopIndex} range={this.state.shopSelector}  range-key="name" onChange={this.onShopChange}>
+              <View className='picker'>
+                当前选择：{this.state.shopSelector[this.state.shopIndex].name}
+              </View>
+            </Picker>
+          </View>
           <View className='get_card'>
-            <Button className='btn' onClick={this.login}>登录</Button>
+            <Button className='btn' >注册</Button>
+          </View>
+          {/* <View className='get_card fast_login'>
+            <Button className='btn'>微信一键登录</Button>
+          </View> */}
+        </AtForm>
+        </View>
+        <View className='register_box' hidden={this.state.isCard==1 || this.state.isCard==3}>
+          <View className='get_card'>
+            <Button className='btn'>密码登录</Button>
           </View>
           <View className='get_card fast_login'>
-            <Button className='btn'>微信一键登录</Button>
+            <Button className='btn'>验证码登录</Button>
           </View>
-        </AtForm>
+        </View>
       </View>
     )
   }
