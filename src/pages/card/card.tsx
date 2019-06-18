@@ -41,6 +41,7 @@ class Card extends Component {
             'content-type':'json'
           },
           success:function(data){
+            console.log("wxOpenid:"+data.data.openid);
             Taro.setStorage({key:'wxOpenid',data:data.data.openid})
             Taro.getStorage({key:'wxOpenid'})
             Taro.request({

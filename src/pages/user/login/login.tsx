@@ -27,9 +27,7 @@ class Login extends Component {
   }
   componentWillMount(){    
   }
-
   componentDidShow () { }
-
   componentDidHide () { }
 
   state = {
