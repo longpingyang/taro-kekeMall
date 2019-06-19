@@ -82,11 +82,12 @@ class Login extends Component {
       avatarUrl:'',
       nickName:''      
     },
-    isCard:1,
+    isCard:2,
     cardNo:"",
     phoneNo:'',
     shopSelector:[{id:1,name:"成都自营店"}],
     shopIndex:0,
+    loginType:0,
     selectorCheckedName:"",
     getText:'获取验证码',
     code:'',
@@ -148,8 +149,9 @@ class Login extends Component {
       method:"POST",
       data:{
         passwd:this.state.passwd,
-        phone:this.state.phoneNo,
-        smsCode:""
+        phone:this.state.phoneNo,        
+        smsCode:this.state.code,
+        wxOpenid: Taro.getStorageSync('wxOpenid')
       }
     }).then((res)=>{
       Taro.hideLoading();
@@ -182,6 +184,33 @@ class Login extends Component {
       shopIndex: e.detail.value
     })
   }
+  //注册
+  registerFn(){
+    Taro.request({
+      url:api.memberBindcardPath,
+      method:"POST",
+      data:{
+        "cardNo": this.state.cardNo,
+        "password":this.state.passwd,
+        "phone": this.state.phoneNo,
+        "shopId": this.state.shopIndex,
+        "smsCode": this.state.code,
+        "wxOpenid": Taro.getStorageSync('wxOpenid')
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res)=>{
+      if(res.data.success){
+
+      }
+    })
+  }
+  loginType(type){
+    this.setState({
+      loginType:type
+    })
+  }
   render () {
     return (
       <View className='login_page'>        
@@ -201,35 +230,71 @@ class Login extends Component {
           <View className='phone_box code_box'>
             <Text className='text'>密码</Text>
             <Text className='star'>*</Text>
-            <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
+            <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入登录密码" />
           </View>
-          <View className='phone_box code_box'>
+          {/* <View className='phone_box code_box'>
             <Text className='text'>确认密码</Text>
             <Text className='star'>*</Text>
             <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入密码" />
-          </View>
+          </View> */}
           <View className="phone_box">
             <Picker mode='selector' value={this.state.shopIndex} range={this.state.shopSelector}  range-key="name" onChange={this.onShopChange}>
               <View className='picker'>
-                当前选择：{this.state.shopSelector[this.state.shopIndex].name}
+                选择门店：{this.state.shopSelector[this.state.shopIndex].name}
               </View>
             </Picker>
           </View>
           <View className='get_card'>
-            <Button className='btn' >注册</Button>
+            <Button className='btn' onClick={this.registerFn.bind(this)}>注册</Button>
           </View>
           {/* <View className='get_card fast_login'>
             <Button className='btn'>微信一键登录</Button>
           </View> */}
         </AtForm>
         </View>
-        <View className='register_box' hidden={this.state.isCard==1 || this.state.isCard==3}>
+        <View className='register_box' hidden={this.state.isCard==1 || this.state.isCard==3 || this.state.loginType==1 || this.state.loginType==2}>
           <View className='get_card'>
-            <Button className='btn'>密码登录</Button>
+            <Button className='btn' onClick={this.loginType.bind(this,1)}>密码登录</Button>
           </View>
           <View className='get_card fast_login'>
-            <Button className='btn'>验证码登录</Button>
+            <Button className='btn' onClick={this.loginType.bind(this,2)}>验证码登录</Button>
           </View>
+        </View>
+        <View className='index passwdlogin_box' hidden={this.state.loginType==0 || this.state.loginType==2}>
+          <AtForm>
+            <View className='phone_box'>
+              <Text className='text'>手机号</Text>
+              <Text className='star'>*</Text>
+              <Input className='input' type="number" name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
+              {/* <Text className='get_code_btn' onClick={this.getCodeFn}>{this.state.getText}</Text> */}
+            </View>
+            <View className='phone_box code_box'>
+              <Text className='text'>密码</Text>
+              <Text className='star'>*</Text>
+              <Input className='input' type='number' name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入登录密码" />
+            </View>
+            <View className='get_card'>
+              <Button className='btn' onClick={this.login.bind(this)}>登录</Button>
+            </View>
+          </AtForm>
+        </View>
+        <View className='index code_box' hidden={this.state.loginType==0 || this.state.loginType==1}>
+          <AtForm>
+            <View className='phone_box'>
+              <Text className='text'>手机号</Text>
+              <Text className='star'>*</Text>
+              <Input className='input' type="number" name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
+              <Text className='get_code_btn' onClick={this.getCodeFn}>{this.state.getText}</Text>
+            </View>
+            <View className='phone_box code_box'>
+              <Text className='text'>验证码</Text>
+              <Text className='star'>*</Text>
+              <Input className='input' type='text' name="input" value={this.state.code} onInput={this.handleChange.bind(this,'code')} placeholder="请输入验证码" />
+            </View>
+            <View className='get_card'>
+              <Button className='btn' onClick={this.login.bind(this)}>登录</Button>
+            </View>
+          </AtForm>
         </View>
       </View>
     )
