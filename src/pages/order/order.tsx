@@ -93,10 +93,7 @@ class Order extends Component {
         })
       }
     })
-
   }
-  
-
 
   goOrderDetailsPage(id){
     Taro.navigateTo({
@@ -120,7 +117,18 @@ class Order extends Component {
                     <View key={item.orderId} className="order-list-item-wrap">
                       <View className="order-item-desc">
                           <Text className="order-item-time flex1 color-3">下单时间：{item.ctime}</Text>
-                          <Text className="theme-color">商家备货中</Text>
+                          {
+                            this.state.currentNav==1 && <Text className="theme-color">待支付</Text>
+                          }
+                          {
+                            this.state.currentNav==2 && <Text className="theme-color">待发货</Text>
+                          }
+                          {
+                            this.state.currentNav==3 && <Text className="theme-color">待收货</Text>
+                          }
+                          {
+                            this.state.currentNav==4 && <Text className="theme-color">待评价</Text>
+                          }
                       </View>
                       <View className="order-list-item" onClick={this.goOrderDetailsPage.bind(this,item.orderId)}>
                           {

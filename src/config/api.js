@@ -34,6 +34,8 @@ const couponListPath = baseUrl + 'coupon/list';//查询登录用户所拥有的�
 const couponGetPath = baseUrl + 'coupon/get';//领取奖券
 const activityIndexAdPath = baseUrl + 'activity/index/ad';//首页的轮播广告查询
 
+const payPreorderPath = baseUrl + 'pay/preorder';//获取支付参数
+
 
 
 module.exports = {
@@ -75,8 +77,9 @@ module.exports = {
   activityQueryPath:activityQueryPath,
   couponListPath:couponListPath,
   couponGetPath:couponGetPath,
-  activityIndexAdPath:activityIndexAdPath
-
+  activityIndexAdPath:activityIndexAdPath,
+  
+  payPreorderPath:payPreorderPath
 
 
 

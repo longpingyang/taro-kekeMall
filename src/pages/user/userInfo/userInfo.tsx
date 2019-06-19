@@ -1,10 +1,10 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Input, Text,Button } from '@tarojs/components'
+import { View, Image, Input, Text,Button,Picker } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import { add, minus, asyncAdd } from '../../../actions/counter'
-
+const api = require('../../../config/api.js');
 import './userInfo.scss'
 
 // #region 书写注意
@@ -66,9 +66,12 @@ class Index extends Component {
   }
   state ={
     userInfo:{
+      memberId:"",
       headUrl:'',
       nickName:'',
-      phone:''
+      phone:'',
+      trueName:"",
+      birthday:""
     }
   }
 
@@ -85,9 +88,13 @@ class Index extends Component {
   componentWillUnmount () { }
 
   componentDidShow () {
-    this.setState({
-      userInfo: Taro.getStorageSync("userMember")
+    let info = Taro.getStorageSync("userMember");
+    this.setState((data) =>{
+      data['userInfo'].headUrl = info.headUrl;
+      data['userInfo'].nickName = info.nickName;
+      data['userInfo'].memberId = info.memberId;
     })
+
   }
 
   componentDidHide () { }
@@ -95,9 +102,12 @@ class Index extends Component {
     Taro.chooseImage({
       count:1,
       success: (res)=> {
-        this.state.userInfo.avatarUrl = res.tempFilePaths[0];
-        this.setState({
-          userInfo: this.state.userInfo
+        // this.state.userInfo.headUrl = res.tempFilePaths[0];
+        // this.setState({
+        //   userInfo: this.state.userInfo
+        // })
+        this.setState((data) =>{
+          data['userInfo'].headUrl = res.tempFilePaths[0];
         })
       },
     })
@@ -109,20 +119,69 @@ class Index extends Component {
       url: '/pages/user/login/login'
     })
   }
+  //保存用户信息
+  saveMember(){
+    Taro.request({
+      url:api.memberSavedetailPath,
+      method:"POST",
+      data:{
+        "birthday": this.state.userInfo.birthday,
+        "headUrl": this.state.userInfo.headUrl,
+        "memberId": this.state.userInfo['memberId'],
+        "nickname": this.state.userInfo.nickName,
+        "phone": this.state.userInfo.phone,
+        "trueName": this.state.userInfo.trueName
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res)=>{
+      if(res.data.success){
+        Taro.showToast({
+          title: '保存成功',
+          icon: 'none',
+          duration: 1500
+        });
+      }
+    })
+  }
+  handleChange (key,e) {
+    this.setState((data)=>{      
+      data['userInfo'][key]= e.detail.value;
+    })
+    return e.detail.value;
+  }
+
   render () {
     return (
       <View className='userInfo'>
-        <View className='headImg'>
-          <Text>我的头像</Text>
+        <View className='phone_box headImg'>
+          <View className='text'>我的头像</View>
           <Image onClick={this.changeHeadImgFn} src={this.state.userInfo.headUrl}></Image>
         </View>
-        <View>
-          <Text>我的昵称</Text>
-          <Input value={this.state.userInfo.nickName}></Input>
+        <View className="phone_box">
+          <View className='text'>我的昵称：</View>
+          <Input className='input' placeholder="请输入昵称" value={this.state.userInfo.nickName} onInput={this.handleChange.bind(this,'nickName')}></Input>
         </View>
-        <View>
-          <Text>手机号</Text>
-          <Input value={this.state.userInfo.phone}></Input>
+        <View className="phone_box">
+          <View className='text'>真实姓名：</View>
+          <Input className='input' placeholder="请输入真实姓名" value={this.state.userInfo.trueName} onInput={this.handleChange.bind(this,'trueName')}></Input>
+        </View>
+        <View className="phone_box">
+          <Text></Text>
+          <View className='text'>手机号：</View>
+          <Input className='input' placeholder="请输入手机号" value={this.state.userInfo.phone} onInput={this.handleChange.bind(this,'phone')}></Input>
+        </View>
+        <View className="phone_box">
+          <Picker mode='date' onChange={this.handleChange.bind(this,'birthday')}>
+            <View className='picker'>
+              <View className='text'>生日：</View>{this.state.userInfo.birthday}
+            </View>
+          </Picker>
+          {/* <Input value={this.state.userInfo.birthday} onInput={this.handleChange.bind(this,'birthday')}></Input> */}
+        </View>
+        <View className="save_box">
+          <Button onClick={this.saveMember.bind(this)} className='btn-max-w' type='primary'>保存</Button>
         </View>
         <View className="logout_box">
           <Button onClick={this.logoutFn} className='btn-max-w' type='primary'>退出登录</Button>

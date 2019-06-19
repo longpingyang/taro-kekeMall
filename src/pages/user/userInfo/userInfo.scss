@@ -1,21 +1,56 @@
 
+
+@import "~taro-ui/dist/style/components/input.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
 .userInfo{
-    view{
-    background: #fff; border-bottom: solid 1px #e0e0e0; height: 80px;
-    }
+    // view{
+    // background: #fff; border-bottom: solid 1px #e0e0e0; height: 80px;
+    // }
     .headImg{
     padding: 20px 0;
     }
-    view text{
-    color: #333333; line-height: 80px; text-indent: 1em; font-size: 30px; float: left;
-    }
+    // view text{
+    // color: #333333; line-height: 80px; text-indent: 1em; font-size: 30px; float: left;
+    // }
     view image{
     height:80px; width: 80px; border-radius: 80px; margin-left: 50px; cursor: pointer;
     }
-    view input{
-    float: right; text-align: right; font-size: 30px; line-height: 80px; height: 80px; padding-right: 1em;
+    // view input{
+    // float: right; text-align: right; font-size: 30px; line-height: 80px; height: 80px; padding-right: 1em;
+    // }
+    .save_box{
+        margin-top: 50px; width: 100%; padding: 0 20px; box-sizing: border-box; border: none;
+    }
+    .save_box .btn-max-w{
+        background-color:#f02e24;
     }
     .logout_box{
-        margin-top: 50px; width: 100%; padding: 0 20px; box-sizing: border-box; border: none;
+        position: fixed; bottom: 20px; left: 0;width: 100%; padding: 0 20px; box-sizing: border-box; border: none;
+    }
+}
+.phone_box{
+    background-color: #fff; font-size: 30px;height: 80px; line-height: 80px; margin-top: 10px;
+    padding:0 10px;
+    .at-input{
+        padding: 0;
+        input{
+            font-size: 30px;
+        }
+    }
+    .text{
+        float: left;font-size: 26px;  height: 80px; line-height: 80px; width: 140px; text-align: right;
+    }
+    .star{
+        color: red;  height: 80px; line-height: 80px;
+    }
+    .input{
+        width: 360px;  float: left; font-size: 26px; height: 80px; line-height: 80px; margin-left: 10px;
+    }
+    .get_code_btn{ 
+        width: 200px; float: right; font-size: 26px; border-left: solid 1PX #eeeeee; color: red; text-align: center;
+        height: 80px;
+    }
+    .picker{
+        width: 100%; height: 80px;
     }
 }

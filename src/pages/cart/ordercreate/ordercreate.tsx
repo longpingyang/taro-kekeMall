@@ -123,12 +123,16 @@ class Ordercreate extends Component {
         Taro.showLoading({
             title: '处理中',
         })
+        let couponList = [];
+        if(this.state.couponId!=''){
+            couponList.push(this.state.couponId);
+        }
         Taro.request({
             url:api.orderCreatePath,
             method:"POST",
             data:{
                 "activityId": "1",
-                "couponList": [this.state.couponId],
+                "couponList": couponList,
                 "goodsList": this.state.goodsList,
                 "memberAddressId": this.state.memberAddressId,
                 "payBanlance": 0,
@@ -151,11 +155,20 @@ class Ordercreate extends Component {
                     url: '/pages/order/order'
                 })
             }else{
-                Taro.showToast({
-                    title: res.data.errorInfo,
-                    icon: 'none',
-                    duration: 1500
-                });
+                if(res.data.errorInfo){
+                    Taro.showToast({
+                        title: res.data.errorInfo,
+                        icon: 'none',
+                        duration: 1500
+                    });
+                }else{
+                    Taro.showToast({
+                        title: '失败'+res.data.errorCode,
+                        icon: 'none',
+                        duration: 1500
+                    });
+                }
+                
             }
         })
     }
