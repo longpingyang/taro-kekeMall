@@ -61,32 +61,32 @@ class App extends Component {
         {
           "pagePath": "pages/index/index",
           "text": "首页",
-          "iconPath": "images/footer/index-4.png",
-          "selectedIconPath": "images/footer/index-3.png"
+          "iconPath": "./images/footer/index-4.png",
+          "selectedIconPath": "./images/footer/index-3.png"
         },
         {
           "pagePath": "pages/goods/goods",
           "text": "全部商品",
-          "iconPath": "images/footer/yuyue-4.png",
-          "selectedIconPath": "images/footer/yuyue-3.png"
+          "iconPath": "./images/footer/yuyue-4.png",
+          "selectedIconPath": "./images/footer/yuyue-3.png"
         },
         {
           "pagePath": "pages/card/card",
           "text": "会员卡",
-          "iconPath": "images/footer/video-4.png",
-          "selectedIconPath": "images/footer/video-3.png"
+          "iconPath": "./images/footer/video-4.png",
+          "selectedIconPath": "./images/footer/video-3.png"
         },
         {
           "pagePath": "pages/cart/cart",
           "text": "购物车",
-          "iconPath": "images/footer/cart-4.png",
-          "selectedIconPath": "images/footer/cart-3.png"
+          "iconPath": "./images/footer/cart-4.png",
+          "selectedIconPath": "./images/footer/cart-3.png"
         },
         {
           "pagePath": "pages/user/user",
           "text": "我的",
-          "iconPath": "images/footer/my-4.png",
-          "selectedIconPath": "images/footer/my-3.png"
+          "iconPath": "./images/footer/my-4.png",
+          "selectedIconPath": "./images/footer/my-3.png"
         }
       ]
     }

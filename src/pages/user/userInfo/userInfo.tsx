@@ -104,6 +104,10 @@ class Index extends Component {
   }
   logoutFn(){
     Taro.setStorageSync("userMember",null);
+    Taro.setStorageSync("token",null);
+    Taro.navigateTo({
+      url: '/pages/user/login/login'
+    })
   }
   render () {
     return (

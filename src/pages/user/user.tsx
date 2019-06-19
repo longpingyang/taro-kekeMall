@@ -140,9 +140,9 @@ class Index extends Component {
             </View>
           </View>
           <View className='balance_box'>
-            <View className='item' onClick={this.goAmountPage}><Text className='text'>0.00\n余额</Text></View>            
-            <View className='item center' onClick={this.goPointPage}><Text className='text'>0\n积分</Text></View>            
-            <View className='item'><Text className='text' onClick={this.couponsMoreFn}>3\n优惠券</Text></View>            
+            <View className='item' onClick={this.goAmountPage}><Text className='text'>{userInfo.moneyBalance}\n余额</Text></View>            
+            <View className='item center' onClick={this.goPointPage}><Text className='text'>{userInfo.scoreCount}\n积分</Text></View>            
+            <View className='item'><Text className='text' onClick={this.couponsMoreFn}>{userInfo.couponCount}\n优惠券</Text></View>            
           </View>
           <View className='order_box'>
             <View className='title'>
@@ -150,25 +150,25 @@ class Index extends Component {
               <Text className='more' onClick={this.goOrderListPagefn}>查看全部订单</Text>
             </View>
             <View className='con'>
-              <View className='item'>
+              <View className='item' onClick={this.goOrderListPagefn}>
                 <AtBadge value={orderNumArr[0]>0?orderNumArr[0]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifukuan_icon.png')}></Image>
                 </AtBadge>                
                 <Text className='text'>待付款</Text>
               </View>
-              <View className='item'>
+              <View className='item' onClick={this.goOrderListPagefn}>
                 <AtBadge value={orderNumArr[1]>0?orderNumArr[1]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifahuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待发货</Text>
               </View>
-              <View className='item'>
+              <View className='item' onClick={this.goOrderListPagefn}>
                 <AtBadge value={orderNumArr[2]>0?orderNumArr[2]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daishouhuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待收货</Text>
               </View>
-              <View className='item'>
+              <View className='item' onClick={this.goOrderListPagefn}>
                 <AtBadge value={orderNumArr[3]>0?orderNumArr[3]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daipingjia_icon.png')}></Image>
                 </AtBadge>  

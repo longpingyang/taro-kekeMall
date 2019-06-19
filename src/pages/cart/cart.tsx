@@ -26,14 +26,6 @@ class Cart extends Component {
 
   componentDidHide () { }
   state ={
-    // goodsList: [
-    //   {id:1, imgurl: '../../images/goods/1.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 1 },
-    //   {id:2, imgurl: '../../images/goods/7.jpg', title: '气质白气质白色连衣衣衣衣裙气质白色连衣裙色连衣裙', lump: 2 },
-    //   {id:3, imgurl: '../../images/goods/1.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 1 },
-    //   {id:4, imgurl: '../../images/goods/7.jpg', title: '气质白气质白色连衣裙气质白色连衣裙色连衣裙', lump: 3 },
-    //   {id:5, imgurl: '../../images/goods/1.jpg', title: '气质白色连衣裙', lump: 2 },
-    //   {id:6, imgurl: '../../images/goods/7.jpg', title: '气质白色连衣裙', lump: 1 }
-    // ],
     couponsModalShow: false,
     goodsList:[],
     amount:0,

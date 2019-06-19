@@ -11,13 +11,13 @@
         }
     }
     .text{
-        float: left;font-size: 26px;  height: 80px; line-height: 80px;
+        float: left;font-size: 26px;  height: 80px; line-height: 80px; width: 140px; text-align: right;
     }
     .star{
-        float: left; color: red;  height: 80px; line-height: 80px;
+        color: red;  height: 80px; line-height: 80px;
     }
     .input{
-        width: 400px;  float: left; font-size: 26px; height: 80px; line-height: 80px; margin-left: 10px;
+        width: 360px;  float: left; font-size: 26px; height: 80px; line-height: 80px; margin-left: 10px;
     }
     .get_code_btn{ 
         width: 200px; float: right; font-size: 26px; border-left: solid 1PX #eeeeee; color: red; text-align: center;
@@ -43,3 +43,6 @@
     }
 }
 
+.loginType_box{
+    position: absolute; top: 50%; margin-top: -200px; right: 0; left: 0;
+}

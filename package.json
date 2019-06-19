@@ -2,7 +2,7 @@
   "name": "kekemall",
   "version": "1.0.0",
   "private": true,
-  "description": "kk商城",
+  "description": "克克商城",
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",
