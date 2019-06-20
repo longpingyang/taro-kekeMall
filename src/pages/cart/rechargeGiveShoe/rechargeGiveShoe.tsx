@@ -63,7 +63,15 @@ class RechargeGiveShoe extends Component {
             if(res.data.success){
                 tempGoods.push(res.data.data);
                 tempamount+=res.data.data.price;             
+            }else{
+              if(res.data.errorCode=='E401'){
+                Taro.setStorageSync('userMember',null);
+                Taro.navigateTo({
+                  url: '/pages/user/login/login'
+                })
+              }
             }
+            
             if(tempGoods.length==idArr.length){
                 tempGoods.forEach(element => {
                     element['checked']=true

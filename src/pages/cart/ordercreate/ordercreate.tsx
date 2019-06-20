@@ -37,6 +37,8 @@ class Ordercreate extends Component {
         couponList:[],//礼券列表
         coupon:0,//优惠金额
         cxYhMoney:0,//促销优惠金额
+        cxYhMoneyId:"",
+        cxYhMoneyType:"",
         couponId:'',
         freight:0,//运费
         payScore:"",
@@ -91,6 +93,13 @@ class Ordercreate extends Component {
                     memberAddressId:res.data.data[0].deliveryId
                 })
             }
+          }else{
+            if(res.data.errorCode=='E401'){
+              Taro.setStorageSync('userMember',null);
+              Taro.navigateTo({
+                url: '/pages/user/login/login'
+              })
+            }
           }
         })
       }
@@ -131,14 +140,19 @@ class Ordercreate extends Component {
             url:api.orderCreatePath,
             method:"POST",
             data:{
-                "activityId": "1",
+                "actType":this.state.cxYhMoneyType,
+                "activityId": this.state.cxYhMoneyId,
                 "couponList": couponList,
                 "goodsList": this.state.goodsList,
                 "memberAddressId": this.state.memberAddressId,
-                "payBanlance": 0,
-                "payMoney": this.state.amount-this.state.coupon+this.state.freight,
+                "remark": this.state.remark,
+                "payActAmount": this.state.cxYhMoney,
+                "payCouponAmount": this.state.coupon,
+                "payRealMoney": this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+                "paySavingAmount": 0,
                 "payScore": 0,
-                "remark": this.state.remark
+                "payScoreAmount": 0,
+                "payScoreCount": 0
             },
             header:{
                 token:Taro.getStorageSync('token')
@@ -202,7 +216,7 @@ class Ordercreate extends Component {
                 token:Taro.getStorageSync('token')
             }
         }).then((res) =>{
-            if(res.data.data){
+            if(res.data.success){
                 //筛选可用的优惠券
                 let goodList = Taro.getStorageSync('orderCreate').goodsList;
                 res.data.data.forEach(ele => {
@@ -231,7 +245,14 @@ class Ordercreate extends Component {
                 this.setState({
                     couponList:tempList
                 })
-            }
+            }else{
+                if(res.data.errorCode=='E401'){
+                  Taro.setStorageSync('userMember',null);
+                  Taro.navigateTo({
+                    url: '/pages/user/login/login'
+                  })
+                }
+              }
         })
     }
     //选择优惠券
@@ -304,8 +325,8 @@ class Ordercreate extends Component {
         });
         if(tempList.length>0){
             let yXActivity = tempList[tempList.length-1];
-            // let rule = JSON.parse(yXActivity.rule);//规则
-            let rule = [{min:1,max:1,value:8},{min:2,max:2,value:7},{min:3,max:1000000,value:6}]
+            let rule = JSON.parse(yXActivity.rule);//规则
+            // let rule = [{min:1,max:1,value:8},{min:2,max:2,value:7},{min:3,max:1000000,value:6}]
             let tempGoodsList = [];
             if(yXActivity.goodsType==1){
                 goodsList.forEach(ele => {
@@ -316,6 +337,7 @@ class Ordercreate extends Component {
             }else{
                 tempGoodsList = goodsList;
             }
+            
             let cxYhMoney = 0;
             if(yXActivity.type==1){//满几件打几折
                 let count = 0;
@@ -325,7 +347,7 @@ class Ordercreate extends Component {
                     sumMoney +=element.price*element.count;
                 });
                 rule.forEach(element => {
-                    if(count>=element.min && count<element.max){
+                    if(count>=element.min && count<=element.max){
                         cxYhMoney=(10-element.value)/10*sumMoney;
                     }
                 });
@@ -354,7 +376,9 @@ class Ordercreate extends Component {
                 });
             }
             this.setState({
-                cxYhMoney:cxYhMoney
+                cxYhMoney:cxYhMoney,
+                cxYhMoneyId:yXActivity.id,
+                cxYhMoneyType:yXActivity.type,
             })
 
         }

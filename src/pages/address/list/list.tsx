@@ -47,6 +47,13 @@ class AddressList extends Component {
           listlength:res.data.data.length,
           iscreateOrder:iscreateOrder
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }

@@ -124,6 +124,13 @@ class Index extends Component {
             }
           ]
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     }) 
   }

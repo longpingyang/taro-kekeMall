@@ -54,7 +54,14 @@ class Index extends Component {
                 dataList:res.data.data,
                 currentNav:type
             })
-        }
+        }else{
+            if(res.data.errorCode=='E401'){
+              Taro.setStorageSync('userMember',null);
+              Taro.navigateTo({
+                url: '/pages/user/login/login'
+              })
+            }
+          }
     })
   }
   componentDidShow () { 

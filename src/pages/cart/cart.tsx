@@ -37,10 +37,7 @@ class Cart extends Component {
     })
   }
   goOrderCreatePage(){
-
     Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount});
-    
-
     Taro.navigateTo({
       url: '/pages/cart/ordercreate/ordercreate'
     })
@@ -64,6 +61,13 @@ class Cart extends Component {
           allChecked:true,
           couponsModalShow: false
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }

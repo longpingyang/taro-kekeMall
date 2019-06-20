@@ -58,13 +58,17 @@ class Index extends Component {
       url: '/pages/user/couponList/couponList'
     })
   }
-  componentDidShow () { Taro.showTabBar({})}
+  componentDidShow () { 
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
+    })
+  }
 
   componentDidHide () { }
   
-  goOrderListPagefn(){
+  goOrderListPagefn(type){
     Taro.navigateTo({
-      url: '/pages/order/order'
+      url: '/pages/order/order?type='+type
     })
   }
   goAddressListPage(){
@@ -147,28 +151,28 @@ class Index extends Component {
           <View className='order_box'>
             <View className='title'>
               <Text className='text'>订单信息</Text>
-              <Text className='more' onClick={this.goOrderListPagefn}>查看全部订单</Text>
+              <Text className='more' onClick={this.goOrderListPagefn.bind(this,1)}>查看全部订单</Text>
             </View>
             <View className='con'>
-              <View className='item' onClick={this.goOrderListPagefn}>
+              <View className='item' onClick={this.goOrderListPagefn.bind(this,1)}>
                 <AtBadge value={orderNumArr[0]>0?orderNumArr[0]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifukuan_icon.png')}></Image>
                 </AtBadge>                
                 <Text className='text'>待付款</Text>
               </View>
-              <View className='item' onClick={this.goOrderListPagefn}>
+              <View className='item' onClick={this.goOrderListPagefn.bind(this,2)}>
                 <AtBadge value={orderNumArr[1]>0?orderNumArr[1]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daifahuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待发货</Text>
               </View>
-              <View className='item' onClick={this.goOrderListPagefn}>
+              <View className='item' onClick={this.goOrderListPagefn.bind(this,3)}>
                 <AtBadge value={orderNumArr[2]>0?orderNumArr[2]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daishouhuo_icon.png')}></Image>
                 </AtBadge>  
                 <Text className='text'>待收货</Text>
               </View>
-              <View className='item' onClick={this.goOrderListPagefn}>
+              <View className='item' onClick={this.goOrderListPagefn.bind(this,4)}>
                 <AtBadge value={orderNumArr[3]>0?orderNumArr[3]:''} maxValue={99}>
                   <Image className='icon' src={require('../../images/icon/daipingjia_icon.png')}></Image>
                 </AtBadge>  

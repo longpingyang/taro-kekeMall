@@ -35,6 +35,7 @@ const couponGetPath = baseUrl + 'coupon/get';//领取奖券
 const activityIndexAdPath = baseUrl + 'activity/index/ad';//首页的轮播广告查询
 
 const payPreorderPath = baseUrl + 'pay/preorder';//获取支付参数
+const payEndpayPath = baseUrl + 'pay/endpay'; //支付回调
 
 
 
@@ -79,7 +80,8 @@ module.exports = {
   couponGetPath:couponGetPath,
   activityIndexAdPath:activityIndexAdPath,
   
-  payPreorderPath:payPreorderPath
+  payPreorderPath:payPreorderPath,
+  payEndpayPath:payEndpayPath
 
 
 

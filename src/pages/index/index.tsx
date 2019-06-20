@@ -46,6 +46,13 @@ class Index extends Component {
         this.setState({
           typeGoodsList:res.data.data
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }
@@ -67,8 +74,6 @@ class Index extends Component {
       if(res.data.success){
         Taro.setStorageSync("allCouponList",res.data.data.couponRules);
         Taro.setStorageSync("allActivityList",res.data.data.activityRules);
-
-
         //优惠券 信息筛选
         let tempList=Taro.getStorageSync('allCouponList');        
         let tempArr = [];
@@ -91,6 +96,9 @@ class Index extends Component {
       }else{
         if(res.data.errorCode=='E401'){
           Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
         }
       }
     })

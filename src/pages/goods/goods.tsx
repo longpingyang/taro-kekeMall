@@ -103,6 +103,13 @@ class Index extends Component {
         this.setState({
           posts:res.data.data
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }
@@ -119,6 +126,13 @@ class Index extends Component {
         this.setState({
           goodsCategory:res.data.data
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }

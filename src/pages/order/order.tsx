@@ -1,6 +1,6 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Button } from '@tarojs/components'
 
 // import { AtBadge,AtList, AtListItem  } from "taro-ui";
 import './order.scss'
@@ -43,7 +43,16 @@ class Order extends Component {
     //     userInfo: rst.data
     //   })
     // })
-    this.getOrderLisyFn(1)
+    if(this.$router.params.type){
+      this.setState({
+        currentNav:this.$router.params.type
+      },()=>{
+        this.getOrderLisyFn(this.state.currentNav)
+      })
+    }else{
+      this.getOrderLisyFn(this.state.currentNav)
+    }
+    
   }
   state = {
     userInfo:{
@@ -91,6 +100,13 @@ class Order extends Component {
         this.setState({
           orderList:res.data.data
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }
@@ -98,6 +114,44 @@ class Order extends Component {
   goOrderDetailsPage(id){
     Taro.navigateTo({
       url: '/pages/order/details/details?id='+id
+    })
+  }
+  payMoneyFn(index){
+    Taro.request({
+      url:api.payPreorderPath,
+      method:"POST",
+      data:{
+        type:2,
+        totalPrice:this.state.orderList[index].payMoney,
+        linkOrder:this.state.orderList[index].orderId
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res) =>{
+      if(res.data.success){
+        let param = {};
+        let arr=res.data.data.split("&"); //各个参数放到数组里
+          for(var i=0;i < arr.length;i++){
+              var num=arr[i].indexOf("=");
+               if(num>0){
+                  let name=arr[i].substring(0,num);
+                  let value=arr[i].substr(num+1);
+                  param[name]=value;
+               }
+          }
+        Taro.requestPayment({
+          timeStamp: param.timeStamp,
+          nonceStr: param.nonceStr,
+          package: "prepay_id="+param.prepay_id,
+          signType: param.signType,
+          paySign: param.paySign,
+          success (res) {
+            console.log(res);
+          },
+          fail (res) {console.log(res); }
+        })
+      }
     })
   }
   render () {
@@ -112,13 +166,16 @@ class Order extends Component {
           </View>
           <View className='order_list'>
           {
-            this.state.orderList.map((item)=>{
+            this.state.orderList.map((item,index)=>{
               return (
                     <View key={item.orderId} className="order-list-item-wrap">
                       <View className="order-item-desc">
                           <Text className="order-item-time flex1 color-3">下单时间：{item.ctime}</Text>
                           {
-                            this.state.currentNav==1 && <Text className="theme-color">待支付</Text>
+                            this.state.currentNav==1 && <View>
+                                                          <Text className="theme-color">待支付</Text>
+                                                          <Text onClick={this.payMoneyFn.bind(this,index)} className="payBtn theme-color">立即支付</Text>
+                                                        </View>
                           }
                           {
                             this.state.currentNav==2 && <Text className="theme-color">待发货</Text>

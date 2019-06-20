@@ -82,6 +82,29 @@
                 margin: 0 15px;
             }
         }
+        .logList_item{
+            width: 100%;display:flex;justify-content:space-between;padding: 0 20px; box-sizing: border-box;
+            height: 80px; line-height: 40px; margin-top: 16px;
+            .log_type{
+                flex:2;
+                .log_typetxt{
+                    width: 100%; float: left;
+                }
+                .log_time{
+                    width: 100%; float: left;
+                }
+            }
+            .changeInfo{
+                text-align: right;flex:1;
+                .change{
+                    width: 100%; float: left;
+                }
+                .changeAfter{
+                    width: 100%; float: left;
+                }
+            }
+        }
+        
     }
 }
 .amountModalCon{    

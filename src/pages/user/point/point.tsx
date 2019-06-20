@@ -28,7 +28,9 @@ class Point extends Component {
   componentWillMount(){    
   }
 
-  componentDidShow () { }
+  componentDidShow () { 
+    this.getScoreLogList();
+  }
 
   componentDidHide () { }
 
@@ -36,14 +38,40 @@ class Point extends Component {
     userInfo:{
       avatarUrl:'',
       nickName:''
-    }
+    },
+    scoreLogList:[],
+    scoreLogListlen:0
   }
   getScoreLogList(){
-    
+    Taro.request({
+      url:api.memberScoreLoglistPath,
+      method:"POST",
+      data:{
+        "pageNo": 1,
+        "pageSize": 10
+      },
+      header:{
+        token:Taro.getStorageSync('token')
+      }      
+    }).then((res) =>{
+      if(res.data.success){
+        this.setState({
+          scoreLogList:res.data.data,
+          scoreLogListlen:res.data.data.length
+        })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
+      }
+    })
   }
-
  
   render () {
+    const { scoreLogList,scoreLogListlen} = this.state;
     return (
     <View className="integral-detail">
         <View className="integral-header">
@@ -72,9 +100,35 @@ class Point extends Component {
             </View>
         </View>
         <View className="integral-record-wrap">
-            <View></View>
+            {
+              scoreLogList.map((item) =>{
+                return (
+                  <View className='logList_item' key={item.ctime}>
+                      <View className='log_type'>
+                        {
+                          item.action==4 && <Text className='log_typetxt'>获取积分</Text>
+                        }
+                        {
+                          item.action==5 && <Text className='log_typetxt'>消费积分</Text>
+                        }
+                        {
+                          (item.action!=5 && item.action!=4) && <Text className='log_typetxt'>其他</Text>
+                        }
+                        <Text className='log_time'>{item.ctime}</Text>
+                      </View>
+                      <View className='changeInfo'>
+                        <Text className='change'>{item.action==1?'-':'+'}￥{item.actionScore}</Text>
+                        <Text className='changeAfter'>总积分：{item.accountScore}</Text>
+                      </View>
+                    </View>
+                )
+              })
+            }
         </View>
-        <View className="ap-no-record color-9 font26">没有产生积分记录哦~</View>
+        {
+          scoreLogListlen==0 &&<View className="ap-no-record color-9 font26">没有产生积分记录哦~</View>
+        }   
+        
     </View>
     )
   }

@@ -66,7 +66,10 @@ class Amount extends Component {
     Taro.request({
       url:api.memberMoneyLoglistPath,
       method:"POST",
-      data:{},
+      data:{
+        "pageNo": 1,
+        "pageSize": 10
+      },
       header:{
         token:Taro.getStorageSync('token')
       }      
@@ -76,6 +79,13 @@ class Amount extends Component {
           moneyLogList:res.data.data,
           moneyLogListlen:res.data.data.length
         })
+      }else{
+        if(res.data.errorCode=='E401'){
+          Taro.setStorageSync('userMember',null);
+          Taro.navigateTo({
+            url: '/pages/user/login/login'
+          })
+        }
       }
     })
   }
@@ -98,8 +108,6 @@ class Amount extends Component {
       {
         temp = (Math.floor(parseInt(e.detail.value)/parseInt(this.state.rule.save))*parseInt(this.state.rule.give)+parseInt(e.detail.value)).toString();
       }
-
-
       this.setState({
         [key]:e.detail.value,
         totalAmount:temp
@@ -109,10 +117,6 @@ class Amount extends Component {
     
   }
   recharge(){
-    console.log(this.state.czAmount);
-    // this.setState({
-    //   isCzModal:false
-    // })
     Taro.request({
       url:api.payPreorderPath,
       method:"POST",
@@ -126,10 +130,8 @@ class Amount extends Component {
       }
     }).then((res) =>{
       if(res.data.success){
-        // let param = JSON.parse(res.data.data);
         let param = {};
         let arr=res.data.data.split("&"); //各个参数放到数组里
-          console.log(arr)
           for(var i=0;i < arr.length;i++){
               var num=arr[i].indexOf("=");
                if(num>0){
@@ -138,8 +140,6 @@ class Amount extends Component {
                   param[name]=value;
                }
           }
-          console.log(param);
-
         Taro.requestPayment({
           timeStamp: param.timeStamp,
           nonceStr: param.nonceStr,
@@ -147,7 +147,15 @@ class Amount extends Component {
           signType: param.signType,
           paySign: param.paySign,
           success (res) {
-            console.log(res);
+            Taro.request({
+              url:api.payEndpayPath,
+              method:"POST",
+              header:{
+                token:Taro.getStorageSync('token')
+              }
+            }).then((res) =>{
+              console.log(res);
+            })           
           },
           fail (res) {console.log(res); }
         })
@@ -189,7 +197,31 @@ class Amount extends Component {
             </View>
         </View>
         <View className="amount-record-wrap">
-            <View></View>
+            {
+              this.state.moneyLogList.map((item) =>{
+                return (
+                    <View className='logList_item' key={item.ctime}>
+                      <View className='log_type'>
+                        {
+                          item.action==1 && <Text className='log_typetxt'>消费</Text>
+                        }
+                        {
+                          item.action==2 && <Text className='log_typetxt'>充值</Text>
+                        }
+                        {
+                          item.action==3 && <Text className='log_typetxt'>赠费</Text>
+                        }
+                        <Text className='log_time'>{item.ctime}</Text>
+                      </View>
+                      <View className='changeInfo'>
+                        <Text className='change'>{item.action==1?'-':'+'}￥{item.actionMoney}</Text>
+                        <Text className='changeAfter'>余额：{item.accountMoney}</Text>
+                      </View>
+                    </View>
+                )
+              })
+              
+            }
             {
               moneyLogListlen==0 &&<View className="ap-no-record color-9 font26 mr-t-dis">没有产生余额记录哦~</View>
             }            
