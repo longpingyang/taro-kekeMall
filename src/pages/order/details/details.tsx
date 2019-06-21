@@ -73,6 +73,55 @@ class OrderDetails extends Component {
       })
   }
 
+  payMoneyFn(){
+    if(this.state.orderDetail.orderType){
+      Taro.request({
+        url:api.payPreorderPath,
+        method:"POST",
+        data:{
+          type:this.state.orderDetail.orderType==1?1:2,
+          totalPrice:this.state.orderDetail.payMoney,
+          linkOrder:this.state.orderDetail.orderId
+        },
+        header:{
+          token:Taro.getStorageSync('token')
+        }
+      }).then((res) =>{
+        if(res.data.success){
+          let param = {};
+          let arr=res.data.data.split("&"); //各个参数放到数组里
+            for(var i=0;i < arr.length;i++){
+                var num=arr[i].indexOf("=");
+                if(num>0){
+                    let name=arr[i].substring(0,num);
+                    let value=arr[i].substr(num+1);
+                    param[name]=value;
+                }
+            }
+          Taro.requestPayment({
+            timeStamp: param.timeStamp,
+            nonceStr: param.nonceStr,
+            package: "prepay_id="+param.prepay_id,
+            signType: param.signType,
+            paySign: param.paySign,
+            success (res) {
+              Taro.navigateTo({
+                url: '/pages/order/order?type=2'
+              })
+            },
+            fail (res) {console.log(res); }
+          })
+        }
+      })
+    }else{
+      Taro.showToast({
+        title: '数据有误',
+        icon: 'none',
+        duration: 2000
+      });
+    }
+  }
+
   render () {
     const {orderDetail}=this.state    
     return (
@@ -174,9 +223,9 @@ class OrderDetails extends Component {
                   </View>
                   <View data-orderno="8811948016528">复制</View>
               </View>
-              <View className='item'>
+              {/* <View className='item'>
                   服务门店： 演示账号
-              </View>
+              </View> */}
               <View className='item'>
                   下单时间：{orderDetail['ctime']}
               </View>
@@ -196,7 +245,11 @@ class OrderDetails extends Component {
               </View>
           </View>
           <View className="order-detail-action fixIphonex border-top-1px font26 bgwh">
-              <View className="detail-action-handle bdc-64" data-iscycle="false" data-type="2">取消订单</View>
+              {
+                orderDetail.status==1 &&  <View onClick={this.payMoneyFn.bind(this)} className="detail-action-handle theme-color">立即支付</View>
+              }
+              
+              <View className="detail-action-handle bdc-64">取消订单</View>
           </View>
           {/* <View className=" fixed-btn-group iphoneXMB">
               <View className="btn">

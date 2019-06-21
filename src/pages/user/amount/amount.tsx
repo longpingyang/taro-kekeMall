@@ -32,7 +32,6 @@ class Amount extends Component {
     }) 
     this.getMoneyLoglist() 
     if(this.$router.params.type && this.$router.params.type==1){
-      // console.log(this.$router.params.rule)
       this.setState({
         czType:this.$router.params.type,
         rule:JSON.parse(this.$router.params.rule)
@@ -41,7 +40,6 @@ class Amount extends Component {
       })      
     }
     if(this.$router.params.type && this.$router.params.type==2){
-      // console.log(this.$router.params.rule)
       this.setState({
         czType:this.$router.params.type,
         czAmount:JSON.parse(this.$router.params.amount)
@@ -133,6 +131,7 @@ class Amount extends Component {
         token:Taro.getStorageSync('token')
       }
     }).then((res) =>{
+      let that = this;
       if(res.data.success){
         let param = {};
         let arr=res.data.data.split("&"); //各个参数放到数组里
@@ -151,21 +150,41 @@ class Amount extends Component {
           signType: param.signType,
           paySign: param.paySign,
           success (res) {
-            Taro.request({
-              url:api.payEndpayPath,
-              method:"POST",
-              header:{
-                token:Taro.getStorageSync('token')
-              }
-            }).then((res) =>{
-              console.log(res);
-            })           
+            // Taro.request({
+            //   url:api.payEndpayPath,
+            //   method:"POST",
+            //   header:{
+            //     token:Taro.getStorageSync('token')
+            //   }
+            // }).then((res) =>{
+            //   console.log(res);
+            // }) 
+            that.closefn();            
+            that.getMoneyLoglist(); 
+            that.getUserMember();
           },
           fail (res) {console.log(res); }
         })
       }
     })
   }
+  getUserMember(){
+    Taro.request({
+      url:api.memberSummaryPath,
+      method:"POST",
+      header:{token:Taro.getStorageSync('token')}
+    }).then((res)=>{
+      if(res.data.success){
+        Taro.setStorageSync('userMember',res.data.data);
+        this.setState({
+          userInfo: Taro.getStorageSync("userMember")
+        })
+      }
+    })
+  }
+
+
+
   selFastAmount(val){
     this.setState({
       czAmount:val,
@@ -204,7 +223,7 @@ class Amount extends Component {
             {
               this.state.moneyLogList.map((item) =>{
                 return (
-                    <View className='logList_item' key={item.ctime}>
+                    <View hidden={item.actionMoney==0 || item.actionMoney==null} className='logList_item' key={item.ctime}>
                       <View className='log_type'>
                         {
                           item.action==1 && <Text className='log_typetxt'>消费</Text>

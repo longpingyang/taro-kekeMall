@@ -117,42 +117,52 @@ class Order extends Component {
     })
   }
   payMoneyFn(index){
-    Taro.request({
-      url:api.payPreorderPath,
-      method:"POST",
-      data:{
-        type:2,
-        totalPrice:this.state.orderList[index].payMoney,
-        linkOrder:this.state.orderList[index].orderId
-      },
-      header:{
-        token:Taro.getStorageSync('token')
-      }
-    }).then((res) =>{
-      if(res.data.success){
-        let param = {};
-        let arr=res.data.data.split("&"); //各个参数放到数组里
-          for(var i=0;i < arr.length;i++){
-              var num=arr[i].indexOf("=");
-               if(num>0){
-                  let name=arr[i].substring(0,num);
-                  let value=arr[i].substr(num+1);
-                  param[name]=value;
-               }
-          }
-        Taro.requestPayment({
-          timeStamp: param.timeStamp,
-          nonceStr: param.nonceStr,
-          package: "prepay_id="+param.prepay_id,
-          signType: param.signType,
-          paySign: param.paySign,
-          success (res) {
-            console.log(res);
-          },
-          fail (res) {console.log(res); }
-        })
-      }
-    })
+    if(this.state.orderList[index].orderType){
+      Taro.request({
+        url:api.payPreorderPath,
+        method:"POST",
+        data:{
+          type:this.state.orderList[index].orderType==1?1:2,
+          totalPrice:this.state.orderList[index].payMoney,
+          linkOrder:this.state.orderList[index].orderId
+        },
+        header:{
+          token:Taro.getStorageSync('token')
+        }
+      }).then((res) =>{
+        if(res.data.success){
+          let param = {};
+          let arr=res.data.data.split("&"); //各个参数放到数组里
+            for(var i=0;i < arr.length;i++){
+                var num=arr[i].indexOf("=");
+                if(num>0){
+                    let name=arr[i].substring(0,num);
+                    let value=arr[i].substr(num+1);
+                    param[name]=value;
+                }
+            }
+          Taro.requestPayment({
+            timeStamp: param.timeStamp,
+            nonceStr: param.nonceStr,
+            package: "prepay_id="+param.prepay_id,
+            signType: param.signType,
+            paySign: param.paySign,
+            success (res) {
+              Taro.navigateTo({
+                url: '/pages/order/order?type=2'
+              })
+            },
+            fail (res) {console.log(res); }
+          })
+        }
+      })
+    }else{
+      Taro.showToast({
+        title: '数据有误',
+        icon: 'none',
+        duration: 2000
+      });
+    }
   }
   render () {
     return (

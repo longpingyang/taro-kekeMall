@@ -106,7 +106,7 @@ class Point extends Component {
             {
               scoreLogList.map((item) =>{
                 return (
-                  <View className='logList_item' key={item.ctime}>
+                  <View hidden={item.actionScore==0 || item.actionScore==null} className='logList_item' key={item.ctime}>
                       <View className='log_type'>
                         {
                           item.action==4 && <Text className='log_typetxt'>获取积分</Text>

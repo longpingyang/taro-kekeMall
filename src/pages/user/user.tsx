@@ -8,7 +8,7 @@ import CouponsModal from '../goods/details/couponsModal/couponsModal'
 import './user.scss'
 import headImg from '../../images/mine02.jpg';
 import centerImg from '../../images/mine01.jpg';
-
+const api = require('../../config/api.js');
 // #region 书写注意
 // 
 // 目前 typescript 版本还无法在装饰器模式下将 Props 注入到 Taro.Component 中的 props 属性
@@ -34,15 +34,30 @@ class Index extends Component {
   componentWillReceiveProps (nextProps) {
     
   }
+  getUserMember(){
+    Taro.request({
+      url:api.memberSummaryPath,
+      method:"POST",
+      header:{token:Taro.getStorageSync('token')}
+    }).then((res)=>{
+      if(res.data.success){
+        Taro.setStorageSync('userMember',res.data.data);
+        this.setState({
+          userInfo: Taro.getStorageSync("userMember")
+        })
+      }
+    })
+  }
 
   componentWillUnmount () { }
   componentWillMount(){
     // Taro.getStorage({key:'userMember'}).then(rst => {   //从缓存中获取用户信息
     //   // this.props.setBasicInfo(rst.data)avatarUrl
     // })
-    this.setState({
-      userInfo: Taro.getStorageSync("userMember")
-    })
+    // this.setState({
+    //   userInfo: Taro.getStorageSync("userMember")
+    // })
+    this.getUserMember();
   }
   state = {
     userInfo:{

@@ -91,9 +91,16 @@ class Index extends Component {
     let info = Taro.getStorageSync("userMember");
     if(info){
       this.setState((data) =>{
-        data['userInfo'].headUrl = info.headUrl;
-        data['userInfo'].nickName = info.nickName;
-        data['userInfo'].memberId = info.memberId;
+        data['userInfo'] = info;
+        // data['userInfo'].headUrl = info.headUrl;
+        // data['userInfo'].nickName = info.nickName;
+        // data['userInfo'].memberId = info.memberId;
+        // data['userInfo'].shopId = info.shopId;
+        // data['userInfo'].cardNo = info.cardNo;
+        // data['userInfo'].phone = info.phone;
+        // data['userInfo'].moneyBalance = info.moneyBalance;
+        // data['userInfo'].couponCount = info.couponCount;
+        // data['userInfo'].scoreCount = info.scoreCount;
       })
     }
   }
@@ -106,10 +113,25 @@ class Index extends Component {
         // this.state.userInfo.headUrl = res.tempFilePaths[0];
         // this.setState({
         //   userInfo: this.state.userInfo
-        // })
+        // })        
         this.setState((data) =>{
           data['userInfo'].headUrl = res.tempFilePaths[0];
         })
+        // Taro.uploadFile({
+        //   url: 'https://example.weixin.qq.com/upload', //仅为示例，非真实的接口地址
+        //   filePath: res.tempFilePaths[0],
+        //   name: 'file',
+        //   formData: {
+        //     'user': 'test'
+        //   },
+        //   success (res){
+        //     const data = res.data
+        //     //do something
+        //   }
+        // })
+
+
+
       },
     })
   }
@@ -125,14 +147,14 @@ class Index extends Component {
     Taro.request({
       url:api.memberSavedetailPath,
       method:"POST",
-      data:{
-        "birthday": this.state.userInfo.birthday,
-        "headUrl": this.state.userInfo.headUrl,
-        "memberId": this.state.userInfo['memberId'],
-        "nickname": this.state.userInfo.nickName,
-        "phone": this.state.userInfo.phone,
-        "trueName": this.state.userInfo.trueName
-      },
+      data:this.state.userInfo,
+        // "birthday": this.state.userInfo.birthday,
+        // "headUrl": this.state.userInfo.headUrl,
+        // "memberId": this.state.userInfo['memberId'],
+        // "nickName": this.state.userInfo.nickName,
+        // "phone": this.state.userInfo.phone,
+        // "trueName": this.state.userInfo.trueName
+      //},
       header:{
         token:Taro.getStorageSync('token')
       }
@@ -157,7 +179,7 @@ class Index extends Component {
     return (
       <View className='userInfo'>
         <View className='phone_box headImg'>
-          <View className='text'>我的头像</View>
+          <View className='text'>我的头像：</View>
           <Image onClick={this.changeHeadImgFn} src={this.state.userInfo.headUrl}></Image>
         </View>
         <View className="phone_box">
@@ -170,13 +192,13 @@ class Index extends Component {
         </View>
         <View className="phone_box">
           <Text></Text>
-          <View className='text'>手机号：</View>
+          <View className='text'>手  机 号：</View>
           <Input className='input' placeholder="请输入手机号" value={this.state.userInfo.phone} onInput={this.handleChange.bind(this,'phone')}></Input>
         </View>
         <View className="phone_box">
           <Picker mode='date' onChange={this.handleChange.bind(this,'birthday')}>
             <View className='picker'>
-              <View className='text'>生日：</View>{this.state.userInfo.birthday}
+              <View className='text'>生&emsp;&emsp;日：</View>{this.state.userInfo.birthday}
             </View>
           </Picker>
           {/* <Input value={this.state.userInfo.birthday} onInput={this.handleChange.bind(this,'birthday')}></Input> */}

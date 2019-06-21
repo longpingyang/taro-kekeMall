@@ -44,5 +44,12 @@
 }
 
 .loginType_box{
-    position: absolute; top: 50%; margin-top: -200px; right: 0; left: 0;
+    position: absolute; right: 0; left: 0; top: 18%; 
+    .logo_box{
+        text-align: center;
+        .logo{
+            width: 300px; border-radius: 150px; height: 300px;
+        }
+    }
+    
 }

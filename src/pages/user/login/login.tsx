@@ -1,6 +1,7 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Form, Text,Input,Picker } from '@tarojs/components'
+import { View, Button, Form, Text,Input,Picker,Image } from '@tarojs/components'
+import LogoImg from '../../../images/logo.png';
 
 const api = require('../../../config/api.js');
 import { AtInput, AtForm } from 'taro-ui'
@@ -263,6 +264,9 @@ class Login extends Component {
         </AtForm>
         </View>
         <View className='loginType_box' hidden={this.state.isCard==0 ||this.state.isCard==1 || this.state.loginType==1 || this.state.loginType==2}>
+          <View className='logo_box'>
+            <Image className='logo' src={LogoImg}></Image>
+          </View>
           <View className='get_card'>
             <Button className='btn' onClick={this.loginType.bind(this,1)}>密 码  登 录</Button>
           </View>
@@ -273,12 +277,12 @@ class Login extends Component {
         <View className='index passwdlogin_box' hidden={this.state.loginType==0 || this.state.loginType==2}>
           <AtForm>
             <View className='phone_box'>
-              <View className='text'><Text className='star'>*</Text>手机号</View>
+              <View className='text'><Text className='star'>*</Text>手机号：</View>
               <Input className='input' type="number" name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
               {/* <Text className='get_code_btn' onClick={this.getCodeFn}>{this.state.getText}</Text> */}
             </View>
             <View className='phone_box code_box'>
-              <View className='text'><Text className='star'>*</Text>密码</View>
+              <View className='text'><Text className='star'>*</Text>密&emsp;码：</View>
               
               <Input className='input' type="number" password={true} name="input" value={this.state.passwd} onInput={this.handleChange.bind(this,'passwd')} placeholder="请输入登录密码" />
             </View>
@@ -290,12 +294,12 @@ class Login extends Component {
         <View className='index code_box' hidden={this.state.loginType==0 || this.state.loginType==1}>
           <AtForm>
             <View className='phone_box'>
-              <View className='text'><Text className='star'>*</Text>手机号</View>
+              <View className='text'><Text className='star'>*</Text>手机号：</View>
               <Input className='input' type="number" name="input" value={this.state.phoneNo} onInput={this.handleChange.bind(this,'phoneNo')} placeholder="请输入手机号" />              
               <Text className='get_code_btn' onClick={this.getCodeFn}>{this.state.getText}</Text>
             </View>
             <View className='phone_box code_box'>
-              <View className='text'><Text className='star'>*</Text>验证码</View>
+              <View className='text'><Text className='star'>*</Text>验证码：</View>
               <Input className='input' type='text' name="input" value={this.state.code} onInput={this.handleChange.bind(this,'code')} placeholder="请输入验证码" />
             </View>
             <View className='get_card'>

@@ -115,7 +115,8 @@ class Ordercreate extends Component {
                 goodsList:Taro.getStorageSync('orderCreate').goodsList,
                 amount:Taro.getStorageSync('orderCreate').amount,
                 saveTimes:Taro.getStorageSync('orderCreate').saveTimes,
-                orderType: 5
+                orderType: 5,
+                cxYhMoneyType:5
             })
         }else{
             this.setState({
@@ -136,6 +137,10 @@ class Ordercreate extends Component {
         if(this.state.couponId!=''){
             couponList.push(this.state.couponId);
         }
+        let amount=this.state.amount;
+        if(this.state.cxYhMoneyType=='5'){
+            amount=this.state.amount*this.state.saveTimes;
+        }
         Taro.request({
             url:api.orderCreatePath,
             method:"POST",
@@ -148,7 +153,7 @@ class Ordercreate extends Component {
                 "remark": this.state.remark,
                 "payActAmount": this.state.cxYhMoney,
                 "payCouponAmount": this.state.coupon,
-                "payRealMoney": this.state.amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+                "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
                 "paySavingAmount": 0,
                 "payScore": 0,
                 "payScoreAmount": 0,
@@ -160,22 +165,14 @@ class Ordercreate extends Component {
         }).then((res)=>{
             Taro.hideLoading();
             if(res.data.success){                
-                // Taro.showToast({
-                //     title: '提交成功',
-                //     icon: 'none',
-                //     duration: 1500
-                // });
-                // Taro.navigateTo({
-                //     url: '/pages/order/order'
-                // })
                 if(this.state.cxYhMoneyType!='5'){
                     Taro.request({
                         url:api.payPreorderPath,
                         method:"POST",
                         data:{
                           type:2,
-                          totalPrice:res.data.data.payMoney,
-                          linkOrder:res.data.data.orderId
+                          totalPrice:amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+                          linkOrder:res.data.data
                         },
                         header:{
                           token:Taro.getStorageSync('token')
@@ -204,7 +201,6 @@ class Ordercreate extends Component {
             }
         })
     }
-
     payMoneyFn(res){
           if(res.data.success){
             let param = {};
@@ -224,9 +220,14 @@ class Ordercreate extends Component {
               signType: param.signType,
               paySign: param.paySign,
               success (res) {
-                console.log(res);
+                // console.log("成功"+JSON.stringify(res));
+                Taro.navigateTo({
+                    url: '/pages/order/order'
+                })
               },
-              fail (res) {console.log(res); }
+              fail (res) {
+                console.log("失败"+JSON.stringify(res)); 
+              }
             })
           }
     }
@@ -646,7 +647,8 @@ class Ordercreate extends Component {
                         this.state.orderType==0 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>提交订单</View>
                     }
                     {
-                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this,this.state.amount*this.state.saveTimes+this.state.freight)}>去充值</View>
+                        // this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this,this.state.amount*this.state.saveTimes+this.state.freight)}>去充值</View>
+                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>去充值</View>
                     }
                 </View>
                 <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>
