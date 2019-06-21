@@ -160,14 +160,32 @@ class Ordercreate extends Component {
         }).then((res)=>{
             Taro.hideLoading();
             if(res.data.success){                
-                Taro.showToast({
-                    title: '提交成功',
-                    icon: 'none',
-                    duration: 1500
-                });
-                Taro.navigateTo({
-                    url: '/pages/order/order'
-                })
+                // Taro.showToast({
+                //     title: '提交成功',
+                //     icon: 'none',
+                //     duration: 1500
+                // });
+                // Taro.navigateTo({
+                //     url: '/pages/order/order'
+                // })
+                if(this.state.cxYhMoneyType!='5'){
+                    Taro.request({
+                        url:api.payPreorderPath,
+                        method:"POST",
+                        data:{
+                          type:2,
+                          totalPrice:res.data.data.payMoney,
+                          linkOrder:res.data.data.orderId
+                        },
+                        header:{
+                          token:Taro.getStorageSync('token')
+                        }
+                    }).then((res) =>{
+                        this.payMoneyFn(res)
+                    })
+                }else{
+                    this.payMoneyFn(res)
+                }
             }else{
                 if(res.data.errorInfo){
                     Taro.showToast({
@@ -186,6 +204,33 @@ class Ordercreate extends Component {
             }
         })
     }
+
+    payMoneyFn(res){
+          if(res.data.success){
+            let param = {};
+            let arr=res.data.data.split("&"); //各个参数放到数组里
+              for(var i=0;i < arr.length;i++){
+                  var num=arr[i].indexOf("=");
+                   if(num>0){
+                      let name=arr[i].substring(0,num);
+                      let value=arr[i].substr(num+1);
+                      param[name]=value;
+                   }
+              }
+            Taro.requestPayment({
+              timeStamp: param.timeStamp,
+              nonceStr: param.nonceStr,
+              package: "prepay_id="+param.prepay_id,
+              signType: param.signType,
+              paySign: param.paySign,
+              success (res) {
+                console.log(res);
+              },
+              fail (res) {console.log(res); }
+            })
+          }
+    }
+
     //去充值
     goRecharge(amount){
     //    Taro.requestPayment({

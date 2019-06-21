@@ -89,12 +89,13 @@ class Index extends Component {
 
   componentDidShow () {
     let info = Taro.getStorageSync("userMember");
-    this.setState((data) =>{
-      data['userInfo'].headUrl = info.headUrl;
-      data['userInfo'].nickName = info.nickName;
-      data['userInfo'].memberId = info.memberId;
-    })
-
+    if(info){
+      this.setState((data) =>{
+        data['userInfo'].headUrl = info.headUrl;
+        data['userInfo'].nickName = info.nickName;
+        data['userInfo'].memberId = info.memberId;
+      })
+    }
   }
 
   componentDidHide () { }

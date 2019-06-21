@@ -25,7 +25,11 @@ class Amount extends Component {
   }
   componentWillMount(){    
   }
-  componentDidShow () { 
+  
+  componentDidShow () {
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
+    }) 
     this.getMoneyLoglist() 
     if(this.$router.params.type && this.$router.params.type==1){
       // console.log(this.$router.params.rule)
@@ -177,7 +181,7 @@ class Amount extends Component {
   }
  
   render () {
-    const {moneyLogList,moneyLogListlen} = this.state;
+    const {moneyLogList,moneyLogListlen,userInfo} = this.state;
     return (
     <View className="integral-detail">
         <View className="integral-header">
@@ -188,7 +192,7 @@ class Amount extends Component {
                     <View className="iconfont icon-dingcengtoumingdu theme-color"></View>
                 </View>
                 <View className="header-point flex flex-center">
-                    <View className="font56">¥0.00</View>
+                    <View className="font56">¥{userInfo.moneyBalance}</View>
                 </View>
             </View>
             <View className="integral-title font30 color666">

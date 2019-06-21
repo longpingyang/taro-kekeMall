@@ -29,6 +29,9 @@ class Point extends Component {
   }
 
   componentDidShow () { 
+    this.setState({
+      userInfo: Taro.getStorageSync("userMember")
+    }) 
     this.getScoreLogList();
   }
 
@@ -71,7 +74,7 @@ class Point extends Component {
   }
  
   render () {
-    const { scoreLogList,scoreLogListlen} = this.state;
+    const { scoreLogList,scoreLogListlen,userInfo} = this.state;
     return (
     <View className="integral-detail">
         <View className="integral-header">
@@ -82,7 +85,7 @@ class Point extends Component {
                     <View  className="iconfont icon-dingcengtoumingdu theme-color"></View>
                 </View>
                 <View className="header-point flex flex-center">
-                    0
+                {userInfo.scoreCount}
                 </View>
                 <a className="header-desc line-height1 color333 font26"></a>
             </View>
