@@ -110,10 +110,6 @@ class Index extends Component {
     Taro.chooseImage({
       count:1,
       success: (res)=> {
-        // this.state.userInfo.headUrl = res.tempFilePaths[0];
-        // this.setState({
-        //   userInfo: this.state.userInfo
-        // })        
         this.setState((data) =>{
           data['userInfo'].headUrl = res.tempFilePaths[0];
         })
