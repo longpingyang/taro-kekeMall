@@ -122,7 +122,7 @@ class Order extends Component {
         url:api.payPreorderPath,
         method:"POST",
         data:{
-          type:this.state.orderList[index].orderType==1?1:2,
+          type:this.state.orderList[index].orderType==1?2:1,
           totalPrice:this.state.orderList[index].payMoney,
           linkOrder:this.state.orderList[index].orderId
         },

@@ -79,7 +79,7 @@ class OrderDetails extends Component {
         url:api.payPreorderPath,
         method:"POST",
         data:{
-          type:this.state.orderDetail.orderType==1?1:2,
+          type:this.state.orderDetail.orderType==1?2:1,
           totalPrice:this.state.orderDetail.payMoney,
           linkOrder:this.state.orderDetail.orderId
         },
