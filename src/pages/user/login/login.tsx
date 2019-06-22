@@ -30,17 +30,15 @@ class Login extends Component {
     Taro.login({
       success:(res) =>{
         Taro.request({
-          url:'https://api.weixin.qq.com/sns/jscode2session?appid=wxa4028bf5e14b501a&secret=cc66408d416e1152f7c6ee16abf25860&js_code=' + res.code,
-          header:{
-            'content-type':'json'
-          },
+          url:api.memberOpenIdPath+'?code='+res.code,
+          method:"POST",
           success:(data)=>{
-            console.log("wxOpenid:"+data.data.openid);
-            Taro.setStorage({key:'wxOpenid',data:data.data.openid})
+            let openid = JSON.parse(data.data.data).openid;
+            Taro.setStorage({key:'wxOpenid',data:openid})
             Taro.request({
               url:api.memberCheckPath,
               data:{
-                wxOpenid:data.data.openid
+                wxOpenid:openid
               },
               method: 'POST',
               success:(obj) =>{
@@ -158,7 +156,7 @@ class Login extends Component {
         passwd:this.state.passwd,
         phone:this.state.phoneNo,        
         smsCode:this.state.code,
-        wxOpenid: Taro.getStorageSync('wxOpenid')
+        openId: Taro.getStorageSync('wxOpenid')
       }
     }).then((res)=>{
       Taro.hideLoading();

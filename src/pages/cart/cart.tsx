@@ -37,7 +37,13 @@ class Cart extends Component {
     })
   }
   goOrderCreatePage(){
-    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount});
+    let tempArr = [];
+    this.state.goodsList.forEach(element => {
+      if(element['checked']){
+        tempArr.push(element);
+      }
+    });
+    Taro.setStorageSync("orderCreate",{goodsList:tempArr,amount:this.state.amount});
     Taro.navigateTo({
       url: '/pages/cart/ordercreate/ordercreate'
     })
@@ -308,7 +314,7 @@ class Cart extends Component {
                   </View>
                   <View className="description font20">(不含运费)</View>
               </View>
-              <View onClick={this.goOrderCreatePage} className="shopcart_go_buy">去结算</View>
+              <View onClick={this.goOrderCreatePage.bind(this)} className="shopcart_go_buy">去结算</View>
           </View>
           <View className="navHeight"></View>
         </View>

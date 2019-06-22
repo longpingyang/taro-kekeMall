@@ -36,7 +36,7 @@ class Card extends Component {
     Taro.login({
       success:function(res){
         Taro.request({
-          url:'https://api.weixin.qq.com/sns/jscode2session?appid=wxa4028bf5e14b501a&secret=cc66408d416e1152f7c6ee16abf25860&js_code=' + res.code,
+          url:'https://api.weixin.qq.com/sns/jscode2session?appid=wxa4028bf5e14b501a&secret=7a8833c881098ef5dadf4e75c0d0ea65&js_code=' + res.code,
           header:{
             'content-type':'json'
           },

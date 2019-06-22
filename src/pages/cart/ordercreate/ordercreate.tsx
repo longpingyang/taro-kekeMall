@@ -141,6 +141,41 @@ class Ordercreate extends Component {
         if(this.state.cxYhMoneyType=='5'){
             amount=this.state.amount*this.state.saveTimes;
         }
+
+        console.log(JSON.stringify({
+            "actType":this.state.cxYhMoneyType,
+            "activityId": this.state.cxYhMoneyId,
+            "couponList": couponList,
+            "goodsList": this.state.goodsList,
+            "memberAddressId": this.state.memberAddressId,
+            "remark": this.state.remark,
+            "payActAmount": this.state.cxYhMoney,
+            "payCouponAmount": this.state.coupon,
+            "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+            "paySavingAmount": 0,
+            "payScore": 0,
+            "payScoreAmount": 0,
+            "payScoreCount": 0
+        }))
+        Taro.setClipboardData({
+            data:JSON.stringify({
+                "actType":this.state.cxYhMoneyType,
+                "activityId": this.state.cxYhMoneyId,
+                "couponList": couponList,
+                "goodsList": this.state.goodsList,
+                "memberAddressId": this.state.memberAddressId,
+                "remark": this.state.remark,
+                "payActAmount": this.state.cxYhMoney,
+                "payCouponAmount": this.state.coupon,
+                "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+                "paySavingAmount": 0,
+                "payScore": 0,
+                "payScoreAmount": 0,
+                "payScoreCount": 0
+            })
+        })
+
+
         Taro.request({
             url:api.orderCreatePath,
             method:"POST",
@@ -332,7 +367,7 @@ class Ordercreate extends Component {
             }            
         }
         let tempyHmoneyArr = this.state.yHmoneyArr;
-        tempyHmoneyArr[obj.template.couponId] = yHmoney;
+        tempyHmoneyArr[obj.id] = yHmoney;
         this.setState({
             yHmoneyArr:tempyHmoneyArr
         });
@@ -679,8 +714,8 @@ class Ordercreate extends Component {
                                             </View>
                                             <View className="coupon-date">{item.template.isGoods==1?"部分商品可用":"全部商品可用"}</View>
                                         </View>
-                                        <View onClick={this.selUseCoupon.bind(this,item.template.couponId)} className="coupon-operate flex" style="background-color: rgb(241, 45, 34);">
-                                            <View  className="btn-pick theme-bdc theme-color font26">{this.state.couponId==item.template.couponId?'已使用': '使用'}</View>
+                                        <View onClick={this.selUseCoupon.bind(this,item.id)} className="coupon-operate flex" style="background-color: rgb(241, 45, 34);">
+                                            <View  className="btn-pick theme-bdc theme-color font26">{this.state.couponId==item.id?'已选择': '使用'}</View>
                                         </View>
                                         <View className="border-coupon"></View>
                                     </View>

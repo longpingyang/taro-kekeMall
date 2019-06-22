@@ -37,6 +37,7 @@ const activityIndexAdPath = baseUrl + 'activity/index/ad';//首页的轮播广�
 const payPreorderPath = baseUrl + 'pay/preorder';//获取支付参数
 const payEndpayPath = baseUrl + 'pay/endpay'; //支付回调
 
+const memberOpenIdPath = baseUrl + 'member/openid';//获取openid
 
 
 module.exports = {
@@ -81,8 +82,8 @@ module.exports = {
   activityIndexAdPath:activityIndexAdPath,
   
   payPreorderPath:payPreorderPath,
-  payEndpayPath:payEndpayPath
-
+  payEndpayPath:payEndpayPath,
+  memberOpenIdPath:memberOpenIdPath
 
 
 

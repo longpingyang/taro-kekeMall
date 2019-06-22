@@ -92,7 +92,7 @@ class Index extends Component {
             {
                 dataList.map((item) =>{
                     return (
-                    <View key={item.id} className="coupon flex discoloration" style="background-color: rgba(241, 45, 34, 0.6);">
+                    <View key={item.id} className={"coupon flex discoloration "+(currentNav==1?"disabled used":"")} >
                         <View className="coupon-price flex theme-color flex-col">
                             <View className={"price-number "+(item.template.type==1?"price-number_3":"")}>
                                 {item.template.type==1 && <View className="unit-name_3">¥</View>}                                        
@@ -108,8 +108,16 @@ class Index extends Component {
                                 <View className="flex flex-v-center">{item.template.isGoods==1?"部分商品可用":"全部商品可用"}</View>
                             </View>
                         </View>
-                        <View className="coupon-usebtn flex flex-col" style="background-color: rgb(241, 45, 34);">
-                            <View className="coupon-usetext">去使用</View>
+                        <View className="coupon-usebtn flex flex-col">
+                            {
+                                currentNav==0 && <View className="coupon-usetext">去使用</View>
+                            }
+                            {
+                                currentNav==1 && <View className="coupon-usetext">已使用</View>
+                            }
+                            {
+                                currentNav==2 && <View className="coupon-usetext">已过期</View>
+                            }
                             <View className="coupon-expire"><View></View></View>
                         </View>
                         <View className="border-coupon"></View>

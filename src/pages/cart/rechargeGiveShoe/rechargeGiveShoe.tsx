@@ -37,10 +37,13 @@ class RechargeGiveShoe extends Component {
     })
   }
   goOrderCreatePage(){
-
-    Taro.setStorageSync("orderCreate",{goodsList:this.state.goodsList,amount:this.state.amount,saveTimes:this.state.saveTimes});
-    
-
+    let tempArr = [];
+    this.state.goodsList.forEach(element => {
+      if(element['checked']){
+        tempArr.push(element);
+      }
+    });
+    Taro.setStorageSync("orderCreate",{goodsList:tempArr,amount:this.state.amount,saveTimes:this.state.saveTimes});
     Taro.navigateTo({
       url: '/pages/cart/ordercreate/ordercreate?orderType=5'
     })
@@ -79,8 +82,8 @@ class RechargeGiveShoe extends Component {
                     element['mainPic'] = JSON.parse(element.picList)[0];
                     element['colorId'] =element.colorList[0].colorId;
                     element['colorName'] =element.colorList[0].name;
-                    element['sizeId'] =element.colorList[0].sizeId;
-                    element['sizeName'] =element.colorList[0].name;
+                    element['sizeId'] =element.sizeList[0].sizeId;
+                    element['sizeName'] =element.sizeList[0].name;
                 });
                 this.setState({
                     goodsList:tempGoods,
