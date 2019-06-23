@@ -42,11 +42,15 @@
         background: #07c160;
     }
 }
-
+.Dy_login{
+    .btn{
+        background: #6190e8;
+    }
+}
 .loginType_box{
-    position: absolute; right: 0; left: 0; top: 18%; 
+    position: absolute; right: 0; left: 0; top: 10%; 
     .logo_box{
-        text-align: center;
+        text-align: center; 
         .logo{
             width: 300px; border-radius: 150px; height: 300px;
         }

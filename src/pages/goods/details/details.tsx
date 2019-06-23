@@ -492,8 +492,8 @@ class Index extends Component {
                           </View>
                       </View>
                   </View>
-                  <View className="sku-form">
-                      <Text className="btn-confirm" onClick={this.saveParam.bind(this)}>确认</Text>
+                  <View className="sku-form" onClick={this.saveParam.bind(this)}>
+                      <Text className="btn-confirm">确认</Text>
                   </View>
               </View>
           </View>

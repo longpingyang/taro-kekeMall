@@ -51,8 +51,7 @@ class Order extends Component {
       })
     }else{
       this.getOrderLisyFn(this.state.currentNav)
-    }
-    
+    }    
   }
   state = {
     userInfo:{
@@ -89,7 +88,7 @@ class Order extends Component {
           "pageCount": 0,
           "pageNo": 1,
           "pageRec": 0,
-          "pageSize": 10
+          "pageSize": 20
         }
       },
       header:{

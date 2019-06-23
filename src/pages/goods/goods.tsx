@@ -89,7 +89,7 @@ class Index extends Component {
           "pageCount": 0,
           "pageNo": 1,
           "pageRec": 10,
-          "pageSize": 10
+          "pageSize": 20
         },
         "priceMax": this.state.goodsParam.priceMin,
         "priceMin": this.state.goodsParam.priceMax,

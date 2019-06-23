@@ -114,9 +114,9 @@ class Card extends Component {
             </View>
           </View>
         </View>
-        <View className='get_card' hidden={this.state.isCard==1}>
+        {/* <View className='get_card' hidden={this.state.isCard==1}>
           <Button className='btn' onClick={this.goinputTelFn}>领取会员卡</Button>
-        </View>
+        </View> */}
         <View className='user_entrance'  hidden={this.state.isCard==3}>
           <View>
             <Text>用户中心</Text>

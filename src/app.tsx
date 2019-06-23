@@ -47,7 +47,23 @@ class App extends Component {
       "pages/order/order",
       "pages/order/details/details",
       "pages/address/list/list",
-      "pages/address/edit/edit"
+      "pages/address/edit/edit",
+      "pages/dianyuan/home/home",
+      "pages/dianyuan/addHy/addHy",
+      "pages/dianyuan/daifa/daifa",
+      "pages/dianyuan/msg/msg",
+      "pages/dianyuan/order/order",
+      "pages/dianyuan/qiandao/qiandao",
+      "pages/dianyuan/tongji/tongji",
+      "pages/dianyuan/minehuiyuan/minehuiyuan",
+      "pages/dianyuan/minehuiyuan/hybq/hybq",
+      "pages/dianyuan/minehuiyuan/hylist/hylist",
+      "pages/dianyuan/minehuiyuan/hyfx/hyfx",
+      "pages/dianyuan/minehuiyuan/hysr/hysr",
+
+      "pages/pintuan/pintuan",
+      "pages/kanjia/kanjia",
+      "pages/zixun/zixun"
     ],
     window: {
       "backgroundTextStyle": "dark",

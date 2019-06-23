@@ -51,7 +51,7 @@ class Point extends Component {
       method:"POST",
       data:{
         "pageNo": 1,
-        "pageSize": 10
+        "pageSize": 20
       },
       header:{
         token:Taro.getStorageSync('token')

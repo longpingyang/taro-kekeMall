@@ -173,7 +173,21 @@ class Index extends Component {
         }
     })
 }
-
+goPintuanPage(){
+  Taro.navigateTo({
+    url: '/pages/pintuan/pintuan'
+  })
+}
+goKanjiaPage(){
+  Taro.navigateTo({
+    url: '/pages/kanjia/kanjia'
+  })
+}
+gozixunPage(){
+  Taro.navigateTo({
+    url: '/pages/zixun/zixun'
+  })
+}
 
   render () {
     const { posts,activityData } = this.state;
@@ -204,7 +218,7 @@ class Index extends Component {
         </View>
         <View className='index_head'>
           <Image className='bg' mode='aspectFill' src={require('../../images/goods/7.jpg')}></Image>
-          <Button>切换门店</Button>
+          {/* <Button>切换门店</Button> */}
           <Image className='center' mode='scaleToFill' src={require('../../images/goods.png')}></Image>
           <Text className="text">克克智慧零售商城</Text>
         </View>
@@ -288,27 +302,42 @@ class Index extends Component {
             )
           })
         }
-        {/*<View className='pintuan'>
-          <Text className='bigtitle'>一起来砍价</Text>
+        <View className='pintuan'>
+          <Text className='bigtitle'>一起来拼团</Text>
           <View className='item_box'>
-            <Image className='image' mode='aspectFill' src={require('../../images/goods/9.jpg')}></Image>
+            <Image className='image' mode='aspectFill' src='http://www.kknx6.com/goods/mainPic/6.png'></Image>
             <View className='item_right'>
               <View className='txtCon'>
-                <Text className='goodsTitle'>气质白色连衣裙（演示，不发货）</Text>
+                <Text className='goodsTitle'>2018深口秋单</Text>
                 <View className='price_box'>
                   <View className='price_left'>
                     <Text className='symbol'>￥</Text>
-                    <Text className='num'>0.01</Text>
+                    <Text className='num'>650</Text>
                   </View>
-                  <Button>发起砍价</Button>
+                  <Button className='btn' onClick={this.goPintuanPage}>去看看</Button>
                 </View>
-              </View>
-              <View className='more'>
-                <Text className="text">查看更多</Text>
               </View>
             </View>
           </View>
-        </View> */}
+        </View>
+        <View className='pintuan'>
+          <Text className='bigtitle'>一起来砍价</Text>
+          <View className='item_box'>
+            <Image className='image' mode='aspectFill' src='http://www.kknx6.com/goods/addPic/61.jpg'></Image>
+            <View className='item_right'>
+              <View className='txtCon'>
+                <Text className='goodsTitle'>2019浅口秋单</Text>
+                <View className='price_box'>
+                  <View className='price_left'>
+                    <Text className='symbol'>￥</Text>
+                    <Text className='num'>911</Text>
+                  </View>
+                  <Button className='btn' onClick={this.goKanjiaPage}>去看看</Button>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
         {
           this.state.typeGoodsList.map((item) =>{
             return (
@@ -347,6 +376,9 @@ class Index extends Component {
             {goodsItem}
           </View>
         </View> */}
+        <View className='zixun_box' onClick={this.gozixunPage}>
+          <Image className='image' mode='aspectFit' src='http://www.kknx6.com/demo/app/sms.png'></Image>
+        </View>
       </View>
     )
   }

@@ -205,8 +205,20 @@ class OrderDetails extends Component {
                       </View>
                   </View>
                   <View className="flex flex-between flex-v-center">
-                      <View>优惠券</View>
-                      <View>-¥0</View>
+                      <View>促销抵扣</View>
+                      <View>-¥{orderDetail.activityMoney}</View>
+                  </View>
+                  <View className="flex flex-between flex-v-center">
+                      <View>优惠抵扣</View>
+                      <View>-¥{orderDetail.couponMoney}</View>
+                  </View>
+                  <View className="flex flex-between flex-v-center">
+                      <View>积分抵扣</View>
+                      <View>-¥{orderDetail.scoreMoney}</View>
+                  </View>
+                  <View className="flex flex-between flex-v-center">
+                      <View>储值抵扣</View>
+                      <View>-¥{orderDetail.savingMoney}</View>
                   </View>
                   <View className="flex flex-between flex-v-center">
                       <View>实际支付</View>
@@ -221,7 +233,7 @@ class OrderDetails extends Component {
                   <View>
                       订单编号： {orderDetail['orderId']}
                   </View>
-                  <View data-orderno="8811948016528">复制</View>
+                  {/* <View data-orderno="8811948016528">复制</View> */}
               </View>
               {/* <View className='item'>
                   服务门店： 演示账号
@@ -232,7 +244,7 @@ class OrderDetails extends Component {
               <View className='item' hidden={true}>支付时间：1970.01.01 08:00:00</View>
               <View className='item' hidden={true}> 交易单号：</View>
               <View className='item'>
-                  支付方式：线下支付
+                  支付方式：线上支付
               </View>
               <View className='item' hidden={true}>
                   完成时间：1970.01.01 08:00:00

@@ -37,8 +37,8 @@ class Ordercreate extends Component {
         couponList:[],//礼券列表
         coupon:0,//优惠金额
         cxYhMoney:0,//促销优惠金额
-        cxYhMoneyId:"",
-        cxYhMoneyType:"",
+        cxYhMoneyId:null,
+        cxYhMoneyType:null,
         couponId:'',
         freight:0,//运费
         payScore:"",
@@ -141,41 +141,9 @@ class Ordercreate extends Component {
         if(this.state.cxYhMoneyType=='5'){
             amount=this.state.amount*this.state.saveTimes;
         }
-
-        console.log(JSON.stringify({
-            "actType":this.state.cxYhMoneyType,
-            "activityId": this.state.cxYhMoneyId,
-            "couponList": couponList,
-            "goodsList": this.state.goodsList,
-            "memberAddressId": this.state.memberAddressId,
-            "remark": this.state.remark,
-            "payActAmount": this.state.cxYhMoney,
-            "payCouponAmount": this.state.coupon,
-            "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
-            "paySavingAmount": 0,
-            "payScore": 0,
-            "payScoreAmount": 0,
-            "payScoreCount": 0
-        }))
-        Taro.setClipboardData({
-            data:JSON.stringify({
-                "actType":this.state.cxYhMoneyType,
-                "activityId": this.state.cxYhMoneyId,
-                "couponList": couponList,
-                "goodsList": this.state.goodsList,
-                "memberAddressId": this.state.memberAddressId,
-                "remark": this.state.remark,
-                "payActAmount": this.state.cxYhMoney,
-                "payCouponAmount": this.state.coupon,
-                "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
-                "paySavingAmount": 0,
-                "payScore": 0,
-                "payScoreAmount": 0,
-                "payScoreCount": 0
-            })
-        })
-
-
+        // Taro.setClipboardData({
+        //     data:''
+        // })
         Taro.request({
             url:api.orderCreatePath,
             method:"POST",

@@ -220,6 +220,11 @@ class Login extends Component {
       loginType:type
     })
   }
+  goDyHomePage(){
+    Taro.navigateTo({
+      url: '/pages/dianyuan/home/home'
+    })
+  }
   render () {
     return (
       <View className='login_page'>        
@@ -270,6 +275,9 @@ class Login extends Component {
           </View>
           <View className='get_card fast_login'>
             <Button className='btn' onClick={this.loginType.bind(this,2)}>验证码登录</Button>
+          </View>
+          <View className='get_card Dy_login'>
+            <Button className='btn' onClick={this.goDyHomePage.bind(this)}>店员登录</Button>
           </View>
         </View>
         <View className='index passwdlogin_box' hidden={this.state.loginType==0 || this.state.loginType==2}>
