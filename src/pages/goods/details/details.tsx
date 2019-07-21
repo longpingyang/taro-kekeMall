@@ -44,7 +44,7 @@ class Index extends Component {
     couponlist:[],
     skuModalShow:false,
     skuData: [],
-    buyType:1,//购买类型1是立即购买 2 加入购物车
+    buyType:1,//购买类型1是立即购买 2 加入购物车 3 充值购买
     buyParam:{
       "colorId": "",
       "count": '1',
@@ -52,7 +52,8 @@ class Index extends Component {
       "sizeId": ""
     },
     selText:'请选择',
-    selArrtText:[]
+    selArrtText:[],
+    shareModalIsShow: false
   }
 
   componentWillReceiveProps (nextProps) {
@@ -177,28 +178,44 @@ class Index extends Component {
         }
   }
   saveParam(){
-    Taro.request({
-        url:api.orderShopcartSavePath,
-        method:"POST",
-        data:{
-            "colorId": this.state.buyParam.colorId,
-            "count": this.state.buyParam.count,
-            "goodsId": this.state.goodsId,
-            "sizeId": this.state.buyParam.sizeId
-        },
-        header:{
-            token:Taro.getStorageSync('token')
-        }
-    }).then((res)=>{
-        Taro.showToast({
-            title: '添加成功',
-            icon: 'none',
-            duration: 1500
-        });
-        Taro.switchTab({
-            url: '/pages/cart/cart'
-        })
-    })
+    if(this.state.buyType==3){
+      Taro.setStorageSync("orderCreate",{goodsList:[{
+        "colorId": this.state.buyParam.colorId,
+        "colorName":"",
+        "count": this.state.buyParam.count,
+        "goodsId": this.state.goodsId,
+        "sizeId": this.state.buyParam.sizeId,
+        "sizeName":"",
+        "mainPic":this.state.background[0],
+        "price":this.state.goodsDetail.price
+      }],amount:this.state.goodsDetail.price,saveTimes:5,basePrice:50});
+      Taro.navigateTo({
+        url: '/pages/cart/ordercreate/ordercreate?orderType=5'
+      })
+    }else{
+      Taro.request({
+          url:api.orderShopcartSavePath,
+          method:"POST",
+          data:{
+              "colorId": this.state.buyParam.colorId,
+              "count": this.state.buyParam.count,
+              "goodsId": this.state.goodsId,
+              "sizeId": this.state.buyParam.sizeId
+          },
+          header:{
+              token:Taro.getStorageSync('token')
+          }
+      }).then((res)=>{
+          Taro.showToast({
+              title: '添加成功',
+              icon: 'none',
+              duration: 1500
+          });
+          Taro.switchTab({
+              url: '/pages/cart/cart'
+          })
+      })
+    }
   }
 
   buyNowFn(){
@@ -208,6 +225,16 @@ class Index extends Component {
       buyType:1
     })
   }
+
+  buyRechargeFn(){
+    this.setState({
+      skuModalShow:true,
+      couponsModalShow:false,
+      buyType:3
+    })
+    
+  }
+
 
   //选择的参数
   getskudata(data){
@@ -251,11 +278,28 @@ class Index extends Component {
       url: '/pages/index/index'
     })
   }
+  //分享
+  openShareModalFn(){
+    this.setState({
+      shareModalIsShow: true
+    })
+  }
+  closeShareModalFn(){
+    this.setState({
+      shareModalIsShow: false
+    })
+  }
+  //
+  shareToFriendFn(){
+
+  }
   render () {
     const {skuData,couponlist} =this.state;
     console.log(couponlist);
     return (
       <View className='goods_details_page'>
+        {/* <button open-type='share'>分享</button> */}
+        <View className="share_btn" onClick={this.openShareModalFn.bind(this)}>分享</View>
         <View className="goods_detail_box">
             <View className="goodsImg_box">        
                 <Swiper
@@ -426,6 +470,7 @@ class Index extends Component {
                   <View className="wrap-btns flex flex1">
                     <View onClick={this.addCartFn} className="flex1 theme-bgcart">加入购物车</View>
                     <View onClick={this.buyNowFn} className="flex1 btn-tobuy theme-bgc">立即购买</View>
+                    <View onClick={this.buyRechargeFn} className="flex1 theme-bgCz">充值购买</View>
                   </View>
                 </View>
             </View>
@@ -502,7 +547,23 @@ class Index extends Component {
         <AtFloatLayout title="领取优惠券" isOpened={this.state.couponsModalShow}>
             <CouponsModal couponlist={this.state.couponlist} />
         </AtFloatLayout>
-
+        <AtFloatLayout title="" isOpened={this.state.shareModalIsShow}>
+          <View className="share_dialog_box">
+            <View className="share_con_box">
+                <View className="item" onClick={this.shareToFriendFn.bind(this)}>
+                  <Button className='btn' open-type="share">
+                    <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
+                    <Text className="text">发给好友</Text>
+                  </Button>
+                </View>
+                <View className="item">
+                    <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
+                    <Text className="text">生成图片</Text>
+                </View>
+            </View>
+            <View className='close_btn' onClick={this.closeShareModalFn.bind(this)}>取消</View>
+          </View>
+        </AtFloatLayout>                          
       </View>
     )
   }

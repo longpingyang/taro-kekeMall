@@ -28,12 +28,30 @@ class Ordercreate extends Component {
             })
         }
     }
+    goZitiAddressPage(){
+        
+    }
+    goZitiShopPage(){
+        if(this.$router.params.orderType){
+            Taro.navigateTo({
+                url: '/pages/zitiShop/zitiShop?checkedId='+this.state.shopId+"&orderType="+this.$router.params.orderType
+            })
+        }else{
+            Taro.navigateTo({
+                url: '/pages/zitiShop/zitiShop?checkedId='+this.state.shopId
+            })
+        }
+    }
     state={
         isShowInvocePage:true,
         couponsModalShow: false,
+        isSelfGet:2,//配送方式 2 快递 1 自提
+        shopId:'',
+        shopAddr:"",
         goodsList:[],
         amount:0,
         saveTimes:0,
+        basePrice:0,
         couponList:[],//礼券列表
         coupon:0,//优惠金额
         cxYhMoney:0,//促销优惠金额
@@ -48,6 +66,7 @@ class Ordercreate extends Component {
         addressObj:{},
         addressListlength:0,
         memberAddressId:"",
+        zitiAddressObj:{},
         yHmoneyArr:{},
         orderType:0//0:普通订单 5:充值送鞋订单
     }
@@ -85,10 +104,9 @@ class Ordercreate extends Component {
                     }
                 });
             }
-            
             if(isDefault){
                 this.setState({
-                    addressObj:res.data.data[0],
+                    zitiAddressObj:res.data.data[0],
                     addressListlength:res.data.data.length,
                     memberAddressId:res.data.data[0].deliveryId
                 })
@@ -102,19 +120,84 @@ class Ordercreate extends Component {
             }
           }
         })
-      }
+    }
+
+    getZitiAddressFn(){
+        Taro.request({
+            url:api.memberDeliveryListPath,
+            method:"POST",
+            header:{
+              token:Taro.getStorageSync('token')
+            }
+          }).then((res) =>{
+            if(res.data.success){
+              let isDefault=true;
+              if(this.$router.params.addId){
+                  res.data.data.forEach(element => {
+                      if(element['deliveryId']==this.$router.params.addId){
+                          isDefault=false
+                          this.setState({
+                              zitiAddressObj:element,
+                              shopId:element.shopId,
+                              shopAddr:element.shopAddr
+                          })
+                      }
+                  });  
+              }else{
+                  res.data.data.forEach(element => {
+                      if(element['isDefault']==1){
+                          isDefault=false
+                          this.setState({
+                              zitiAddressObj:element,
+                              shopId:element.shopId,
+                              shopAddr:element.shopAddr
+                          })
+                      }
+                  });
+              }
+              if(isDefault){
+                  this.setState({
+                      zitiAddressObj:res.data.data[0],
+                      shopId:res.data.data[0].shopId,
+                      shopAddr:res.data.data[0].shopAddr
+                  })
+              }
+            }else{
+              if(res.data.errorCode=='E401'){
+                Taro.setStorageSync('userMember',null);
+                Taro.navigateTo({
+                  url: '/pages/user/login/login'
+                })
+              }
+            }
+          })
+    }
+
+
     showInvocePage(){
         this.setState({
             isShowInvocePage:false
         })
     }
     componentDidMount(){
-        this.getAddressList();
+        if(this.$router.params.isSelfGet){
+            this.setState({
+                isSelfGet:this.$router.params.isSelfGet
+            });
+            if(this.$router.params.isSelfGet==2){
+                this.getAddressList();
+            }else{
+                this.getZitiAddressFn();
+            }
+        }else{
+            this.getAddressList();
+        }
         if(this.$router.params.orderType==5){//充值送鞋
             this.setState({
                 goodsList:Taro.getStorageSync('orderCreate').goodsList,
                 amount:Taro.getStorageSync('orderCreate').amount,
                 saveTimes:Taro.getStorageSync('orderCreate').saveTimes,
+                basePrice:Taro.getStorageSync('orderCreate').basePrice,
                 orderType: 5,
                 cxYhMoneyType:5
             })
@@ -137,9 +220,17 @@ class Ordercreate extends Component {
         if(this.state.couponId!=''){
             couponList.push(this.state.couponId);
         }
-        let amount=this.state.amount;
-        if(this.state.cxYhMoneyType=='5'){
-            amount=this.state.amount*this.state.saveTimes;
+        let amountTmp=this.state.amount;
+        let amount = amountTmp;
+        if(this.state.cxYhMoneyType=='5'){            
+            if(this.state.basePrice==0){
+                amountTmp=this.state.amount-this.state.cxYhMoney;
+            }else{
+                amountTmp=this.state.basePrice
+            }
+            amount = amountTmp*this.state.saveTimes;
+        }else{
+            amount = amountTmp-this.state.cxYhMoney-this.state.coupon;
         }
         // Taro.setClipboardData({
         //     data:''
@@ -153,10 +244,13 @@ class Ordercreate extends Component {
                 "couponList": couponList,
                 "goodsList": this.state.goodsList,
                 "memberAddressId": this.state.memberAddressId,
+                "isSelfGet": this.state.isSelfGet,
+                "shopId":this.state.shopId,
+                "shopAddr":this.state.shopAddr,
                 "remark": this.state.remark,
                 "payActAmount": this.state.cxYhMoney,
                 "payCouponAmount": this.state.coupon,
-                "payRealMoney": amount-this.state.cxYhMoney-this.state.coupon+this.state.freight,
+                "payRealMoney": amount+this.state.freight,
                 "paySavingAmount": 0,
                 "payScore": 0,
                 "payScoreAmount": 0,
@@ -435,6 +529,15 @@ class Ordercreate extends Component {
         
 
     }
+    //改变配送方式
+    changeDeliveryType(type){
+        this.setState({
+            isSelfGet:type
+        })
+    }
+    
+
+    
 
 
     render(){
@@ -444,11 +547,12 @@ class Ordercreate extends Component {
                 <View className="wrap-delivery-type flex flex-v-center">
                     <View className="deli-title flex0">配送方式</View>
                     <View className="deli-type-list flex1 flex">
-                        <View className="deli-item  border-around theme-color theme-bdc  text-line1">商家配送</View>
-                        <View className="deli-item  text-line1">到店自提</View>
+                        <View onClick={this.changeDeliveryType.bind(this,2)} className={"deli-item  text-line1 "+(this.state.isSelfGet==2?"border-around theme-color theme-bdc":"")}>商家配送</View>
+                        <View onClick={this.changeDeliveryType.bind(this,1)} className={"deli-item  text-line1 "+(this.state.isSelfGet==1?"border-around theme-color theme-bdc":"")}>到店自提</View>
                     </View>
                 </View>
-                <View className="wrap-address">
+                {
+                    this.state.isSelfGet==2 && <View className="wrap-address">
                     <View className="arrow-container" hidden={addressListlength>0}>
                         <View className="addr-cont border-bottom-1px theme-color">
                             <View className="arrow-wrap flex-v-center ">
@@ -486,7 +590,6 @@ class Ordercreate extends Component {
                             </View>
                         </View>
                     </View>
-
                     <View className="custom-form pr-32">
                         <View className="arrow-wrap flex-v-center no-icon">
                             <View className="flex0 group-wrap-tip">
@@ -498,6 +601,22 @@ class Ordercreate extends Component {
                         </View>
                     </View>
                 </View>
+                }
+                {
+                    this.state.isSelfGet==1 && <View className="wrap-address">
+                    <View className="m-row m-row-line m-row-start m-row-icon-box  order-row-comm">
+                        <View className="order-row-comm-name">自提点</View>
+                        <View className="order-row-comm-val">测试自提0409</View>
+                        <View onClick={this.goZitiShopPage.bind(this)} className="iconfont icon-newarrow m-row-icon "></View>
+                    </View>
+                    <View className="m-row m-row-line m-row-start order-row-comm">
+                        <View className="order-row-comm-name item-required">提货手机</View>
+                        <Input className="order-row-comm-val input" type="number" placeholder="请填写"></Input>
+                    </View>
+                </View>
+                }
+                
+                
                 <View className="wrap-goods section-item">
                     <View className="wrap-goods-title border-bottom-1px">
                         <View className="iconfont icon-gouwuqingdan"></View>购物清单
@@ -602,18 +721,47 @@ class Ordercreate extends Component {
                     
                     {
                         this.state.orderType==5 && <View>
-                                                        <View className="flex flex-between">
-                                                            <Text>充值赠送抵扣</Text><Text>-¥{this.state.amount}</Text>
-                                                        </View>
-                                                        <View className="flex flex-between">
-                                                            <Text>充值金额</Text><Text>¥{this.state.amount*this.state.saveTimes}</Text>
-                                                        </View>
+                                                        {/* 无基价 */}
+                                                        {
+                                                           this.state.basePrice==0 && <View className="flex flex-between">
+                                                                <Text>促销活动抵扣</Text><Text>-¥{this.state.cxYhMoney}</Text>
+                                                            </View>                                                        
+                                                        }
+                                                        {
+                                                            this.state.basePrice==0 && <View className="flex flex-between">
+                                                                <Text>充值赠送抵扣</Text><Text>-¥{this.state.amount-this.state.cxYhMoney}</Text>
+                                                            </View>
+                                                        }
+                                                        {/* 有基价 */}
+                                                        {
+                                                            this.state.basePrice!=0 && <View className="flex flex-between">
+                                                                <Text>充值赠送抵扣</Text><Text>-¥{this.state.amount}</Text>
+                                                            </View>
+                                                        }
+                                                        {
+                                                           this.state.basePrice==0 && <View className="flex flex-between">
+                                                                <Text>充值金额</Text><Text>¥{(this.state.amount-this.state.cxYhMoney)*this.state.saveTimes}</Text>
+                                                            </View>
+                                                        }
+                                                        {
+                                                            this.state.basePrice!=0 && <View className="flex flex-between">
+                                                                <Text>充值金额</Text><Text>¥{this.state.basePrice*this.state.saveTimes}</Text>
+                                                            </View>
+                                                        }                                                        
                                                         <View className="flex flex-between">
                                                             <Text>运费</Text><Text>¥{this.state.freight}</Text>
                                                         </View>
-                                                        <View className="flex flex-between">
-                                                            <Text>实付支付</Text><Text>¥{this.state.amount*this.state.saveTimes+this.state.freight}</Text>
-                                                        </View>
+                                                        {
+                                                            this.state.basePrice==0 && <View className="flex flex-between">
+                                                                <Text>实付支付</Text><Text>¥{(this.state.amount-this.state.cxYhMoney)*this.state.saveTimes+this.state.freight}</Text>
+                                                            </View>
+                                                        }
+                                                        {
+                                                            this.state.basePrice!=0 && <View className="flex flex-between">
+                                                                <Text>实付支付</Text><Text>¥{this.state.basePrice*this.state.saveTimes+this.state.freight}</Text>
+                                                            </View>
+                                                        }
+                                                        
                                                     </View>
                     }
                     {
@@ -641,7 +789,7 @@ class Ordercreate extends Component {
                     }
                     {
                         this.state.orderType==5 && <View className="pay-info"> 
-                                                        实付：<Text className="theme-color">¥{this.state.amount*this.state.saveTimes+this.state.freight}</Text>
+                                                        实付：<Text className="theme-color">¥{this.state.basePrice==0?(this.state.amount-this.state.cxYhMoney)*this.state.saveTimes+this.state.freight:this.state.basePrice*this.state.saveTimes+this.state.freight}</Text>
                                                     </View>
                     }
                     

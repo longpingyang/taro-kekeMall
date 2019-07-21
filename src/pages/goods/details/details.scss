@@ -423,3 +423,47 @@ a.arrows:visited {
       color:#f12e24;
   }
 }
+.goods_details_page{
+  .share_btn{
+    position: fixed; right: 20px; top: 300px; width: 80px; height: 80px; border: solid 1px #ddd; z-index: 99; border-radius: 40px;
+    line-height: 80px; text-align: center; font-size: 22px;
+  }
+  .at-float-layout__container{
+    min-height: 100px;
+    .layout-body{
+      min-height: 100px;
+      .layout-body__content{
+        min-height: 100px;
+      }
+    }
+  }
+}
+.theme-bgCz{
+  background: #38be00;
+}
+.share_dialog_box{  
+  .share_con_box{
+    display: flex; background: #ddd; padding: 30px 0;
+    .item{
+      flex: 1; text-align: center;
+      .btn{
+        background: #ddd; height: 100%;border: none; padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center; justify-content: space-between;
+        &::after {
+          border: 0; 
+        }
+      }
+      .img{
+        width: 80px; height: 80px; border-radius: 40px;
+      }
+      .text{
+        text-align: center;  width: 100%; float: left; font-size: 26px; color: #333; height: 26px; line-height: 26px;
+      } 
+    }
+  }
+  .close_btn{
+    width: 100%; text-align: center; height: 80px; line-height: 80px; font-size: 26px; background: #fff; color: #333;
+  }
+}

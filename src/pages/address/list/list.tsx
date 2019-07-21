@@ -112,7 +112,6 @@ class AddressList extends Component {
           url: '/pages/cart/ordercreate/ordercreate?addId='+id
         })
       }
-      
     }
   }
 
