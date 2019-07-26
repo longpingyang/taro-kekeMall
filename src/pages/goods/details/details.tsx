@@ -368,7 +368,7 @@ class Index extends Component {
             {/* <View className='temp_box'>
               <Image mode='widthFix' src={require('../../../images/001.jpg')}></Image>
             </View> */}
-            <View className="wrap-promotion">
+            {/* <View className="wrap-promotion">
               <View className="promotion-item arrows comment-title flex">
                   <View className="promotion-title color2">商品评价</View>
                   <View className="comment-amount color4" onClick={this.evaluationListPage}>3条评价</View>
@@ -411,7 +411,7 @@ class Index extends Component {
                       <View className="comment-item comment-more font24 color-4">更多评论</View>
                   </View>
               </View>
-            </View>
+            </View> */}
 
 
             <View className="wrap-shopinfo">

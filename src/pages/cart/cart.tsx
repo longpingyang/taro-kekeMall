@@ -29,7 +29,7 @@ class Cart extends Component {
     couponsModalShow: false,
     goodsList:[],
     amount:0,
-    allChecked:true
+    allChecked:false
   }
   goDetailPage(id){
     Taro.navigateTo({
@@ -43,6 +43,14 @@ class Cart extends Component {
         tempArr.push(element);
       }
     });
+    if(tempArr.length==0){
+      Taro.showToast({
+        title:"您还没有选择商品哦",
+        icon:"none",
+        duration:1500
+      });
+      return;
+    }
     Taro.setStorageSync("orderCreate",{goodsList:tempArr,amount:this.state.amount});
     Taro.navigateTo({
       url: '/pages/cart/ordercreate/ordercreate'
@@ -58,13 +66,13 @@ class Cart extends Component {
     }).then((res) =>{
       if(res.data.success){
         res.data.data.goodsList.forEach(element => {
-          element['checked']=true
+          element['checked']=false
         });
 
         this.setState({
           goodsList:res.data.data.goodsList,
-          amount:res.data.data.amount,
-          allChecked:true,
+          amount:0,
+          allChecked:false,
           couponsModalShow: false
         })
       }else{

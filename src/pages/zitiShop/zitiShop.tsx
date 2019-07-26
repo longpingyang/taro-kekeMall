@@ -1,6 +1,9 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View,Text, Input } from '@tarojs/components'
+
+const api = require('../../config/api.js');
+
 class ZitiShop extends Component {
   config: Config = {
     navigationBarTitleText: '自提门店'
@@ -22,7 +25,26 @@ class ZitiShop extends Component {
   componentDidShow () { 
     // this.setState({
     //   userInfo: Taro.getStorageSync("userMember")
-    // }) 
+    // })  shopListPath
+    Taro.request({
+      url:api.shopListPath,
+      method:'POST',
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res) =>{
+      if(res.data.success){ 
+        // console.log(res.data.data);
+        this.setState({
+          addressList:res.data.data
+        })
+      } 
+    })
+
+
+
+
+
   }
   componentDidHide () { }
 
@@ -56,43 +78,25 @@ class ZitiShop extends Component {
             </View>
         </View>
         <View className="mention-list-container">
-            <View className="mention-list-item bkg-white" onClick={this.selzitiAddressFn.bind(this,'1')}>
-                <View className="mention-list-item-title flex felx-v-center">
-                    <Text className="flex1 text-line1 font24">东路店</Text>
-                    <Text className="mention-list-item-choose theme-color font24">[当前]</Text>
-                    {/* <Text>查看地图</Text> */}
-                </View>
-                <View className="mention-list-item-address">上海市黄浦区南京东路街道南京西路286号祥康里
-                </View>
-                <View className="mention-list-item-business flex flex-v-center border-top-1px">
-                    <Text className="flex1">营业时间: (周一)10:00-22:00</Text>
-                    <Text className="iconfont icon-dianhua"></Text>
-                </View>
-            </View>
-            <View className="mention-list-item bkg-white">
-                <View className="mention-list-item-title flex felx-v-center">
-                    <Text className="flex1 text-line1">东路店</Text>
-                    {/* <Text>查看地图</Text> */}
-                </View>
-                <View className="mention-list-item-address">上海市黄浦区南京东路街道南京西路286号祥康里
-                </View>
-                <View className="mention-list-item-business flex flex-v-center border-top-1px">
-                    <Text className="flex1">营业时间: (周一)10:00-22:00</Text>
-                    <Text className="iconfont icon-dianhua"></Text>
-                </View>
-            </View>
-            <View className="mention-list-item bkg-white">
-                <View className="mention-list-item-title flex felx-v-center">
-                    <Text className="flex1 text-line1">东路店</Text>
-                    {/* <Text>查看地图</Text> */}
-                </View>
-                <View className="mention-list-item-address">上海市黄浦区南京东路街道南京西路286号祥康里
-                </View>
-                <View className="mention-list-item-business flex flex-v-center border-top-1px">
-                    <Text className="flex1">营业时间: (周一)10:00-22:00</Text>
-                    <Text className="iconfont icon-dianhua"></Text>
-                </View>
-            </View>
+            {
+              this.state.addressList.map((item) =>{
+                return (
+                  <View className="mention-list-item bkg-white" onClick={this.selzitiAddressFn.bind(this,'1')}>
+                    <View className="mention-list-item-title flex felx-v-center">
+                        <Text className="flex1 text-line1">{item['name']}</Text>
+                        <Text className="mention-list-item-choose theme-color font24">[当前]</Text>
+                        {/* <Text>查看地图</Text> */}
+                    </View>
+                    <View className="mention-list-item-address">{item['address']}
+                    </View>
+                    <View className="mention-list-item-business flex flex-v-center border-top-1px">
+                        <Text className="flex1">营业时间: (周一)10:00-22:00</Text>
+                        <Text className="iconfont icon-dianhua"></Text>
+                    </View>
+                  </View>
+                )
+              })
+            }
             <View className="no-more">没有更多了~</View>
         </View>
     </View>

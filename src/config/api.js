@@ -38,6 +38,7 @@ const payPreorderPath = baseUrl + 'pay/preorder';//获取支付参数
 const payEndpayPath = baseUrl + 'pay/endpay'; //支付回调
 
 const memberOpenIdPath = baseUrl + 'member/openid';//获取openid
+const shopListPath = baseUrl + 'shop/list';//查询门店及地址
 
 
 module.exports = {
@@ -83,7 +84,8 @@ module.exports = {
   
   payPreorderPath:payPreorderPath,
   payEndpayPath:payEndpayPath,
-  memberOpenIdPath:memberOpenIdPath
+  memberOpenIdPath:memberOpenIdPath,
+  shopListPath:shopListPath
 
 
 
