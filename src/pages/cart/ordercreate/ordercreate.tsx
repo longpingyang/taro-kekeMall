@@ -690,11 +690,11 @@ class Ordercreate extends Component {
                                                     </View>
                     }                    
                     <View className=" wrap-radio-input border-bottom-1px invoice-btn-wrap">
-                        <View onClick={this.showInvocePage} className="wrap-radio flex-between flex">
+                        {/* <View onClick={this.showInvocePage} className="wrap-radio flex-between flex">
                             <Text className="flex0">发票</Text>
                             <View className="flex flex1 flex-end flex-v-center"><View className="radio"></View>
                             </View>
-                        </View>
+                        </View> */}
                         {/* <View className="wrap-switch-input wrap-paytype section-item">
                             <View className="arrow-item flex flex-between">
                                 <Text>开票信息</Text>
@@ -802,9 +802,9 @@ class Ordercreate extends Component {
                         this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>去充值</View>
                     }
                 </View>
-                <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>
+                {/* <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>
                     <InvocePage></InvocePage>
-                </View>
+                </View> */}
                 
                 <AtFloatLayout title="使用优惠券" isOpened={this.state.couponsModalShow}>
                     <View className='couponsModal_box select_coupons_wrap'>

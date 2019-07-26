@@ -1,0 +1,85 @@
+.seeCode_box{
+    .apoint-wrap{
+        height: 300px;position:relative;
+        .svg-wrap{
+            position:relative;
+            width:100%;
+            height:100%;
+            overflow:hidden;
+
+        }
+    }
+}
+.integral-detail{
+    font-size: 24px;
+    .integral-header{
+        background: #fff;
+        .apoint-wrap {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            background: #fff;
+            .svg-wrap {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                .icon-dicengtoumingdu {
+                    font-size: 240px;
+                    z-index: 1;
+                    opacity: .2;
+                }
+                .icon-zhongjiancengtoumingdu {
+                    z-index: 2;
+                    line-height: 400px;
+                    opacity: .16;
+                }
+                .icon-dingcengtoumingdu {
+                    font-size: 120px;
+                    line-height: 460px;
+                    z-index: 3;
+                    opacity: .16;
+                }
+            }
+        }
+        .header-point {
+            text-align: center;width: 100%;
+            font-size: 80px;
+            color: #333;
+            font-weight: 700;
+            line-height: 95px;
+            position: absolute;
+            top: 70px;
+            z-index: 10;
+        }
+        .integral-title {
+            line-height: 105px; box-sizing: border-box;
+            position: relative;
+            padding-left: 44px;
+            .text-icon {
+                content: "";
+                position: absolute;
+                left: 30px;
+                height: 30px;
+                width: 4px;
+                top: 50%;
+                margin-top: -15px;
+            }
+        }
+        .wrap-integral-nav {
+            height: 120px;
+            .integral-nav {
+                width: 50%;
+                height: 60px;
+                line-height: 60px;
+                text-align: center;
+                font-size: 32px;
+                color: #333;
+                .iconfont {
+                    font-size: 38px;
+                    margin-right: 14px;
+                }
+            }
+        }
+    } 
+}

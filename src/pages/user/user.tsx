@@ -110,6 +110,12 @@ class Index extends Component {
       url: '/pages/user/userInfo/userInfo'
     })
   }
+  //
+  goSeeCodePage(){
+    Taro.navigateTo({
+      url: '/pages/user/seeCode/seeCode'
+    })
+  }
 
   tobegin = (userInfo) => {    
     if(userInfo.detail.userInfo){   //同意
@@ -207,6 +213,11 @@ class Index extends Component {
             <AtList>
               <AtListItem onClick={this.gogerenxinxiPage}
                 title='个人信息'
+                arrow='right'
+                thumb={require('../../images/icon/gerenxinxi_icon.png')}
+              />
+              <AtListItem onClick={this.goSeeCodePage}
+                title='查看验证码'
                 arrow='right'
                 thumb={require('../../images/icon/gerenxinxi_icon.png')}
               />

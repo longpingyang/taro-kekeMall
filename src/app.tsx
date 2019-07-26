@@ -43,6 +43,8 @@ class App extends Component {
       "pages/user/amount/amount",
       "pages/user/login/login",
       "pages/user/point/point",
+      "pages/user/seeCode/seeCode",
+
       "pages/logs/logs",
       "pages/order/order",
       "pages/order/details/details",
