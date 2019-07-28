@@ -30,6 +30,8 @@ class App extends Component {
       "pages/index/index",
       "pages/goods/goods",
       "pages/goods/details/details",
+      "pages/goods/shareImg/shareImg",
+
       "pages/goods/evaluation/evaluationList",
       "pages/card/card",
       "pages/card/input_tel/input_tel",

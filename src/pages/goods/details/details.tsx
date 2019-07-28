@@ -92,12 +92,18 @@ class Index extends Component {
 
 
   getDoodsDetails(){
+    var url = api.goodsDetailPath;//goodsDetailTwoPath;
+    var data = {
+      goodsId:this.$router.params.id
+    }
+    if(this.$router.params.shopId){
+      url = api.goodsDetailTwoPath;
+      data['shopId'] = this.$router.params.shopId
+    }
     Taro.request({
-      url:api.goodsDetailPath,
+      url:url,
       method:'POST',
-      data:{
-        goodsId:this.$router.params.id
-      },
+      data:data,
       header:{
         token:Taro.getStorageSync('token')
       }
@@ -167,6 +173,7 @@ class Index extends Component {
     this.setState((data)=>{
       data['skuModalShow']=true;
       data['couponsModalShow']=false;
+      data['shareModalIsShow']=false;
       data['buyType']=2;
     },()=>{
     })
@@ -249,6 +256,7 @@ class Index extends Component {
     this.setState({
       skuModalShow:true,
       couponsModalShow:false,
+      shareModalIsShow: false,
       buyType:1
     })
   }
@@ -257,6 +265,7 @@ class Index extends Component {
     this.setState({
       skuModalShow:true,
       couponsModalShow:false,
+      shareModalIsShow: false,
       buyType:3
     })
     
@@ -272,7 +281,8 @@ class Index extends Component {
   couponsMoreFn(){   
     this.setState({
       skuModalShow:false,
-      couponsModalShow: true
+      couponsModalShow: true,
+      shareModalIsShow: false
     })
   }
 
@@ -308,6 +318,8 @@ class Index extends Component {
   //分享
   openShareModalFn(){
     this.setState({
+      skuModalShow:false,
+      couponsModalShow:false,
       shareModalIsShow: true
     })
   }
@@ -320,9 +332,16 @@ class Index extends Component {
   shareToFriendFn(){
 
   }
+
+  goShareImgPageFn(){
+    Taro.navigateTo({
+      url: '/pages/goods/shareImg/shareImg?id='+this.state.goodsId
+    })
+  }
+
+
   render () {
     const {skuData,couponlist,isRechargeBuy} =this.state;
-    console.log(skuData);
     return (
       <View className='goods_details_page'>
         {/* <button open-type='share'>分享</button> */}
@@ -577,13 +596,13 @@ class Index extends Component {
         <AtFloatLayout title="" isOpened={this.state.shareModalIsShow}>
           <View className="share_dialog_box">
             <View className="share_con_box">
-                <View className="item" onClick={this.shareToFriendFn.bind(this)}>
+                <View className="item">
                   <Button className='btn' open-type="share">
                     <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
                     <Text className="text">发给好友</Text>
                   </Button>
                 </View>
-                <View className="item">
+                <View className="item" onClick={this.goShareImgPageFn}>
                     <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
                     <Text className="text">生成图片</Text>
                 </View>

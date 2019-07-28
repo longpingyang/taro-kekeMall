@@ -17,6 +17,7 @@ const memberShopListPath = baseUrl + 'member/shop/list';//查询门店列表
 const goodsIndexCategorygoodsPath =  baseUrl + 'goods/index/categorygoods';//首页显示分类及分类商品列表
 const goodsListPath = baseUrl + 'goods/goods/list';//查询商品列表
 const goodsDetailPath = baseUrl + 'goods/goods/detail';//查询商品明细
+const goodsDetailTwoPath = baseUrl + 'goods/goods/detail2';//查询商品明细
 const goodsPromotionpath = baseUrl + 'goods/promotion';//查询指定商品相关的促销活动
 const goodsRecommendPath = baseUrl + 'goods/recommend';//查询商品推荐信息列表
 const goodsCategoryListPath = baseUrl + 'goods/goods/category/list';//查询商品分类列表
@@ -41,6 +42,7 @@ const memberOpenIdPath = baseUrl + 'member/openid';//获取openid
 const shopListPath = baseUrl + 'shop/list';//查询门店及地址
 const activityActjsonPath = baseUrl + 'activity/actjson';//查询是否属于充送范围的商品
 const memberZccodePath = baseUrl + 'member/zccode';//查询资产代码
+const siteShareGoodsPath = baseUrl + 'site/share/goods';//商品分享图片
 
 
 module.exports = {
@@ -65,6 +67,7 @@ module.exports = {
   goodsIndexCategorygoodsPath:goodsIndexCategorygoodsPath,
   goodsListPath:goodsListPath,
   goodsDetailPath:goodsDetailPath,
+  goodsDetailTwoPath:goodsDetailTwoPath,
   goodsPromotionpath:goodsPromotionpath,
   goodsRecommendPath:goodsRecommendPath,
   goodsCategoryListPath:goodsCategoryListPath,
@@ -89,8 +92,8 @@ module.exports = {
   memberOpenIdPath:memberOpenIdPath,
   shopListPath:shopListPath,
   activityActjsonPath:activityActjsonPath,
-  memberZccodePath:memberZccodePath
-
+  memberZccodePath:memberZccodePath,
+  siteShareGoodsPath:siteShareGoodsPath
 
 
 
