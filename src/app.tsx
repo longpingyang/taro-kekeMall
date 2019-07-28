@@ -50,6 +50,8 @@ class App extends Component {
       "pages/order/details/details",
       "pages/address/list/list",
       "pages/address/edit/edit",
+
+      "pages/dianyuan/login/login",
       "pages/dianyuan/home/home",
       "pages/dianyuan/addHy/addHy",
       "pages/dianyuan/daifa/daifa",
@@ -69,6 +71,11 @@ class App extends Component {
       "pages/kanjia/kanjia",
       "pages/zixun/zixun"
     ],
+    permission: {
+      　　'scope.userLocation':{
+      　　　　desc:'你的位置信息将用于小程序位置接口的效果展示'
+      　　}
+      },
     window: {
       "backgroundTextStyle": "dark",
       "enablePullDownRefresh": true,

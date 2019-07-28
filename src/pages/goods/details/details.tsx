@@ -45,11 +45,16 @@ class Index extends Component {
     skuModalShow:false,
     skuData: [],
     buyType:1,//购买类型1是立即购买 2 加入购物车 3 充值购买
+    isRechargeBuy: false,//该商品是否是充送商品
+    saveTimes:1,//充送倍数
+    basePrice:0,
     buyParam:{
       "colorId": "",
+      "colorName":'',
       "count": '1',
       "goodsId": "",
-      "sizeId": ""
+      "sizeId": "",
+      "sizeName":""
     },
     selText:'请选择',
     selArrtText:[],
@@ -60,12 +65,32 @@ class Index extends Component {
   }
   componentWillMount(){
       this.getDoodsDetails();
+      this.getActivityActjson();
   }
   componentWillUnmount () { }
 
   componentDidShow () {
 
   }
+  getActivityActjson(){
+    Taro.request({
+      url:api.activityActjsonPath+'?goodsId='+this.$router.params.id,
+      method:'POST',
+      header:{
+        token:Taro.getStorageSync('token')
+      }
+    }).then((res) =>{
+      if(res.data.success && res.data.data){
+        this.setState({
+          isRechargeBuy:true,
+          saveTimes: JSON.parse(res.data.data.rule).saveTimes,
+          basePrice: res.data.data.rangeValue?res.data.data.rangeValue:0
+        })
+      }
+    })
+  }
+
+
   getDoodsDetails(){
     Taro.request({
       url:api.goodsDetailPath,
@@ -147,7 +172,7 @@ class Index extends Component {
     })
   }
 
-  checkedAttr(pindex,sIndex,value){
+  checkedAttr(pindex,sIndex,value,text){
         this.setState((data) =>{            
             data['skuData'][pindex].attrValueList.forEach(element => {
                 element['checked']=false;
@@ -157,8 +182,10 @@ class Index extends Component {
             data['selArrtText'][pindex]=data['skuData'][pindex].attrValueList[sIndex].value;
             if(pindex==0){
                 data['buyParam'].colorId=value;
+                data['buyParam'].colorName = text;
             }else{
                 data['buyParam'].sizeId=value;
+                data['buyParam'].sizeName=text;
             }
 
 
@@ -178,17 +205,17 @@ class Index extends Component {
         }
   }
   saveParam(){
-    if(this.state.buyType==3){
+    if(this.state.buyType==3){//充值送鞋
       Taro.setStorageSync("orderCreate",{goodsList:[{
         "colorId": this.state.buyParam.colorId,
-        "colorName":"",
+        "colorName":this.state.buyParam.colorName,
         "count": this.state.buyParam.count,
         "goodsId": this.state.goodsId,
         "sizeId": this.state.buyParam.sizeId,
-        "sizeName":"",
+        "sizeName":this.state.buyParam.sizeName,
         "mainPic":this.state.background[0],
-        "price":this.state.goodsDetail.price
-      }],amount:this.state.goodsDetail.price,saveTimes:5,basePrice:50});
+        "price":this.state.goodsDetail['price']
+      }],amount:this.state.goodsDetail['price'],saveTimes:this.state.saveTimes,basePrice:this.state.basePrice});
       Taro.navigateTo({
         url: '/pages/cart/ordercreate/ordercreate?orderType=5'
       })
@@ -294,8 +321,8 @@ class Index extends Component {
 
   }
   render () {
-    const {skuData,couponlist} =this.state;
-    console.log(couponlist);
+    const {skuData,couponlist,isRechargeBuy} =this.state;
+    console.log(skuData);
     return (
       <View className='goods_details_page'>
         {/* <button open-type='share'>分享</button> */}
@@ -470,7 +497,7 @@ class Index extends Component {
                   <View className="wrap-btns flex flex1">
                     <View onClick={this.addCartFn} className="flex1 theme-bgcart">加入购物车</View>
                     <View onClick={this.buyNowFn} className="flex1 btn-tobuy theme-bgc">立即购买</View>
-                    <View onClick={this.buyRechargeFn} className="flex1 theme-bgCz">充值购买</View>
+                    <View hidden={!isRechargeBuy} onClick={this.buyRechargeFn} className="flex1 theme-bgCz">充值购买</View>
                   </View>
                 </View>
             </View>
@@ -516,7 +543,7 @@ class Index extends Component {
                                       <View className="sku-options flex">
                                           {
                                               item.attrValueList.map((sItem,sIndex)=>{
-                                                  return <View key={sItem.key} onClick={this.checkedAttr.bind(this,index,sIndex,sItem.key)}  className={"sku-item "+(sItem.checked?"theme-color theme-bdc":"")}>{sItem.value}</View>
+                                                  return <View key={sItem.key} onClick={this.checkedAttr.bind(this,index,sIndex,sItem.key,sItem.value)}  className={"sku-item "+(sItem.checked?"theme-color theme-bdc":"")}>{sItem.value}</View>
                                               })
                                           }
                                       </View>

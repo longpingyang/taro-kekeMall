@@ -19,6 +19,21 @@ class DyHome extends Component {
     // this.setState({
     //   userInfo: Taro.getStorageSync("userMember")
     // }) 
+    // Taro.getLocation({
+    //   type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+    //   success (res) {
+    //     const latitude = res.latitude
+    //     const longitude = res.longitude
+    //     Taro.openLocation({
+    //       latitude,
+    //       longitude,
+    //       scale: 18
+    //     })
+    //   }
+    //  })
+
+
+    
   }
   componentDidHide () { }
 
@@ -28,9 +43,10 @@ class DyHome extends Component {
     })
   }
   goDy_msgPage(){
-    Taro.navigateTo({
-      url: '/pages/dianyuan/msg/msg'
-    })
+    // Taro.navigateTo({
+    //   url: '/pages/dianyuan/msg/msg'
+    // })
+    this.setLocationFn();
   }
   goDy_addHyPage(){
     Taro.navigateTo({
@@ -55,6 +71,24 @@ class DyHome extends Component {
   goDy_tongjiPage(){
     Taro.navigateTo({
       url: '/pages/dianyuan/tongji/tongji'
+    })
+  }
+  //调整地图位置
+  setLocationFn(){
+    Taro.chooseLocation({
+        success: function (res) {
+        // success
+            console.log(res,"location")
+            console.log(res.name)
+            console.log(res.latitude)
+            console.log(res.longitude)
+        },
+        fail: function () {
+        // fail
+        },
+        complete: function () {
+        // complete
+        }
     })
   }
   render () {

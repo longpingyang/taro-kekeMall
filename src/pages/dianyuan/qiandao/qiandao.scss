@@ -1,0 +1,35 @@
+.QianDao_box{
+    font-size: 28px;
+    .QD_top{
+        padding: 0 50px; box-sizing: border-box;
+        .line{
+            padding-top: 16px;
+            .text{
+
+            }
+            .btn{
+                width: 140px; height: 60px; line-height: 60px; font-size: 26px; 
+                background: #6190e8; color: #ffffff;
+            }
+        }
+    }
+    .QD_body{
+        padding-top: 30px;
+        .list_title{            
+            display: flex; font-weight: bold; background: #ebeaf0; height: 80px;box-sizing: border-box;
+            line-height: 80px; text-align: center; 
+            .text{
+                flex: 1;
+            }
+        }
+        .list_box{
+
+            .item{
+                display: flex; text-align: center;height: 80px; line-height: 80px; border-bottom: solid 1px #9e9e9e;
+                .text{
+                    flex: 1;
+                }
+            }
+        }
+    }
+}

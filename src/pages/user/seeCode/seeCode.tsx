@@ -1,6 +1,9 @@
 import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View,Image } from '@tarojs/components'
+
+const api = require('../../../config/api.js');
+
 class SeeCode extends Component {
   config: Config = {
     navigationBarTitleText: '查看验证码'
@@ -18,6 +21,22 @@ class SeeCode extends Component {
     // this.setState({
     //   userInfo: Taro.getStorageSync("userMember")
     // }) 
+
+    Taro.request({
+      url:api.memberZccodePath,
+      method:"POST",
+      header:{
+        token:Taro.getStorageSync('token')
+      } 
+    }).then(res =>{
+      console.log(res);
+      if(res.data.success){
+        
+      }
+    })
+
+
+
   }
   componentDidHide () { }
   render () {

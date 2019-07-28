@@ -222,7 +222,7 @@ class Login extends Component {
   }
   goDyHomePage(){
     Taro.navigateTo({
-      url: '/pages/dianyuan/home/home'
+      url: '/pages/dianyuan/login/login'
     })
   }
   render () {

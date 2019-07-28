@@ -79,9 +79,9 @@ class ZitiShop extends Component {
         </View>
         <View className="mention-list-container">
             {
-              this.state.addressList.map((item) =>{
+              this.state.addressList.map((item,index) =>{
                 return (
-                  <View className="mention-list-item bkg-white" onClick={this.selzitiAddressFn.bind(this,'1')}>
+                  <View className="mention-list-item bkg-white" key={index}  onClick={this.selzitiAddressFn.bind(this,'1')}>
                     <View className="mention-list-item-title flex felx-v-center">
                         <Text className="flex1 text-line1">{item['name']}</Text>
                         <Text className="mention-list-item-choose theme-color font24">[当前]</Text>

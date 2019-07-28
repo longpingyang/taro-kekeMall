@@ -33,7 +33,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 11,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -116,6 +116,13 @@
 					"id": -1,
 					"name": "店员首页",
 					"pathName": "pages/dianyuan/home/home",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "签到",
+					"pathName": "pages/dianyuan/qiandao/qiandao",
 					"scene": null
 				}
 			]

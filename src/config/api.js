@@ -39,6 +39,8 @@ const payEndpayPath = baseUrl + 'pay/endpay'; //支付回调
 
 const memberOpenIdPath = baseUrl + 'member/openid';//获取openid
 const shopListPath = baseUrl + 'shop/list';//查询门店及地址
+const activityActjsonPath = baseUrl + 'activity/actjson';//查询是否属于充送范围的商品
+const memberZccodePath = baseUrl + 'member/zccode';//查询资产代码
 
 
 module.exports = {
@@ -85,8 +87,9 @@ module.exports = {
   payPreorderPath:payPreorderPath,
   payEndpayPath:payEndpayPath,
   memberOpenIdPath:memberOpenIdPath,
-  shopListPath:shopListPath
-
+  shopListPath:shopListPath,
+  activityActjsonPath:activityActjsonPath,
+  memberZccodePath:memberZccodePath
 
 
 
