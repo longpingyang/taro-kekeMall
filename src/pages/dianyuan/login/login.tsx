@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View,Image,Input,Text,Button } from '@tarojs/components'
 import { AtInput, AtForm } from 'taro-ui'
 const api = require('../../../config/api.js');
-// import './home.scss'
+import './login.scss'
 class DyLogin extends Component {
   config: Config = {
     navigationBarTitleText: '店员登录'
