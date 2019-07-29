@@ -81,7 +81,7 @@ class Ordercreate extends Component {
         }).then((res) =>{
           if(res.data.success){
             let isDefault=true;
-            if(this.$router.params.addId){
+            if(this.$router.params.addId  && this.state.isSelfGet==2){
                 res.data.data.forEach(element => {
                     if(element['deliveryId']==this.$router.params.addId){
                         isDefault=false
@@ -124,7 +124,7 @@ class Ordercreate extends Component {
 
     getZitiAddressFn(){
         Taro.request({
-            url:api.memberDeliveryListPath,
+            url:api.shopListPath,
             method:"POST",
             header:{
               token:Taro.getStorageSync('token')
@@ -132,34 +132,23 @@ class Ordercreate extends Component {
           }).then((res) =>{
             if(res.data.success){
               let isDefault=true;
-              if(this.$router.params.addId){
+              if(this.$router.params.addId && this.state.isSelfGet==1){
                   res.data.data.forEach(element => {
-                      if(element['deliveryId']==this.$router.params.addId){
+                      if(element['shopId']==this.$router.params.addId){
                           isDefault=false
                           this.setState({
                               zitiAddressObj:element,
                               shopId:element.shopId,
-                              shopAddr:element.shopAddr
+                              shopAddr:element.address
                           })
                       }
                   });  
-              }else{
-                  res.data.data.forEach(element => {
-                      if(element['isDefault']==1){
-                          isDefault=false
-                          this.setState({
-                              zitiAddressObj:element,
-                              shopId:element.shopId,
-                              shopAddr:element.shopAddr
-                          })
-                      }
-                  });
               }
               if(isDefault){
                   this.setState({
                       zitiAddressObj:res.data.data[0],
                       shopId:res.data.data[0].shopId,
-                      shopAddr:res.data.data[0].shopAddr
+                      shopAddr:res.data.data[0].address
                   })
               }
             }else{
@@ -184,14 +173,16 @@ class Ordercreate extends Component {
             this.setState({
                 isSelfGet:this.$router.params.isSelfGet
             });
-            if(this.$router.params.isSelfGet==2){
-                this.getAddressList();
-            }else{
-                this.getZitiAddressFn();
-            }
+            // if(this.$router.params.isSelfGet==2){
+            //     this.getAddressList();
+            // }else{
+            //     this.getZitiAddressFn();
+            // }
         }else{
-            this.getAddressList();
+            // this.getAddressList();
         }
+        this.getAddressList();
+        this.getZitiAddressFn();
         if(this.$router.params.orderType==5){//入包送鞋
             this.setState({
                 goodsList:Taro.getStorageSync('orderCreate').goodsList,
@@ -605,8 +596,8 @@ class Ordercreate extends Component {
                 {
                     this.state.isSelfGet==1 && <View className="wrap-address">
                     <View className="m-row m-row-line m-row-start m-row-icon-box  order-row-comm">
-                        <View className="order-row-comm-name">自提点</View>
-                        <View className="order-row-comm-val">测试自提0409</View>
+                        <View className="order-row-comm-name">自提店</View>
+                        <View className="order-row-comm-val">{this.state.zitiAddressObj['name']}</View>
                         <View onClick={this.goZitiShopPage.bind(this)} className="iconfont icon-newarrow m-row-icon "></View>
                     </View>
                     <View className="m-row m-row-line m-row-start order-row-comm">

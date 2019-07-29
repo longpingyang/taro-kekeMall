@@ -33,7 +33,7 @@ class RechargeGiveShoe extends Component {
   }
   goDetailPage(id){
     Taro.navigateTo({
-      url: '/pages/goods/details/details?id='+id+'&shopId=1'
+      url: '/pages/goods/details/details?id='+id
     })
   }
   goOrderCreatePage(){
@@ -64,7 +64,7 @@ class RechargeGiveShoe extends Component {
             }
         }).then((res)=>{
             if(res.data.success){
-                tempGoods.push(res.data.data);
+                tempGoods.push(res.data['data']);
                 tempamount+=res.data.data.price;             
             }else{
               if(res.data.errorCode=='E401'){
@@ -199,17 +199,17 @@ class RechargeGiveShoe extends Component {
   render () {
     const { goodsList } = this.state
     const goodsItem = goodsList.map((post) =>{
-        return  <View className='goodsItem' key={post.id} onClick={this.goDetailPage.bind(this,post.goodsId)}>
-                  <Image className='goods_img' mode='aspectFill' src={post.mainPic}></Image>     
+        return  <View className='goodsItem' key={post.id} onClick={this.goDetailPage.bind(this,post['goodsId'])}>
+                  <Image className='goods_img' mode='aspectFill' src={post['mainPic']}></Image>     
                   <View className='goodsText'>         
-                    <View className='title'>{post.goodsName}</View>
+                    <View className='title'>{post['goodsName']}</View>
                     <View className='lump' hidden={post.lump!=1}>
                       <Text className='text'>拼团</Text>
                     </View>
                     <View className='bottom'>
                       <Text className='vip'>会员</Text>
                       <Text className='b'>￥</Text>
-                      <Text className='span'>{post.dispPrice}</Text>
+                      <Text className='span'>{post['dispPrice']}</Text>
                       <Image className='image' src={require('../../images/index03.jpg')}></Image>
                     </View>
                   </View>

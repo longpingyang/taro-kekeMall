@@ -92,14 +92,27 @@ class Index extends Component {
 
 
   getDoodsDetails(){
-    var url = api.goodsDetailPath;//goodsDetailTwoPath;
+    var url = api.goodsDetailTwoPath;//goodsDetailTwoPath;
     var data = {
-      goodsId:this.$router.params.id
+      goodsId:1
+    }
+    if(this.$router.params.id){
+      url = api.goodsDetailPath;
+      data = {
+        goodsId:this.$router.params.id
+      }
     }
     if(this.$router.params.shopId){
       url = api.goodsDetailTwoPath;
-      data['shopId'] = this.$router.params.shopId
+      data['shopId'] = this.$router.params.shopId;
+      data['goodsId'] = this.$router.params.id;
     }
+    if(!this.$router.params.id && !this.$router.params.shopId){
+      url = api.goodsDetailTwoPath;
+      data['shopId'] = 1;
+      data['goodsId'] = 1;
+    }
+
     Taro.request({
       url:url,
       method:'POST',

@@ -4,6 +4,9 @@ import { View,Text, Input } from '@tarojs/components'
 
 const api = require('../../config/api.js');
 
+
+import './zitiShop.scss';
+
 class ZitiShop extends Component {
   config: Config = {
     navigationBarTitleText: '自提门店'
@@ -81,10 +84,10 @@ class ZitiShop extends Component {
             {
               this.state.addressList.map((item,index) =>{
                 return (
-                  <View className="mention-list-item bkg-white" key={index}  onClick={this.selzitiAddressFn.bind(this,'1')}>
+                  <View className="mention-list-item bkg-white" key={index}  onClick={this.selzitiAddressFn.bind(this,item['shopId'])}>
                     <View className="mention-list-item-title flex felx-v-center">
                         <Text className="flex1 text-line1">{item['name']}</Text>
-                        <Text className="mention-list-item-choose theme-color font24">[当前]</Text>
+                        {/* <Text className="mention-list-item-choose theme-color font24">[当前]</Text> */}
                         {/* <Text>查看地图</Text> */}
                     </View>
                     <View className="mention-list-item-address">{item['address']}
