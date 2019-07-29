@@ -144,7 +144,7 @@ class Index extends Component {
       url: '/pages/cart/rechargeGiveShoe/rechargeGiveShoe?ids='+ids+"&rule="+rule
     })
   }
-  //去充值
+  //去入包
   goRecharge(rule){
       Taro.navigateTo({
           url: '/pages/user/amount/amount?type=1&rule='+rule
@@ -284,15 +284,15 @@ gozixunPage(){
                         item.type==4 && <View className="font24">充{JSON.parse(item.rule).save}送{JSON.parse(item.rule).give}</View>
                       }
                       {
-                        item.type==5 && <View className="font24">充值陪数：{JSON.parse(item.rule).saveTimes}</View>
+                        item.type==5 && <View className="font24">入包陪数：{JSON.parse(item.rule).saveTimes}</View>
                       }
                       
                       <View className='price_box'>
                         {
-                          item.type==4 && <Button onClick={this.goRecharge.bind(this,item.rule)}>去充值</Button>
+                          item.type==4 && <Button onClick={this.goRecharge.bind(this,item.rule)}>去入包</Button>
                         }
                         {
-                          item.type==5 && <Button onClick={this.goGiveShow.bind(this,item.goodsId,item.rule)}>去充值</Button>
+                          item.type==5 && <Button onClick={this.goGiveShow.bind(this,item.goodsId,item.rule)}>去入包</Button>
                         }
                       </View>
                     </View>

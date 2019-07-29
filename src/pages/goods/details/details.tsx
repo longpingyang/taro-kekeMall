@@ -44,7 +44,7 @@ class Index extends Component {
     couponlist:[],
     skuModalShow:false,
     skuData: [],
-    buyType:1,//购买类型1是立即购买 2 加入购物车 3 充值购买
+    buyType:1,//购买类型1是立即购买 2 加入购物车 3 入包购买
     isRechargeBuy: false,//该商品是否是充送商品
     saveTimes:1,//充送倍数
     basePrice:0,
@@ -212,7 +212,7 @@ class Index extends Component {
         }
   }
   saveParam(){
-    if(this.state.buyType==3){//充值送鞋
+    if(this.state.buyType==3){//入包送鞋
       Taro.setStorageSync("orderCreate",{goodsList:[{
         "colorId": this.state.buyParam.colorId,
         "colorName":this.state.buyParam.colorName,
@@ -516,7 +516,7 @@ class Index extends Component {
                   <View className="wrap-btns flex flex1">
                     <View onClick={this.addCartFn} className="flex1 theme-bgcart">加入购物车</View>
                     <View onClick={this.buyNowFn} className="flex1 btn-tobuy theme-bgc">立即购买</View>
-                    <View hidden={!isRechargeBuy} onClick={this.buyRechargeFn} className="flex1 theme-bgCz">充值购买</View>
+                    <View hidden={!isRechargeBuy} onClick={this.buyRechargeFn} className="flex1 theme-bgCz">入包购买</View>
                   </View>
                 </View>
             </View>

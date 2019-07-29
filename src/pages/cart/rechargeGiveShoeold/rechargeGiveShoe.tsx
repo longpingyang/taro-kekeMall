@@ -9,7 +9,7 @@ const api = require('../../../config/api.js');
 class RechargeGiveShoe extends Component {
    
   config: Config = {
-    navigationBarTitleText: '充值送鞋'
+    navigationBarTitleText: '入包送鞋'
   }
 
   componentWillReceiveProps (nextProps) {
@@ -271,7 +271,7 @@ class RechargeGiveShoe extends Component {
               <View className="sc_select_all">全选</View>
               <View className="shopcart_total_price flex1 flex flex-col">
                   <View className="font26">
-                      充值金额:
+                      入包金额:
                       <Text className="theme-color price">
                         <Text className="font26">¥</Text>
                         <Text className="font36">{this.state.amount*this.state.saveTimes}</Text>

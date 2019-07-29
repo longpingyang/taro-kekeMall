@@ -3,7 +3,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View,Image } from '@tarojs/components'
 
 const api = require('../../../config/api.js');
-
+import './seeCode.scss'
 class SeeCode extends Component {
   config: Config = {
     navigationBarTitleText: '查看验证码'
@@ -34,9 +34,6 @@ class SeeCode extends Component {
         
       }
     })
-
-
-
   }
   componentDidHide () { }
   render () {
