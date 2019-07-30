@@ -44,6 +44,20 @@ class Login extends Component {
               success:(obj) =>{
                 if(obj.data.success){
                   if(obj.data.data.verifyResult){
+                    if(obj.data.data.verifyResult==1){
+                      // Taro.getSetting({
+                      //   success(res){
+                      //     if (!res.authSetting['scope.userInfo']) {
+                      //       Taro.authorize({
+                      //         scope: 'scope.userInfo',
+                      //         success(obj){
+                      //         }
+                      //       })
+                      //     }
+                      //   }
+                      // })
+                      
+                    }
                     Taro.request({
                       url:api.memberShopListPath,
                       method:"POST",

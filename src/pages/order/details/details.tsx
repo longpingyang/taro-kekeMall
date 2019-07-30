@@ -132,7 +132,7 @@ class OrderDetails extends Component {
           </View>
           <View className="order-delivery">
               <View className=""></View>
-              <View className="order-detail-delivery flex flex-v-center bgwh border-bottom-1px" hidden={true}>
+              <View className="order-detail-delivery flex flex-v-center bgwh border-bottom-1px" hidden={orderDetail['isSelfGet']!=1}>
                   <View className="order-detail-icon iconfont icon-xinxi"></View>
                   <View className="delivery-address-box font26 flex1 color-3 bgwh">
                       <View className="order-subjoin-itemorder-subjoin-item">
@@ -140,7 +140,7 @@ class OrderDetails extends Component {
                       </View>
                   </View>
               </View>
-              <View className="order-detail-delivery flex flex-v-center bgwh border-bottom-1px">
+              <View className="order-detail-delivery flex flex-v-center bgwh border-bottom-1px" hidden={orderDetail['isSelfGet']==1}>
                 <View className="order-detail-icon iconfont icon-shouhuodizhi"></View>
                 <View className="delivery-address-box flex1 font26 color-3">
                     <View className="flex">
@@ -243,9 +243,8 @@ class OrderDetails extends Component {
               </View>
               <View className='item' hidden={true}>支付时间：1970.01.01 08:00:00</View>
               <View className='item' hidden={true}> 交易单号：</View>
-              <View className='item'>
-                  支付方式：线上支付
-              </View>
+              <View className='item'>支付方式：线上支付</View>
+              <View className='item' hidden={orderDetail['isSelfGet']==2 || orderDetail['isSelfGet']==null}>提货码：{orderDetail['selfGetCode']}</View>
               <View className='item' hidden={true}>
                   完成时间：1970.01.01 08:00:00
               </View>

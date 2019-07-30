@@ -93,26 +93,85 @@ class Index extends Component {
 
   getDoodsDetails(){
     var url = api.goodsDetailTwoPath;//goodsDetailTwoPath;
-    var data = {
+    var paramdata = {
       goodsId:1
     }
     if(this.$router.params.id){
       url = api.goodsDetailPath;
-      data = {
+      paramdata = {
         goodsId:this.$router.params.id
       }
     }
-    if(this.$router.params.shopId){
-      url = api.goodsDetailTwoPath;
-      data['shopId'] = this.$router.params.shopId;
-      data['goodsId'] = this.$router.params.id;
-    }
     if(!this.$router.params.id && !this.$router.params.shopId){
       url = api.goodsDetailTwoPath;
-      data['shopId'] = 1;
-      data['goodsId'] = 1;
+      paramdata['shopId'] = 1;
+      paramdata['goodsId'] = 1;
     }
+    if(this.$router.params.shopId){
+      url = api.goodsDetailTwoPath;
+      paramdata['shopId'] = this.$router.params.shopId;
+      paramdata['goodsId'] = this.$router.params.id;
+    }
+      Taro.login({
+        success:(res) =>{
+          Taro.request({
+            url:api.memberOpenIdPath+'?code='+res.code,
+            method:"POST",
+            success:(data)=>{
+              let openid = JSON.parse(data.data.data).openid;
+              Taro.setStorage({key:'wxOpenid',data:openid})
+              Taro.request({
+                url:api.memberCheckPath,
+                data:{
+                  wxOpenid:openid
+                },
+                method: 'POST',
+                success:(obj) =>{
+                  if(obj.data.success){
+                    if(obj.data.data.verifyResult){//1新用户;2未登录;3已登录
+                      if(obj.data.data.verifyResult==1){//scope.userInfo
+                        // Taro.authorize({
+                        //   scope: 'scope.userInfo',
+                        //   success(){}
+                        // })
+                        Taro.navigateTo({
+                          url: '/pages/user/login/login'
+                        })
+                      }
+                      if(obj.data.data.verifyResult==2){
+                        Taro.showLoading({
+                          title: '登录中',
+                        })
+                        Taro.request({
+                          url:api.memberLoginTwoPath,
+                          data:{
+                            openId:openid
+                          },
+                          method: 'POST',
+                        }).then((res)=>{
+                          Taro.hideLoading();
+                          if(res.data.success){
+                            Taro.setStorageSync('token',res.data.data.token);
+                            Taro.setStorageSync('userMember',res.data.data.member);
+                            this.getDetailDataFn(paramdata,url);
+                          }
+                        })
+                      }
+                      if(obj.data.data.verifyResult==3){
+                        this.getDetailDataFn(paramdata,url);
+                      }
+                    }
+                  }
+                }
+              })
+            }
+          })
+        }
+      }) 
+  }
 
+
+  getDetailDataFn(data,url){
     Taro.request({
       url:url,
       method:'POST',
@@ -177,8 +236,9 @@ class Index extends Component {
           })
         }
       }
-    }) 
+    })
   }
+
 
   componentDidHide () { }
 

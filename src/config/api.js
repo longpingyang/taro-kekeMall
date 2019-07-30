@@ -3,6 +3,7 @@ const memberCheckPath = baseUrl + 'member/check'; //检查微信号是否绑定�
 const memberSendsmsPath = baseUrl + 'member/sendsms';//发送短信验证码
 const memberBindcardPath = baseUrl + 'member/bindcard'; //绑定微信和会员卡
 const memberLoginPath = baseUrl + 'member/login'; //用户登录，验证码 和 密码 任一正确都可
+const memberLoginTwoPath = baseUrl + 'member/login2'; //用户登录，验证码 和 密码 任一正确都可
 const memberSummaryPath = baseUrl + 'member/summary';//刷新用户摘要信息
 const memberDetailPath = baseUrl + 'member/detail';//用户明细信息查询
 const memberSavedetailPath = baseUrl + 'member/savedetail';//保存用户明细信息
@@ -50,6 +51,7 @@ module.exports = {
   memberSendsmsPath:memberSendsmsPath,
   memberBindcardPath:memberBindcardPath,
   memberLoginPath:memberLoginPath,
+  memberLoginTwoPath:memberLoginTwoPath,
   memberSummaryPath:memberSummaryPath,
   memberDetailPath:memberDetailPath,
   memberSavedetailPath:memberSavedetailPath,
