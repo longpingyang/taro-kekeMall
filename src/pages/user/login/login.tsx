@@ -4,7 +4,7 @@ import { View, Button, Form, Text,Input,Picker,Image } from '@tarojs/components'
 import LogoImg from '../../../images/logo.png';
 
 const api = require('../../../config/api.js');
-import { AtInput, AtForm } from 'taro-ui'
+import { AtInput, AtForm,AtFloatLayout } from 'taro-ui'
 import './login.scss'
 class Login extends Component {
     /**
@@ -26,6 +26,7 @@ class Login extends Component {
 
   componentWillUnmount () {
   }
+  
   componentWillMount(){
     Taro.login({
       success:(res) =>{
@@ -45,6 +46,12 @@ class Login extends Component {
                 if(obj.data.success){
                   if(obj.data.data.verifyResult){
                     if(obj.data.data.verifyResult==1){
+                      this.setState({
+                        getPhoneModalIsShow:true
+                      })
+                      // this.setState({
+                      //   getPhoneModalIsShow:true
+                      // })
                       // Taro.getSetting({
                       //   success(res){
                       //     if (!res.authSetting['scope.userInfo']) {
@@ -56,7 +63,6 @@ class Login extends Component {
                       //     }
                       //   }
                       // })
-                      
                     }
                     Taro.request({
                       url:api.memberShopListPath,
@@ -93,7 +99,9 @@ class Login extends Component {
       }
     })  
   }
-  componentDidShow () { }
+  componentDidShow () {
+
+  }
   componentDidHide () { }
 
   state = {
@@ -101,6 +109,7 @@ class Login extends Component {
       avatarUrl:'',
       nickName:''      
     },
+    getPhoneModalIsShow:false,
     isCard:0,
     cardNo:"",
     phoneNo:'',
@@ -239,6 +248,28 @@ class Login extends Component {
       url: '/pages/dianyuan/login/login'
     })
   }
+  getPhoneNumber(e) {
+    var that = this;
+    console.log(e);
+    if (e.detail.errMsg == "getPhoneNumber:ok") {
+      // Taro.request({
+      //   url: '',
+      //   method: "POST",
+      //   data: {
+      //     encryptedData: e.detail.encryptedData,
+      //     iv: e.detail.iv,
+      //     sessionKey: that.data.session_key,
+      //   },
+      //   success: function (res) {
+      //     console.log(res);
+      //   }
+      // })
+      this.setState({
+        phoneNo:'12345678901',
+        getPhoneModalIsShow:false
+      })
+    }
+  }
   render () {
     return (
       <View className='login_page'>        
@@ -327,6 +358,15 @@ class Login extends Component {
             </View>
           </AtForm>
         </View>
+        <AtFloatLayout title="" isOpened={this.state.getPhoneModalIsShow}>
+          <View className="share_dialog_box">
+            <View className="share_con_box">
+                <Button className='btn' onGetPhoneNumber={this.getPhoneNumber.bind(this)} open-type="getPhoneNumber">
+                  <Text className="text">快速获取手机号码</Text>
+                </Button>
+            </View>
+          </View>
+        </AtFloatLayout>
       </View>
     )
   }

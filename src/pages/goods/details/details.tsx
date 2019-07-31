@@ -64,13 +64,13 @@ class Index extends Component {
   componentWillReceiveProps (nextProps) {
   }
   componentWillMount(){
-      this.getDoodsDetails();
-      this.getActivityActjson();
+      
   }
   componentWillUnmount () { }
 
   componentDidShow () {
-
+    this.getDoodsDetails();
+    this.getActivityActjson();
   }
   getActivityActjson(){
     Taro.request({

@@ -1,4 +1,4 @@
-
+@import "~taro-ui/dist/style/components/float-layout.scss";
 @import "~taro-ui/dist/style/components/input.scss";
 @import "~taro-ui/dist/style/components/icon.scss";
 .phone_box{
@@ -56,4 +56,15 @@
         }
     }
     
+}
+.login_page{
+.at-float-layout__container{
+    min-height: 200px;
+    .layout-body{
+      min-height: 200px;
+      .layout-body__content{
+        min-height: 200px;
+      }
+    }
+  }
 }
