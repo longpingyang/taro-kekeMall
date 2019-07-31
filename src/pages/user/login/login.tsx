@@ -306,6 +306,9 @@ class Login extends Component {
           <View className='get_card'>
             <Button className='btn' onClick={this.registerFn.bind(this)}>注册</Button>
           </View>
+          <View className='get_card Dy_login'>
+            <Button className='btn' onClick={this.goDyHomePage.bind(this)}>店员登录</Button>
+          </View>
           {/* <View className='get_card fast_login'>
             <Button className='btn'>微信一键登录</Button>
           </View> */}
