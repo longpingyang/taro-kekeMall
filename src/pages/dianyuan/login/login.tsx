@@ -31,22 +31,28 @@ class DyLogin extends Component {
     return e.detail.value;
   }
   login(){
-    // Taro.showLoading({
-    //   title: '登录中',
-    // })
-    // Taro.request({
-    //   url:api.memberLoginPath,
-    //   method:"POST",
-    //   data:{
-    //     passwd:this.state.passwd,
-    //     phone:this.state.phoneNo        
-    //   }
-    // }).then((res)=>{
-      
-    // })
-    Taro.navigateTo({
-        url: '/pages/dianyuan/home/home'
+    Taro.showLoading({
+      title: '登录中',
     })
+    Taro.request({
+      url:api.opLoginPath+"?phone="+this.state.phoneNo+"&password="+this.state.passwd,
+      method:"POST",
+    }).then((res)=>{
+      Taro.hideLoading();
+      if(res.data.success){
+        Taro.setStorageSync('dy_token',res.data.data.token);
+        Taro.navigateTo({
+          url: '/pages/dianyuan/home/home'
+        })
+      }else{
+        Taro.showToast({
+          title: res.data.errorInfo,
+          icon: 'none',
+          duration: 1500
+        });
+      }
+    })
+    
   }
   render () {
     return (

@@ -82,6 +82,27 @@ class DyQianDao extends Component {
     })
   }
   componentDidHide () { }
+
+  //
+  signFn(){
+    Taro.request({
+      url:api.opSignPath,
+      method:'POST',
+      data:{
+        token:Taro.getStorageSync('dy_token'),
+        shopId:this.state.shopSelector[this.state.shopIndex].shopId
+      }      
+    }).then((res) =>{
+      if(res.data.success){ 
+        Taro.showToast({
+          title: '签到成功',
+          icon: 'none',
+          duration: 1500
+        });
+      } 
+    })
+  }
+
   render () {
     const {nowDate} = this.state;
     return (
@@ -102,7 +123,7 @@ class DyQianDao extends Component {
             <Text className='text'>签到时间：{nowDate}</Text>
           </View>
           <View className="line">
-            <Button className='btn'>签到</Button>
+            <Button className='btn' onClick={this.signFn.bind(this)}>签到</Button>
           </View>
         </View>
 

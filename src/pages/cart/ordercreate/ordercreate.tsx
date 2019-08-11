@@ -68,7 +68,7 @@ class Ordercreate extends Component {
         memberAddressId:"",
         zitiAddressObj:{},
         yHmoneyArr:{},
-        orderType:0//0:普通订单 5:入包送鞋订单
+        orderType:0//0:普通订单 5:充币送鞋订单
     }
 
     getAddressList(){
@@ -183,7 +183,7 @@ class Ordercreate extends Component {
         }
         this.getAddressList();
         this.getZitiAddressFn();
-        if(this.$router.params.orderType==5){//入包送鞋
+        if(this.$router.params.orderType==5){//充币送鞋
             this.setState({
                 goodsList:Taro.getStorageSync('orderCreate').goodsList,
                 amount:Taro.getStorageSync('orderCreate').amount,
@@ -320,7 +320,7 @@ class Ordercreate extends Component {
           }
     }
 
-    //去入包
+    //去充币
     goRecharge(amount){
     //    Taro.requestPayment({
     //         timeStamp: '',
@@ -720,23 +720,23 @@ class Ordercreate extends Component {
                                                         }
                                                         {
                                                             this.state.basePrice==0 && <View className="flex flex-between">
-                                                                <Text>入包赠送抵扣</Text><Text>-¥{this.state.amount-this.state.cxYhMoney}</Text>
+                                                                <Text>充币赠送抵扣</Text><Text>-¥{this.state.amount-this.state.cxYhMoney}</Text>
                                                             </View>
                                                         }
                                                         {/* 有基价 */}
                                                         {
                                                             this.state.basePrice!=0 && <View className="flex flex-between">
-                                                                <Text>入包赠送抵扣</Text><Text>-¥{this.state.amount}</Text>
+                                                                <Text>充币赠送抵扣</Text><Text>-¥{this.state.amount}</Text>
                                                             </View>
                                                         }
                                                         {
                                                            this.state.basePrice==0 && <View className="flex flex-between">
-                                                                <Text>入包金额</Text><Text>¥{(this.state.amount-this.state.cxYhMoney)*this.state.saveTimes}</Text>
+                                                                <Text>充币金额</Text><Text>¥{(this.state.amount-this.state.cxYhMoney)*this.state.saveTimes}</Text>
                                                             </View>
                                                         }
                                                         {
                                                             this.state.basePrice!=0 && <View className="flex flex-between">
-                                                                <Text>入包金额</Text><Text>¥{this.state.basePrice*this.state.saveTimes}</Text>
+                                                                <Text>充币金额</Text><Text>¥{this.state.basePrice*this.state.saveTimes}</Text>
                                                             </View>
                                                         }                                                        
                                                         <View className="flex flex-between">
@@ -789,8 +789,8 @@ class Ordercreate extends Component {
                         this.state.orderType==0 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>提交订单</View>
                     }
                     {
-                        // this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this,this.state.amount*this.state.saveTimes+this.state.freight)}>去入包</View>
-                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>去入包</View>
+                        // this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.goRecharge.bind(this,this.state.amount*this.state.saveTimes+this.state.freight)}>去充币</View>
+                        this.state.orderType==5 && <View className="sub-btn theme-bgc" onClick={this.subOrderFn.bind(this)}>去充币</View>
                     }
                 </View>
                 {/* <View className='InvocePage_box' hidden={this.state.isShowInvocePage}>

@@ -14,7 +14,7 @@ class Amount extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '留存明显'
+    navigationBarTitleText: '余币明显'
   }
   static options = {
     addGlobalClass: true
@@ -91,7 +91,7 @@ class Amount extends Component {
       }
     })
   }
-  //入包按钮
+  //充币按钮
   OpenCz(){
     this.setState({
       isCzModal:true
@@ -215,7 +215,7 @@ class Amount extends Component {
                 </View>
             </View>
             <View className="integral-title font30 color666">
-                留存明细
+                余币明细
                 <View className="text-icon theme-bgc"></View>
             </View>
         </View>
@@ -229,7 +229,7 @@ class Amount extends Component {
                           item.action==1 && <Text className='log_typetxt'>消费</Text>
                         }
                         {
-                          item.action==2 && <Text className='log_typetxt'>入包</Text>
+                          item.action==2 && <Text className='log_typetxt'>充币</Text>
                         }
                         {
                           item.action==3 && <Text className='log_typetxt'>赠费</Text>
@@ -238,7 +238,7 @@ class Amount extends Component {
                       </View>
                       <View className='changeInfo'>
                         <Text className='change'>{item.action==1?'-':'+'}￥{item.actionMoney}</Text>
-                        <Text className='changeAfter'>留存：{item.accountMoney}</Text>
+                        <Text className='changeAfter'>余币：{item.accountMoney}</Text>
                       </View>
                     </View>
                 )
@@ -246,18 +246,18 @@ class Amount extends Component {
               
             }
             {
-              moneyLogListlen==0 &&<View className="ap-no-record color-9 font26 mr-t-dis">没有产生留存记录哦~</View>
+              moneyLogListlen==0 &&<View className="ap-no-record color-9 font26 mr-t-dis">没有产生余币记录哦~</View>
             }            
             <View onClick={this.OpenCz} className="amount-charge-fixed flex fixIphonex">
-                <View className="amount--btn half color-white theme-bgc font36">入包</View>
+                <View className="amount--btn half color-white theme-bgc font36">充币</View>
             </View>
         </View>
 
         <AtModal isOpened={this.state.isCzModal}>
           <AtModalHeader>
-            {this.state.czType==0 && <Text>入包</Text>}
-            {this.state.czType==1 && <Text>入包送钱</Text>}
-            {this.state.czType==2 && <Text>入包送鞋</Text>}
+            {this.state.czType==0 && <Text>充币</Text>}
+            {this.state.czType==1 && <Text>充币送钱</Text>}
+            {this.state.czType==2 && <Text>充币送鞋</Text>}
           </AtModalHeader>
           <AtModalContent>
             {
@@ -268,7 +268,7 @@ class Amount extends Component {
                                           <Text className='text' onClick={this.selFastAmount.bind(this,500)}>500</Text>
                                         </View>
                                         <View className='customAmount'>
-                                          <Text className='text'>请输入入包金额：</Text>
+                                          <Text className='text'>请输入充币金额：</Text>
                                           <View className='input_box'>
                                             <Text className='unit'>￥</Text>
                                             <Input className='input' type="digit" value={this.state.czAmount=="0"?"":this.state.czAmount} onInput={this.handleChange.bind(this,'czAmount')}></Input>
@@ -278,14 +278,14 @@ class Amount extends Component {
             }
             {
               this.state.czType==1 && <View className='amountModalCon'>
-                                        <View>入包规则：每入包{this.state.rule.save}送{this.state.rule.give},可以累计</View>
+                                        <View>充币规则：每充币{this.state.rule.save}送{this.state.rule.give},可以累计</View>
                                         <View className="FastAmount">
                                           <Text className='text' onClick={this.selFastAmount.bind(this,100)}>100</Text>
                                           <Text className='text' onClick={this.selFastAmount.bind(this,200)}>200</Text>
                                           <Text className='text' onClick={this.selFastAmount.bind(this,500)}>500</Text>
                                         </View>
                                         <View className='customAmount'>
-                                          <Text className='text'>请输入入包金额：</Text>
+                                          <Text className='text'>请输入充币金额：</Text>
                                           <View className='input_box'>
                                             <Text className='unit'>￥</Text>
                                             <Input className='input' type="digit" value={this.state.czAmount=="0"?"":this.state.czAmount} onInput={this.handleChange.bind(this,'czAmount')}></Input>
@@ -299,7 +299,7 @@ class Amount extends Component {
             {
               this.state.czType==2 && <View className='amountModalCon'>                                        
                                         <View className='customAmount'>
-                                          <Text className='text'>入包金额：</Text>
+                                          <Text className='text'>充币金额：</Text>
                                           <View className='input_box'>
                                             <Text className='unit'>￥</Text>
                                             <Input className='input' disabled type="digit" value={this.state.czAmount}></Input>

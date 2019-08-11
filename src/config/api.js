@@ -45,8 +45,19 @@ const activityActjsonPath = baseUrl + 'activity/actjson';//查询是否属于充
 const memberZccodePath = baseUrl + 'member/zccode';//查询资产代码
 const siteShareGoodsPath = baseUrl + 'site/share/goods';//商品分享图片
 
+const opSignPath = baseUrl + 'op/sign';//店员 签到
+const opShopSetlocalPath =  baseUrl + 'op/shop/setlocal';//店员 设置地址
+const opLoginPath = baseUrl + 'op/login';//店员 登录
+const opMemberPath = baseUrl + 'op/member';//
+
 
 module.exports = {
+
+  opMemberPath:opMemberPath,
+  opLoginPath:opLoginPath,
+  opShopSetlocalPath:opShopSetlocalPath,
+  opSignPath:opSignPath,
+
   memberCheckPath:memberCheckPath,
   memberSendsmsPath:memberSendsmsPath,
   memberBindcardPath:memberBindcardPath,

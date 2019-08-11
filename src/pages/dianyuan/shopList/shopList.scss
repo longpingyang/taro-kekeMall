@@ -1,0 +1,48 @@
+
+.bkg-white {
+    background-color: #fff;
+}
+
+.mention-list-container {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .mention-list-item {
+        padding: 30px 30px 0;
+        margin-bottom: 20px;
+    }
+    .mention-list-item-title {
+        padding-bottom: 18px;
+    }
+    .mention-list-item-address {
+        padding-bottom: 22px;
+        font-size: 26px;
+        color: #666;
+    }
+    .icon-dizhi2{
+        display: block;
+        height: 34px;
+        font-size: 34px;
+        color: #646464;
+    }
+    .mention-list-item-business {
+        height:82px;
+        .flex1 {
+            display: block;
+            font-size: 25px;
+            color: #999;
+        }
+        
+    }
+}
+.no-more {
+    font-size: 25px;
+    line-height: 32px;
+    color: #999;
+    text-align: center;
+    margin: 40px 0;
+}

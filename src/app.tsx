@@ -66,7 +66,7 @@ class App extends Component {
       "pages/dianyuan/minehuiyuan/hylist/hylist",
       "pages/dianyuan/minehuiyuan/hyfx/hyfx",
       "pages/dianyuan/minehuiyuan/hysr/hysr",
-
+      "pages/dianyuan/shopList/shopList",
       "pages/zitiShop/zitiShop",
 
       "pages/pintuan/pintuan",

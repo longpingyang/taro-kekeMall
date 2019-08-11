@@ -9,7 +9,7 @@ const api = require('../../../config/api.js');
 class RechargeGiveShoe extends Component {
    
   config: Config = {
-    navigationBarTitleText: '入包送鞋'
+    navigationBarTitleText: '充币送鞋'
   }
 
   componentWillReceiveProps (nextProps) {

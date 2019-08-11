@@ -91,7 +91,7 @@ class Index extends Component {
       url: '/pages/address/list/list'
     })
   }
-  //留存明细
+  //余币明细
   goAmountPage(){
     Taro.navigateTo({
       url: '/pages/user/amount/amount'
@@ -165,7 +165,7 @@ class Index extends Component {
             </View>
           </View>
           <View className='balance_box'>
-            <View className='item' onClick={this.goAmountPage}><Text className='text'>{userInfo.moneyBalance}\n留存</Text></View>            
+            <View className='item' onClick={this.goAmountPage}><Text className='text'>{userInfo.moneyBalance}\n余币</Text></View>            
             <View className='item center' onClick={this.goPointPage}><Text className='text'>{userInfo.scoreCount}\n积分</Text></View>            
             <View className='item'><Text className='text' onClick={this.couponsMoreFn}>{userInfo.couponCount}\n优惠券</Text></View>            
           </View>
