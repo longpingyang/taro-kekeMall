@@ -52,7 +52,7 @@ const opMemberPath = baseUrl + 'op/member';//
 
 
 module.exports = {
-
+  baseUrl:baseUrl,
   opMemberPath:opMemberPath,
   opLoginPath:opLoginPath,
   opShopSetlocalPath:opShopSetlocalPath,

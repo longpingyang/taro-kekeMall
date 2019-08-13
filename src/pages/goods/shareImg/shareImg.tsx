@@ -24,11 +24,8 @@ class ShareImg extends Component {
         title: '生存中...',
     })
     Taro.request({
-        url:api.siteShareGoodsPath,
+        url:api.siteShareGoodsPath+"?goodsId="+this.$router.params.id,
         method:"POST",
-        data:{
-            goodsId:this.$router.params.id
-        },
         header:{
             token:Taro.getStorageSync('token')
         }
@@ -84,10 +81,10 @@ class ShareImg extends Component {
   render () {
     return (
         <View className='shareImg_box'>
-            {/* <Image className='shareImg' mode='scaleToFill' src={this.state.ImgUrl}></Image> */}
-            <Image className='shareImg' mode='scaleToFill' src='http://www.kknx6.com/demo/opr/dy_tongji.jpg'></Image>
+            <Image className='shareImg' mode='scaleToFill' src={api.baseUrl+this.state.ImgUrl}></Image>
+            {/* <Image className='shareImg' mode='scaleToFill' src='http://www.kknx6.com/demo/opr/dy_tongji.jpg'></Image> */}
             <View className='get_card'>
-              <Button className='btn' onClick={this.saveImg.bind(this,'http://www.kknx6.com/demo/opr/dy_tongji.jpg')}>保存</Button>
+              <Button className='btn' onClick={this.saveImg.bind(this,api.baseUrl+this.state.ImgUrl)}>保存</Button>
             </View>
         </View>
     )

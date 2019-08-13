@@ -125,38 +125,42 @@ class Index extends Component {
                 data:{
                   wxOpenid:openid
                 },
+                header:{
+                  token:Taro.getStorageSync('token')
+                },
                 method: 'POST',
                 success:(obj) =>{
                   if(obj.data.success){
                     if(obj.data.data.verifyResult){//1新用户;2未登录;3已登录
-                      if(obj.data.data.verifyResult==1){//scope.userInfo
+                      if(obj.data.data.verifyResult==1 || obj.data.data.verifyResult==2){//scope.userInfo
                         // Taro.authorize({
                         //   scope: 'scope.userInfo',
                         //   success(){}
                         // })
+                        Taro.setStorageSync('backUrl','/pages/goods/details/details?id='+paramdata.goodsId);
                         Taro.navigateTo({
                           url: '/pages/user/login/login'
                         })
                       }
-                      if(obj.data.data.verifyResult==2){
-                        Taro.showLoading({
-                          title: '登录中',
-                        })
-                        Taro.request({
-                          url:api.memberLoginTwoPath,
-                          data:{
-                            openId:openid
-                          },
-                          method: 'POST',
-                        }).then((res)=>{
-                          Taro.hideLoading();
-                          if(res.data.success){
-                            Taro.setStorageSync('token',res.data.data.token);
-                            Taro.setStorageSync('userMember',res.data.data.member);
-                            this.getDetailDataFn(paramdata,url);
-                          }
-                        })
-                      }
+                      // if(obj.data.data.verifyResult==2){
+                      //   Taro.showLoading({
+                      //     title: '登录中',
+                      //   })
+                      //   Taro.request({
+                      //     url:api.memberLoginTwoPath,
+                      //     data:{
+                      //       openId:openid
+                      //     },
+                      //     method: 'POST',
+                      //   }).then((res)=>{
+                      //     Taro.hideLoading();
+                      //     if(res.data.success){
+                      //       Taro.setStorageSync('token',res.data.data.token);
+                      //       Taro.setStorageSync('userMember',res.data.data.member);
+                      //       this.getDetailDataFn(paramdata,url);
+                      //     }
+                      //   })
+                      // }
                       if(obj.data.data.verifyResult==3){
                         this.getDetailDataFn(paramdata,url);
                       }

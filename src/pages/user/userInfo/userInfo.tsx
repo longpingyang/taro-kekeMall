@@ -131,9 +131,10 @@ class Index extends Component {
       },
     })
   }
-  logoutFn(){
-    Taro.setStorageSync("userMember",null);
-    Taro.setStorageSync("token",null);
+  logoutFn(){    
+    Taro.removeStorageSync('userMember');
+    Taro.removeStorageSync('token');
+    Taro.removeStorageSync('wxOpenid');
     Taro.navigateTo({
       url: '/pages/user/login/login'
     })

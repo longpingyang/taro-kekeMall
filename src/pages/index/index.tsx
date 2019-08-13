@@ -32,6 +32,8 @@ class Index extends Component {
   componentDidShow () {
     this.getShopActivity();
     this.getIndeList();
+    if(Taro.getStorageSync('backUrl'))
+      Taro.removeStorageSync('backUrl');
   }
   //首页商品展示信息
   getIndeList(){

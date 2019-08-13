@@ -22,6 +22,7 @@ class Login extends Component {
   } 
 
   componentWillReceiveProps (nextProps) {
+
   }
 
   componentWillUnmount () {
@@ -41,14 +42,17 @@ class Login extends Component {
               data:{
                 wxOpenid:openid
               },
+              header:{
+                token:Taro.getStorageSync('token')
+              },
               method: 'POST',
               success:(obj) =>{
                 if(obj.data.success){
                   if(obj.data.data.verifyResult){
                     if(obj.data.data.verifyResult==1){
-                      this.setState({
-                        getPhoneModalIsShow:true
-                      })
+                      // this.setState({
+                      //   getPhoneModalIsShow:true
+                      // })
                       // this.setState({
                       //   getPhoneModalIsShow:true
                       // })
@@ -70,7 +74,7 @@ class Login extends Component {
                       header:{
                         token:Taro.getStorageSync('token')
                       } 
-                    }).then((res) =>{
+                    }).then((res) =>{                      
                       if(res.data.success){
                         this.setState({
                           shopSelector:res.data.data
@@ -88,17 +92,46 @@ class Login extends Component {
                       isCard:obj.data.data.verifyResult //1新用户;2未登录;3已登录
                     })
                   }
-                  
                 }
               }
             })
-            
           }
         })
 
       }
     })  
   }
+
+  oneLoginFn(){
+    Taro.showLoading({
+      title: '登录中',
+    })
+    Taro.request({
+      url:api.memberLoginTwoPath,
+      data:{
+        openId:Taro.getStorageSync('wxOpenid')
+      },
+      method: 'POST',
+    }).then((res)=>{
+      Taro.hideLoading();
+      if(res.data.success){
+        Taro.setStorageSync('token',res.data.data.token);
+        Taro.setStorageSync('userMember',res.data.data.member);
+        if(Taro.getStorageSync('backUrl')){
+          Taro.navigateTo({
+            url: Taro.getStorageSync('backUrl')
+          })
+        }else{
+          Taro.switchTab({
+            url: '/pages/index/index'
+          })
+        }
+        
+      }
+    })
+  }
+
+
   componentDidShow () {
 
   }
@@ -110,7 +143,9 @@ class Login extends Component {
       nickName:''      
     },
     getPhoneModalIsShow:false,
-    isCard:0,
+    isRegisterModel: false,
+    // verifyResult:0,
+    isCard:0,//1新用户;2未登录;3已登录
     cardNo:"",
     phoneNo:'',
     shopSelector:[{shopId:1,name:"成都自营店"}],
@@ -167,7 +202,6 @@ class Login extends Component {
       }
     }
   }
-
   login(){
     Taro.showLoading({
       title: '登录中',
@@ -266,14 +300,20 @@ class Login extends Component {
       // })
       this.setState({
         phoneNo:'12345678901',
-        getPhoneModalIsShow:false
+        isRegisterModel: true
       })
     }
+  }
+  isShowRegisterModelFn(){
+    this.setState({
+      isRegisterModel: true
+    })
   }
   render () {
     return (
       <View className='login_page'>        
-        <View className='index register_box' hidden={this.state.isCard==0 || this.state.isCard==2 || this.state.isCard==3}>
+        {/* <View className='index register_box' hidden={this.state.isCard==0 || this.state.isCard==2 || this.state.isCard==3}> */}
+        <View className='index register_box' hidden={!this.state.isRegisterModel}>
           <AtForm>
           <View className='phone_box'>
             <View className='text'><Text className='star'>*</Text>手机号：</View>
@@ -306,13 +346,25 @@ class Login extends Component {
           <View className='get_card'>
             <Button className='btn' onClick={this.registerFn.bind(this)}>注册</Button>
           </View>
-          <View className='get_card Dy_login'>
+          {/* <View className='get_card Dy_login'>
             <Button className='btn' onClick={this.goDyHomePage.bind(this)}>店员登录</Button>
-          </View>
+          </View> */}
           {/* <View className='get_card fast_login'>
             <Button className='btn'>微信一键登录</Button>
           </View> */}
+          
         </AtForm>
+        </View>
+        <View className='loginType_box' hidden={this.state.isCard!=1 || this.state.isRegisterModel}>
+          <View className='logo_box'>
+            <Image className='logo' src={LogoImg}></Image>
+          </View>
+          <View className='get_card fast_login' >
+            <Button className='btn' onGetPhoneNumber={this.getPhoneNumber.bind(this)} open-type="getPhoneNumber">微信一键登录</Button>
+          </View>
+          <View className='get_card'>
+            <Button className='btn' onClick={this.isShowRegisterModelFn.bind(this)}>注册</Button>
+          </View>
         </View>
         <View className='loginType_box' hidden={this.state.isCard==0 ||this.state.isCard==1 || this.state.loginType==1 || this.state.loginType==2}>
           <View className='logo_box'>
@@ -321,7 +373,11 @@ class Login extends Component {
           <View className='get_card'>
             <Button className='btn' onClick={this.loginType.bind(this,1)}>密 码  登 录</Button>
           </View>
-          <View className='get_card fast_login'>
+          
+          <View className='get_card fast_login' hidden={this.state.isCard!=2}>
+            <Button className='btn' onClick={this.oneLoginFn.bind(this)}>微信一键登录</Button>
+          </View>
+          <View className='get_card'>
             <Button className='btn' onClick={this.loginType.bind(this,2)}>验证码登录</Button>
           </View>
           <View className='get_card Dy_login'>
@@ -361,7 +417,7 @@ class Login extends Component {
             </View>
           </AtForm>
         </View>
-        <AtFloatLayout title="" isOpened={this.state.getPhoneModalIsShow}>
+        {/* <AtFloatLayout title="" isOpened={this.state.getPhoneModalIsShow}>
           <View className="share_dialog_box">
             <View className="share_con_box">
                 <Button className='btn' onGetPhoneNumber={this.getPhoneNumber.bind(this)} open-type="getPhoneNumber">
@@ -369,7 +425,7 @@ class Login extends Component {
                 </Button>
             </View>
           </View>
-        </AtFloatLayout>
+        </AtFloatLayout> */}
       </View>
     )
   }
