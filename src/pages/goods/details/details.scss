@@ -427,6 +427,9 @@ a.arrows:visited {
   .share_btn{
     position: fixed; right: 20px; top: 300px; width: 80px; height: 80px; border: solid 1px #ddd; z-index: 99; border-radius: 40px;
     line-height: 80px; text-align: center; font-size: 22px;
+    .img{
+      width: 80px; height: 80px;border-radius: 40px;
+    }
   }
   .at-float-layout__container{
     min-height: 100px;

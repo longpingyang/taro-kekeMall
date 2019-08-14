@@ -119,7 +119,7 @@ class Login extends Component {
         Taro.setStorageSync('userMember',res.data.data.member);
         if(Taro.getStorageSync('backUrl')){
           Taro.navigateTo({
-            url: Taro.getStorageSync('backUrl')
+            url: Taro.getStorageSync('backUrl')+'&shopId='+Taro.getStorageSync('userMember').shopId
           })
         }else{
           Taro.switchTab({

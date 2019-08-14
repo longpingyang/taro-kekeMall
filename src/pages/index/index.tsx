@@ -138,7 +138,7 @@ class Index extends Component {
   }
   goDetailPage(id){
     Taro.navigateTo({
-      url: '/pages/goods/details/details?id='+id
+      url: '/pages/goods/details/details?id='+id+'&shopId='+Taro.getStorageSync('userMember').shopId
     })
   }
   goGiveShow(ids,rule){

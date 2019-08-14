@@ -28,6 +28,7 @@ class Index extends Component {
     goodsId:'',
     goodsDetail: {},
     background: [],
+    verifyResult:0,//1新用户;2未登录;3已登录
     indicatorDots: true,
     vertical: false,
     autoplay: true,
@@ -70,6 +71,7 @@ class Index extends Component {
 
   componentDidShow () {
     this.getDoodsDetails();
+    this.checkLoginStatusFn();
     this.getActivityActjson();
   }
   getActivityActjson(){
@@ -93,96 +95,55 @@ class Index extends Component {
 
   getDoodsDetails(){
     var url = api.goodsDetailTwoPath;//goodsDetailTwoPath;
-    var paramdata = {
-      goodsId:1
+    if(this.$router.params.shopId && this.$router.params.id){
+      url = api.goodsDetailTwoPath+'?goodsId='+this.$router.params.id+'&shopId='+this.$router.params.shopId;
     }
-    if(this.$router.params.id){
-      url = api.goodsDetailPath;
-      paramdata = {
-        goodsId:this.$router.params.id
-      }
-    }
-    if(!this.$router.params.id && !this.$router.params.shopId){
-      url = api.goodsDetailTwoPath;
-      paramdata['shopId'] = 1;
-      paramdata['goodsId'] = 1;
-    }
-    if(this.$router.params.shopId){
-      url = api.goodsDetailTwoPath;
-      paramdata['shopId'] = this.$router.params.shopId;
-      paramdata['goodsId'] = this.$router.params.id;
-    }
-      Taro.login({
-        success:(res) =>{
-          Taro.request({
-            url:api.memberOpenIdPath+'?code='+res.code,
-            method:"POST",
-            success:(data)=>{
-              let openid = JSON.parse(data.data.data).openid;
-              Taro.setStorage({key:'wxOpenid',data:openid})
-              Taro.request({
-                url:api.memberCheckPath,
-                data:{
-                  wxOpenid:openid
-                },
-                header:{
-                  token:Taro.getStorageSync('token')
-                },
-                method: 'POST',
-                success:(obj) =>{
-                  if(obj.data.success){
-                    if(obj.data.data.verifyResult){//1新用户;2未登录;3已登录
-                      if(obj.data.data.verifyResult==1 || obj.data.data.verifyResult==2){//scope.userInfo
-                        // Taro.authorize({
-                        //   scope: 'scope.userInfo',
-                        //   success(){}
-                        // })
-                        Taro.setStorageSync('backUrl','/pages/goods/details/details?id='+paramdata.goodsId);
-                        Taro.navigateTo({
-                          url: '/pages/user/login/login'
-                        })
-                      }
-                      // if(obj.data.data.verifyResult==2){
-                      //   Taro.showLoading({
-                      //     title: '登录中',
-                      //   })
-                      //   Taro.request({
-                      //     url:api.memberLoginTwoPath,
-                      //     data:{
-                      //       openId:openid
-                      //     },
-                      //     method: 'POST',
-                      //   }).then((res)=>{
-                      //     Taro.hideLoading();
-                      //     if(res.data.success){
-                      //       Taro.setStorageSync('token',res.data.data.token);
-                      //       Taro.setStorageSync('userMember',res.data.data.member);
-                      //       this.getDetailDataFn(paramdata,url);
-                      //     }
-                      //   })
-                      // }
-                      if(obj.data.data.verifyResult==3){
-                        this.getDetailDataFn(paramdata,url);
-                      }
-                    }
+    this.getDetailDataFn(url);
+  }
+
+  checkLoginStatusFn(){
+    Taro.login({
+      success:(res) =>{
+        Taro.request({
+          url:api.memberOpenIdPath+'?code='+res.code,
+          method:"POST",
+          success:(data)=>{
+            let openid = JSON.parse(data.data.data).openid;
+            Taro.setStorage({key:'wxOpenid',data:openid})
+            Taro.request({
+              url:api.memberCheckPath,
+              data:{
+                wxOpenid:openid
+              },
+              header:{
+                token:Taro.getStorageSync('token')
+              },
+              method: 'POST',
+              success:(obj) =>{
+                if(obj.data.success){
+                  if(obj.data.data.verifyResult){//1新用户;2未登录;3已登录
+                    this.setState({
+                      verifyResult:obj.data.data.verifyResult
+                    })
+                    
                   }
                 }
-              })
-            }
-          })
-        }
-      }) 
+              }
+            })
+          }
+        })
+      }
+    }) 
   }
 
 
-  getDetailDataFn(data,url){
+  getDetailDataFn(url){
     Taro.request({
       url:url,
-      method:'POST',
-      data:data,
-      header:{
-        token:Taro.getStorageSync('token')
-      }
+      method:'POST'
+      // header:{
+      //   token:Taro.getStorageSync('token')
+      // }
     }).then((res)=>{
       if(res.data.success){
         let colorArr:any = [];
@@ -194,7 +155,10 @@ class Index extends Component {
           sizeArr.push({'key':element.sizeId,'value':element.name})
         });   
         //优惠券 信息筛选
-        let tempList=Taro.getStorageSync('allCouponList');        
+        let tempList =[];
+        if(Taro.getStorageSync('allCouponList')){
+          tempList=Taro.getStorageSync('allCouponList');    
+        }
         let tempArr = [];
         tempList.forEach(element => {
             tempArr=[...tempArr,...element.coupons];
@@ -247,13 +211,16 @@ class Index extends Component {
   componentDidHide () { }
 
   addCartFn(){
-    this.setState((data)=>{
-      data['skuModalShow']=true;
-      data['couponsModalShow']=false;
-      data['shareModalIsShow']=false;
-      data['buyType']=2;
-    },()=>{
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      this.setState((data)=>{
+        data['skuModalShow']=true;
+        data['couponsModalShow']=false;
+        data['shareModalIsShow']=false;
+        data['buyType']=2;
+      },()=>{
+      })
+    }
   }
 
   checkedAttr(pindex,sIndex,value,text){
@@ -330,22 +297,35 @@ class Index extends Component {
   }
 
   buyNowFn(){
-    this.setState({
-      skuModalShow:true,
-      couponsModalShow:false,
-      shareModalIsShow: false,
-      buyType:1
-    })
-  }
-
-  buyRechargeFn(){
-    this.setState({
-      skuModalShow:true,
-      couponsModalShow:false,
-      shareModalIsShow: false,
-      buyType:3
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      this.setState({
+        skuModalShow:true,
+        couponsModalShow:false,
+        shareModalIsShow: false,
+        buyType:1
+      })
+    }
     
+  }
+  isGoLoginPageFn(){
+    if(this.state.verifyResult==1 || this.state.verifyResult==2){//scope.userInfo
+      Taro.setStorageSync('backUrl','/pages/goods/details/details?id='+this.$router.params.id);
+      Taro.navigateTo({
+        url: '/pages/user/login/login'
+      })
+    }    
+  }
+  buyRechargeFn(){
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      this.setState({
+        skuModalShow:true,
+        couponsModalShow:false,
+        shareModalIsShow: false,
+        buyType:3
+      })
+    }
   }
 
 
@@ -370,27 +350,43 @@ class Index extends Component {
   }
   //商品页面
   goGoodsPageFn(){
-    Taro.switchTab({
-      url: '/pages/goods/goods'
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      Taro.switchTab({
+        url: '/pages/goods/goods'
+      })
+    }
+    
   }
   //我的 
   goMinePageFn(){
-    Taro.switchTab({
-      url: '/pages/user/user'
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      Taro.switchTab({
+        url: '/pages/user/user'
+      })
+    }
+    
   }
   //购物车
   goCartPage(){
-    Taro.switchTab({
-      url: '/pages/cart/cart'
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      Taro.switchTab({
+        url: '/pages/cart/cart'
+      })
+    }
+    
   }
   //首页
   goIndexPage(){
-    Taro.switchTab({
-      url: '/pages/index/index'
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      Taro.switchTab({
+        url: '/pages/index/index'
+      })
+    }
+    
   }
   //分享
   openShareModalFn(){
