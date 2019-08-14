@@ -422,7 +422,9 @@ class Index extends Component {
     return (
       <View className='goods_details_page'>
         {/* <button open-type='share'>分享</button> */}
-        <View className="share_btn" onClick={this.openShareModalFn.bind(this)}>分享</View>
+        <View className="share_btn" onClick={this.openShareModalFn.bind(this)}>
+          <Image className="img" src="http://www.kknx6.com/demo/app/share.png"></Image>
+        </View>
         <View className="goods_detail_box">
             <View className="goodsImg_box">        
                 <Swiper
@@ -675,12 +677,12 @@ class Index extends Component {
             <View className="share_con_box">
                 <View className="item">
                   <Button className='btn' open-type="share">
-                    <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
+                    <Image className="img" src="http://www.kknx6.com/demo/app/wechat.png"></Image>
                     <Text className="text">发给好友</Text>
                   </Button>
                 </View>
                 <View className="item" onClick={this.goShareImgPageFn}>
-                    <Image className="img" src="http://www.kknx6.com/goods/mainPic/11.jpg"></Image>
+                    <Image className="img" src="http://www.kknx6.com/demo/app/image.png"></Image>
                     <Text className="text">生成图片</Text>
                 </View>
             </View>
