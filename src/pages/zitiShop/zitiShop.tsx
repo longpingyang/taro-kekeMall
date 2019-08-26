@@ -38,8 +38,16 @@ class ZitiShop extends Component {
     }).then((res) =>{
       if(res.data.success){ 
         // console.log(res.data.data);
+        let data = [];
+        if(res.data.data.length>10){
+          data = res.data.data.splice(0,10);
+        }else{
+          data = res.data.data;
+        }
+
+
         this.setState({
-          addressList:res.data.data
+          addressList:data
         })
       } 
     })

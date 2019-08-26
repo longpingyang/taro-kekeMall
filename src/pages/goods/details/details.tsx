@@ -141,9 +141,6 @@ class Index extends Component {
     Taro.request({
       url:url,
       method:'POST'
-      // header:{
-      //   token:Taro.getStorageSync('token')
-      // }
     }).then((res)=>{
       if(res.data.success){
         let colorArr:any = [];
@@ -264,7 +261,7 @@ class Index extends Component {
         "goodsId": this.state.goodsId,
         "sizeId": this.state.buyParam.sizeId,
         "sizeName":this.state.buyParam.sizeName,
-        "mainPic":this.state.background[0],
+        "mainPic":this.state.background?this.state.background:'',
         "price":this.state.goodsDetail['price']
       }],amount:this.state.goodsDetail['price'],saveTimes:this.state.saveTimes,basePrice:this.state.basePrice});
       Taro.navigateTo({
@@ -390,11 +387,14 @@ class Index extends Component {
   }
   //分享
   openShareModalFn(){
-    this.setState({
-      skuModalShow:false,
-      couponsModalShow:false,
-      shareModalIsShow: true
-    })
+    this.isGoLoginPageFn();
+    if(this.state.verifyResult==3){
+      this.setState({
+        skuModalShow:false,
+        couponsModalShow:false,
+        shareModalIsShow: true
+      })
+    }
   }
   closeShareModalFn(){
     this.setState({
@@ -604,7 +604,7 @@ class Index extends Component {
                       <View className="flex">
                           {/* <View  style={{backgroundImage: `url(${headImg})`}}>
                           </View> */}
-                          <Image className="sku-good-img" mode='widthFix' src={this.state.background[0]}></Image>
+                          <Image className="sku-good-img" mode='widthFix' src={this.state.background?this.state.background[0]:''}></Image>
                           <View className="sku-header-info flex1">
                               <View>
                                   <View className="sku-price PriceSwitch theme-color">

@@ -39,7 +39,6 @@ class ShareImg extends Component {
       })
   }
   saveImg(url){
-
     Taro.getSetting({
         success(res){
             if (!res.authSetting['scope.writePhotosAlbum']) {

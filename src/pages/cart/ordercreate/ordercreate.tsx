@@ -595,10 +595,10 @@ class Ordercreate extends Component {
                 }
                 {
                     this.state.isSelfGet==1 && <View className="wrap-address">
-                    <View className="m-row m-row-line m-row-start m-row-icon-box  order-row-comm">
+                    <View onClick={this.goZitiShopPage.bind(this)} className="m-row m-row-line m-row-start m-row-icon-box  order-row-comm">
                         <View className="order-row-comm-name">自提店</View>
                         <View className="order-row-comm-val">{this.state.zitiAddressObj['name']}</View>
-                        <View onClick={this.goZitiShopPage.bind(this)} className="iconfont icon-newarrow m-row-icon "></View>
+                        <View  className="iconfont icon-newarrow m-row-icon "></View>
                     </View>
                     <View className="m-row m-row-line m-row-start order-row-comm">
                         <View className="order-row-comm-name item-required">提货手机</View>

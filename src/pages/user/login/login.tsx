@@ -284,7 +284,6 @@ class Login extends Component {
   }
   getPhoneNumber(e) {
     var that = this;
-    console.log(e);
     if (e.detail.errMsg == "getPhoneNumber:ok") {
       // Taro.request({
       //   url: '',
@@ -300,6 +299,11 @@ class Login extends Component {
       // })
       this.setState({
         phoneNo:'12345678901',
+        isRegisterModel: true
+      })
+    }else{
+      this.setState({
+        phoneNo:'',
         isRegisterModel: true
       })
     }
@@ -359,11 +363,11 @@ class Login extends Component {
           <View className='logo_box'>
             <Image className='logo' src={LogoImg}></Image>
           </View>
-          <View className='get_card fast_login' >
-            <Button className='btn' onGetPhoneNumber={this.getPhoneNumber.bind(this)} open-type="getPhoneNumber">微信一键登录</Button>
+          <View className='get_card' >
+            <Button className='btn' onGetPhoneNumber={this.getPhoneNumber.bind(this)} open-type="getPhoneNumber">注册</Button>
           </View>
-          <View className='get_card'>
-            <Button className='btn' onClick={this.isShowRegisterModelFn.bind(this)}>注册</Button>
+          <View className='get_card Dy_login'>
+            <Button className='btn' onClick={this.goDyHomePage.bind(this)}>店员登录</Button>
           </View>
         </View>
         <View className='loginType_box' hidden={this.state.isCard==0 ||this.state.isCard==1 || this.state.loginType==1 || this.state.loginType==2}>
