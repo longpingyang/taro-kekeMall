@@ -492,7 +492,7 @@ class Ordercreate extends Component {
                     count +=element.count;
                 });
                 rule.forEach(element => {
-                    if(count>=element.min && count<element.max){
+                    if(count>=element.min && count<=element.max){
                         cxYhMoney=element.value;
                     }
                 });
