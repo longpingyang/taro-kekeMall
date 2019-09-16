@@ -289,12 +289,20 @@ class Login extends Component {
   getPhoneNumber(e) {
     if (e.detail.errMsg == "getPhoneNumber:ok") {
       Taro.request({
-        url: api.memberDecodePath+'?encrypdata='+e.detail.encryptedData+'&ivdata='+e.detail.iv+'&sessionkey='+this.state.sessionkey,
-        method: "POST",        
+        url: api.memberDecodePath+'?encrypdata='+encodeURIComponent(e.detail.encryptedData)+'&ivdata='+encodeURIComponent(e.detail.iv)+'&sessionkey='+encodeURIComponent(this.state.sessionkey),
+        method: "POST", 
+        header:{
+          token:Taro.getStorageSync('token')
+        },       
         success:  (res)=> {
           if(res.data.data){
             this.setState({
               phoneNo:JSON.parse(res.data.data).phoneNumber,
+              isRegisterModel: true
+            })
+          }else{
+            this.setState({
+              phoneNo:'',
               isRegisterModel: true
             })
           }
