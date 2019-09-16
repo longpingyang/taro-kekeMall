@@ -24,7 +24,7 @@ class ShareImg extends Component {
         title: '生存中...',
     })
     Taro.request({
-        url:api.siteShareGoodsPath+"?goodsId="+this.$router.params.id,
+        url:api.siteShareGoodsPath+"?goodsId="+this.$router.params.id+'&shopId='+Taro.getStorageSync('userMember').shopId,
         method:"POST",
         header:{
             token:Taro.getStorageSync('token')

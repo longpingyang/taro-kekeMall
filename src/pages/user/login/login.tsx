@@ -37,6 +37,9 @@ class Login extends Component {
           success:(data)=>{
             let openid = JSON.parse(data.data.data).openid;
             Taro.setStorage({key:'wxOpenid',data:openid})
+            this.setState({
+              sessionkey:JSON.parse(data.data.data).session_key
+            })
             Taro.request({
               url:api.memberCheckPath,
               data:{
@@ -155,7 +158,8 @@ class Login extends Component {
     getText:'获取验证码',
     code:'',
     passwd:"",
-    getChange: true
+    getChange: true,
+    sessionkey:''
   }
 
   getCodeFn () {
@@ -283,23 +287,18 @@ class Login extends Component {
     })
   }
   getPhoneNumber(e) {
-    var that = this;
     if (e.detail.errMsg == "getPhoneNumber:ok") {
-      // Taro.request({
-      //   url: '',
-      //   method: "POST",
-      //   data: {
-      //     encryptedData: e.detail.encryptedData,
-      //     iv: e.detail.iv,
-      //     sessionKey: that.data.session_key,
-      //   },
-      //   success: function (res) {
-      //     console.log(res);
-      //   }
-      // })
-      this.setState({
-        phoneNo:'12345678901',
-        isRegisterModel: true
+      Taro.request({
+        url: api.memberDecodePath+'?encrypdata='+e.detail.encryptedData+'&ivdata='+e.detail.iv+'&sessionkey='+this.state.sessionkey,
+        method: "POST",        
+        success:  (res)=> {
+          if(res.data.data){
+            this.setState({
+              phoneNo:JSON.parse(res.data.data).phoneNumber,
+              isRegisterModel: true
+            })
+          }
+        }
       })
     }else{
       this.setState({
@@ -374,16 +373,16 @@ class Login extends Component {
           <View className='logo_box'>
             <Image className='logo' src={LogoImg}></Image>
           </View>
-          <View className='get_card'>
+          {/* <View className='get_card'>
             <Button className='btn' onClick={this.loginType.bind(this,1)}>密 码  登 录</Button>
-          </View>
+          </View> */}
           
           <View className='get_card fast_login' hidden={this.state.isCard!=2}>
             <Button className='btn' onClick={this.oneLoginFn.bind(this)}>微信一键登录</Button>
           </View>
-          <View className='get_card'>
+          {/* <View className='get_card'>
             <Button className='btn' onClick={this.loginType.bind(this,2)}>验证码登录</Button>
-          </View>
+          </View> */}
           <View className='get_card Dy_login'>
             <Button className='btn' onClick={this.goDyHomePage.bind(this)}>店员登录</Button>
           </View>

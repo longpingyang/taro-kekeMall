@@ -94,11 +94,25 @@ class Index extends Component {
 
 
   getDoodsDetails(){
+    console.log(this.$router.params);
     var url = api.goodsDetailTwoPath;//goodsDetailTwoPath;
     if(this.$router.params.shopId && this.$router.params.id){
       url = api.goodsDetailTwoPath+'?goodsId='+this.$router.params.id+'&shopId='+this.$router.params.shopId;
+      this.getDetailDataFn(url);
     }
-    this.getDetailDataFn(url);
+    
+    if(this.$router.params.scene){
+      Taro.request({
+        url:api.siteSceneParamPath+'?sceneId='+this.$router.params.scene,
+        method:'POST',
+      }).then((res) =>{
+        if(res.data.success && res.data.data){
+          url = api.goodsDetailTwoPath+'?'+ res.data.data;
+          this.getDetailDataFn(url);
+        }
+      })
+    }
+    
   }
 
   checkLoginStatusFn(){
