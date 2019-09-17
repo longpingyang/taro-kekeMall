@@ -28,7 +28,7 @@ class Index extends Component {
   componentWillUnmount() {}
 
   componentDidShow () { 
-    this.getGoodsList();
+    this.getGoodsList(1);
     this.getGoodsCategory();
   }
 
@@ -37,6 +37,7 @@ class Index extends Component {
     show: false,
     filterModel:false,
     isGoodsLine:false,
+
     posts: [
       {"goodsId": "1",
       "dispPrice": 200,
@@ -45,6 +46,8 @@ class Index extends Component {
       "mainPic": null,
       "tag": null}
     ],
+    page:1,
+    isMore: true,
     goodsParam:{
       key:'',
       categoryId:'',
@@ -64,7 +67,7 @@ class Index extends Component {
         },
         show:false,filterModel:false
       },()=>{
-        this.getGoodsList();
+        this.getGoodsList(1);
       })
     }else{
       this.setState({
@@ -74,11 +77,15 @@ class Index extends Component {
         },
         show:false,filterModel:false
       },()=>{
-        this.getGoodsList();
+        this.getGoodsList(1);
       })
     }        
   }
-  getGoodsList(){
+  getGoodsList(page){
+    let pageNum = this.state.page;
+    if(page){
+      pageNum = page;
+    }
     Taro.request({
       url:api.goodsListPath,
       method:'POST',
@@ -87,7 +94,7 @@ class Index extends Component {
         "key": this.state.goodsParam.key,
         "pageInfo": {
           "pageCount": 0,
-          "pageNo": 1,
+          "pageNo": pageNum,
           "pageRec": 10,
           "pageSize": 20
         },
@@ -100,9 +107,16 @@ class Index extends Component {
       }
     }).then((res) =>{
       if(res.data.success){  
-        this.setState({
-          posts:res.data.data
-        })
+        if(res.data.data.length>0){
+          this.setState({
+            posts:[...this.state.posts,...res.data.data]
+          })
+        }else{
+          this.setState({
+            isMore: false
+          })
+        }
+        
       }else{
         if(res.data.errorCode=='E401'){
           Taro.setStorageSync('userMember',null);
@@ -150,7 +164,7 @@ class Index extends Component {
       },
       show:false,filterModel:false
     },()=>{
-      this.getGoodsList();
+      this.getGoodsList(1);
     })
   }
   setGoodsParamKey(e){
@@ -183,6 +197,21 @@ class Index extends Component {
     Taro.navigateTo({
       url: '/pages/goods/details/details?id='+id+'&shopId='+Taro.getStorageSync('userMember').shopId
     })
+  }
+  onReachBottom(){
+    if(this.state.isMore){
+      this.setState({
+        page: this.state.page+1
+      },() =>{
+        this.getGoodsList(this.state.page);
+      })
+    }
+    
+    console.log('加载更多....');
+  }
+  onPullDownRefresh(){
+
+    console.log('刷新数据...');
   }
   render () {
     const { posts,goodsCategory } = this.state
@@ -261,7 +290,7 @@ class Index extends Component {
                 <View className="searchs flex1">
                         {/* <Input type="hidden" name="id" className="hidden" value="0"></Input>
                         <Input type="hidden" name="classifyname" className="hidden" value="全部商品"></Input> */}
-                        <Input type="text" confirm-type="search" onConfirm={this.getGoodsList} onInput={this.setGoodsParamKey.bind(this)} name="search" placeholder="请输入搜索的商品" value={this.state.goodsParam.key}></Input>
+                        <Input type="text" confirm-type="search" onConfirm={this.getGoodsList.bind(this,1)} onInput={this.setGoodsParamKey.bind(this)} name="search" placeholder="请输入搜索的商品" value={this.state.goodsParam.key}></Input>
                     <View className="iconsearch iconfont icon-sousuo"></View>
                 </View>
                 <View className="mode" onClick={this.changeStyleFn.bind(this)}>
